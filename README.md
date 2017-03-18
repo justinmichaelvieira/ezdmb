@@ -10,7 +10,7 @@ Python 3 (https://www.python.org/downloads/)
 Qt 5 (https://www.qt.io/)
 
 ## How to run
-1. Clone or download all files.
+1. Clone or download all files (be sure to include and install the prerequisites above, if you don't have them)!
 2. Open a command line, and run `main.py` in the local ezdmb folder.  For example, on Windows I might run `python c:\Users\Justin\Documents\ezdmb\main.py`.
 
 ## Instructions / Basic Operation
@@ -26,6 +26,9 @@ Handles configuration of the system, and outputting the config json.
 
 ### /Controller/SelectFile.py
 File selection dialog behavior and overrides.
+
+### /dmb_config.pro
+Qt project file which loads all designer (`*.ui`) files.
 
 ### `*_auto.py`
 The `*_auto.py` are generated from Qt designer files using the `pyuic5` command (see: http://manpages.ubuntu.com/manpages/xenial/man1/pyuic5.1.html). 
