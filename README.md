@@ -14,7 +14,7 @@ A dead-simple digital menu board display and configuration, written in Python.  
 2. Open a command line, and run `main.py` in the local ezdmb folder.  For example, on Windows I might run `python c:\Users\Justin\Documents\ezdmb\main.py`.
 
 ## Instructions / Basic Operation
-The "Set New Image" button opens a file browser on the tablet/computer which will allow the user to select a different image.  On selection a config file, `dmb_config.json`, is written with the name of the selected menu board image.
+On load, both the fullscreen and configuration windows are loaded.  The configuration window can be simply closed by the user if it is not needed, leaving the fullscreen "menu board display" window open. The "Set New Image" button opens a file browser on the tablet/computer which will allow the user to select a different image.  On selection a config file, `dmb_config.json`, is written with the name of the selected menu board image.
 
 ## Code Listing / Technical Documentation
 
