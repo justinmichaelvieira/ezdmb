@@ -27,7 +27,7 @@ Handles configuration of the system, and outputting the config json.
 ### /Controller/SelectFile.py
 File selection dialog behavior and overrides.
 
-### /dmb_config.pro
+### dmb_config.pro
 Qt project file which loads all designer (`*.ui`) files.
 
 ### `*_auto.py`
