@@ -6,8 +6,8 @@ A dead-simple digital menu board display and configuration, written in Python.  
 ![Configuration Window](/Images/ezdmb1.PNG)
 
 ## Prerequisites
-Python 3 (https://www.python.org/downloads/)
-Qt 5 (https://www.qt.io/)
+- Python 3 (https://www.python.org/downloads/)
+- Qt 5 (https://www.qt.io/)
 
 ## How to run
 1. Clone or download all files (be sure to include and install the prerequisites above, if you don't have them)!
