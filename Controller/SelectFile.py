@@ -1,10 +1,9 @@
-import sys
-import PyQt5
 from PyQt5 import Qt
+from PyQt5 import QtGui
 from PyQt5.QtWidgets import *
-from PyQt5 import QtCore, QtGui
-import Configuration
-import mainwindow_auto
+
+from Controller import Configuration
+
 
 class SelectFile(object):
 
@@ -29,7 +28,6 @@ class SelectFile(object):
         fullScreenForm.label_pic.pixmap = Qt.QPixmap()
         fullScreenForm.label_pic.setPixmap(QtGui.QPixmap(main_img))
         fullScreenForm.label_pic.pixmap = fullScreenForm.label_pic.pixmap.scaled(fullScreenForm.size(), Qt.Qt.KeepAspectRatio)
-        #print(main_img)
 
         # Save new image as the default image
         config = Configuration.Configuration()

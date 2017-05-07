@@ -7,7 +7,9 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import Configuration
+
+from Controller import Configuration
+
 
 class Ui_FullScreenWindow(object):
     def setupUi(self, FullScreenWindow):

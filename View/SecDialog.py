@@ -1,10 +1,9 @@
-import sys
-import PyQt5
-from PyQt5 import Qt
 from PyQt5.QtWidgets import *
-from PyQt5 import QtCore, QtGui
 import secdialog_auto
-import Configuration
+from PyQt5.QtWidgets import *
+
+import secdialog_auto
+
 
 class SecDialog(QDialog, secdialog_auto.Ui_SecDialog):
 
