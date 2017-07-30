@@ -175,12 +175,12 @@ class Ui_ConfigDialog(object):
         self.verticalLayout_6.addWidget(self.groupBox_4)
 
         self.retranslateUi(ConfigDialog)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(ConfigDialog)
 
     def retranslateUi(self, ConfigDialog):
         _translate = QtCore.QCoreApplication.translate
-        ConfigDialog.setWindowTitle(_translate("ConfigDialog", "Dialog"))
+        ConfigDialog.setWindowTitle(_translate("ConfigDialog", "Settings"))
         self.groupBox.setTitle(_translate("ConfigDialog", "Content"))
         self.use_html_file_check.setText(_translate("ConfigDialog", "Use HTML file"))
         self.use_images_check.setText(_translate("ConfigDialog", "Use images"))

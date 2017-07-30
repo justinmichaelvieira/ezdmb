@@ -22,6 +22,11 @@ class ConfigDialog(QDialog, configdialog_auto.Ui_ConfigDialog):
         self._config.SaveSettings(self.use_images_check.isChecked(), self.use_html_file_check.isChecked(),
                                   self.use_menu_data_check.isChecked(), self.rotate_images_check.isChecked(),
                                   float(self.rotateTimeBox.value()),tmpContentList)
+        self._config.UseImages = self.use_images_check.isChecked()
+        self._config.UseHTML = self.use_html_file_check.isChecked()
+        self._config.UseImported = self.use_menu_data_check.isChecked()
+        self._config.RotateContent = self.rotate_images_check.isChecked()
+        self._config.RotateContentTime = self.rotateTimeBox.value()
         self.close()
 
     def addContent(self):
@@ -31,3 +36,10 @@ class ConfigDialog(QDialog, configdialog_auto.Ui_ConfigDialog):
     def deleteSelectedContent(self):
         for SelectedItem in self.loadedContentWidget.selectedItems():
             self.loadedContentWidget.takeItem(self.loadedContentWidget.row(SelectedItem))
+
+    def setUiFromConfig(self):
+        self.use_images_check.setChecked(bool(self._config.UseImages))
+        self.use_html_file_check.setChecked(bool(self._config.UseHTML))
+        self.use_menu_data_check.setChecked(bool(self._config.UseImported))
+        self.rotate_images_check.setChecked(bool(self._config.RotateContent))
+        self.rotateTimeBox.setValue(float(self._config.RotateContentTime))

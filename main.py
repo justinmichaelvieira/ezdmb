@@ -64,6 +64,7 @@ def populateInstance():
     return app, fullScreenMenu, advancedConfig
 
 def showAdvConfig(advancedConfig):
+    advancedConfig.setUiFromConfig()
     advancedConfig.show()
 
 # python bit to figure how who started This
