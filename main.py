@@ -53,7 +53,7 @@ def populateInstance():
     advancedConfig.rotate_images_check.setChecked(config.RotateContent == "true")
     advancedConfig.rotateTimeBox.setValue(float(config.RotateContentTime))
     for i in config.ContentArray:
-        item = QListWidgetItem("%i" % str(i))
+        item = QListWidgetItem("%s" % str(i))
         advancedConfig.loadedContentWidget.addItem(item)
     configDialog.show()
     fullScreenMenu.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -61,6 +61,8 @@ def populateInstance():
     selectFile = SelectFile.SelectFile()
     configDialog.setImageButton.clicked.connect(lambda: selectFile.selectFile(configDialog, fullScreenMenu))
     configDialog.pushButton_2.clicked.connect(lambda: showAdvConfig(advancedConfig))
+    configDialog.raise_()
+    configDialog.activateWindow()
     return app, fullScreenMenu, advancedConfig
 
 def showAdvConfig(advancedConfig):

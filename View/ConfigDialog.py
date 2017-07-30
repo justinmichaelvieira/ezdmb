@@ -27,6 +27,7 @@ class ConfigDialog(QDialog, configdialog_auto.Ui_ConfigDialog):
         self._config.UseImported = self.use_menu_data_check.isChecked()
         self._config.RotateContent = self.rotate_images_check.isChecked()
         self._config.RotateContentTime = self.rotateTimeBox.value()
+        self._config.ContentArray = tmpContentList
         self.close()
 
     def addContent(self):
