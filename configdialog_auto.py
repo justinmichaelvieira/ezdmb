@@ -175,7 +175,7 @@ class Ui_ConfigDialog(object):
         self.verticalLayout_6.addWidget(self.groupBox_4)
 
         self.retranslateUi(ConfigDialog)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(ConfigDialog)
 
     def retranslateUi(self, ConfigDialog):
