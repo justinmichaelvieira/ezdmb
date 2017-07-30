@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import *
 
 from Controller import Configuration
 
-
 class SelectFile(object):
 
     def __init__(self):
@@ -31,4 +30,4 @@ class SelectFile(object):
 
         # Save new image as the default image
         config = Configuration.Configuration()
-        config.SaveConfig(main_img)
+        config.SaveNewImage(main_img)

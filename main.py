@@ -10,7 +10,6 @@ from PyQt5.QtWidgets import *
 from Controller import SelectFile, Configuration
 from View import FullScreenWindow, MainWindow, ConfigDialog
 
-
 # This is a required defined class for argparse -JV
 class CmdArgs:
     pass
@@ -18,7 +17,7 @@ class CmdArgs:
 # starting point of the app runtime
 def main():
     # a new app instance
-    app, fullScreenMenu = populateInstance()
+    app, fullScreenMenu, advancedConfig = populateInstance()
     # store screen geometry
     screenWidth = fullScreenMenu.frameGeometry().width()
     screenHeight = fullScreenMenu.frameGeometry().height()
@@ -47,14 +46,22 @@ def populateInstance():
     fullScreenMenu = FullScreenWindow.FullScreenWindow()
     configDialog = MainWindow.MainWindow()
     configDialog.current_menu.setPixmap(QtGui.QPixmap(config.SavedImage))
-    advancedConfig = ConfigDialog.ConfigDialog()
+    advancedConfig = ConfigDialog.ConfigDialog(config)
+    advancedConfig.use_images_check.setChecked(config.UseImages == "true")
+    advancedConfig.use_html_file_check.setChecked(config.UseHTML == "true")
+    advancedConfig.use_menu_data_check.setChecked(config.UseImported == "true")
+    advancedConfig.rotate_images_check.setChecked(config.RotateContent == "true")
+    advancedConfig.rotateTimeBox.setValue(float(config.RotateContentTime))
+    for i in config.ContentArray:
+        item = QListWidgetItem("%i" % str(i))
+        advancedConfig.loadedContentWidget.addItem(item)
     configDialog.show()
     fullScreenMenu.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     fullScreenMenu.showFullScreen()
     selectFile = SelectFile.SelectFile()
     configDialog.setImageButton.clicked.connect(lambda: selectFile.selectFile(configDialog, fullScreenMenu))
     configDialog.pushButton_2.clicked.connect(lambda: advancedConfig.show())
-    return app, fullScreenMenu
+    return app, fullScreenMenu, advancedConfig
 
 # python bit to figure how who started This
 if __name__ == "__main__":
