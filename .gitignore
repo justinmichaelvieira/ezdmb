@@ -1,3 +1,9 @@
 /__pycache__/*
 /.idea/*
+<<<<<<< 4bdc15d8a5396a12fa1a8ae8ac03832ce44cee16
 *.pyc
+=======
+*.pyc
+*.sublime-project
+*.sublime-workspace
+>>>>>>> Updated config interface to prepare for html, expanded rotation settings and imports.

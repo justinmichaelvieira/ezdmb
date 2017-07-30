@@ -14,13 +14,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    secdialog.cpp
+    configdialog.cpp
 
 HEADERS  += mainwindow.h \
-    secdialog.h
+    configdialog.h
 
 FORMS    += mainwindow.ui \
-    secdialog.ui \
-    fullscreenwindow.ui
+    fullscreenwindow.ui \
+    fullscreenbrowser.ui \
+    configdialog.ui
 
 RESOURCES +=

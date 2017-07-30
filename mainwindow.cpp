@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "secdialog.h"
+#include "configdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,7 +16,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    SecDialog secdialog;
-    secdialog.setModal(true);
-    secdialog.exec();
+    ConfigDialog configdialog;
+    configdialog.setModal(true);
+    configdialog.exec();
 }

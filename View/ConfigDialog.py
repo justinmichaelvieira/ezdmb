@@ -1,11 +1,8 @@
 from PyQt5.QtWidgets import *
-import secdialog_auto
-from PyQt5.QtWidgets import *
-
-import secdialog_auto
+import configdialog_auto
 
 
-class SecDialog(QDialog, secdialog_auto.Ui_SecDialog):
+class ConfigDialog(QDialog, configdialog_auto.Ui_ConfigDialog):
 
     def __init__(self):
         super(self.__class__, self).__init__()

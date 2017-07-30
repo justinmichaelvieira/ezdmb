@@ -7,8 +7,8 @@ import argparse  # Cmd line option lib
 import sys
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import *
-from Controller import SelectFile, Configuration, BootstrapAPI
-from View import FullScreenWindow, MainWindow, SecDialog
+from Controller import SelectFile, Configuration
+from View import FullScreenWindow, MainWindow, ConfigDialog
 
 
 # This is a required defined class for argparse -JV
@@ -25,7 +25,6 @@ def main():
     #size and show menu
     fullScreenMenu.label_pic.resize(screenWidth, screenHeight)
     parseCmdLineArgs(screenHeight, screenWidth)
-    #api = BootstrapAPI.BootstrapAPI()
     # without this, the script exits immediately.
     sys.exit(app.exec_())
 
@@ -48,7 +47,7 @@ def populateInstance():
     fullScreenMenu = FullScreenWindow.FullScreenWindow()
     configDialog = MainWindow.MainWindow()
     configDialog.current_menu.setPixmap(QtGui.QPixmap(config.SavedImage))
-    advancedConfig = SecDialog.SecDialog()
+    advancedConfig = ConfigDialog.ConfigDialog()
     configDialog.show()
     fullScreenMenu.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     fullScreenMenu.showFullScreen()
