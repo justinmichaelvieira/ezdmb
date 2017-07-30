@@ -60,8 +60,11 @@ def populateInstance():
     fullScreenMenu.showFullScreen()
     selectFile = SelectFile.SelectFile()
     configDialog.setImageButton.clicked.connect(lambda: selectFile.selectFile(configDialog, fullScreenMenu))
-    configDialog.pushButton_2.clicked.connect(lambda: advancedConfig.show())
+    configDialog.pushButton_2.clicked.connect(lambda: showAdvConfig(advancedConfig))
     return app, fullScreenMenu, advancedConfig
+
+def showAdvConfig(advancedConfig):
+    advancedConfig.show()
 
 # python bit to figure how who started This
 if __name__ == "__main__":

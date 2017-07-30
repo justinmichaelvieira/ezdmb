@@ -25,13 +25,9 @@ class ConfigDialog(QDialog, configdialog_auto.Ui_ConfigDialog):
         self.close()
 
     def addContent(self):
-        contentFiles = QFileDialog.getOpenFileName(self)
-        tmpContentList = [str(contentFiles.item(i).text()) for i in range(contentFiles.count())]
-        self.loadedContentWidget.addItems(tmpContentList)
+        contentFile = QFileDialog.getOpenFileName(self)[0]
+        self.loadedContentWidget.addItem(contentFile)
 
     def deleteSelectedContent(self):
-        listItems = self.loadedContentWidget.selectedItems()
-        if not listItems: return
-        for item in listItems:
-            itemIndex = self.loadedContentWidget.indexOfTopLevelItem(item)
-            self.loadedContentWidget.takeTopLevelItem(itemIndex)
+        for SelectedItem in self.loadedContentWidget.selectedItems():
+            self.loadedContentWidget.takeItem(self.loadedContentWidget.row(SelectedItem))
