@@ -11,17 +11,16 @@ app.config.update(
 db = SQLAlchemy(app)
 
 
-class Menu(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    menuName = db.Column(db.Text)
-
-
 class MenuItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    menuId = db.Column(db.Integer, db.ForeignKey('menu.id'))
     menuItemName = db.Column(db.Text)
     price = db.Column(db.Float)
 
+class ItemAddOn(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    menuItemId = db.Column(db.Integer, db.ForeignKey('menuitem.id'))
+    addOnName = db.Column(db.Text)
+    price = db.Column(db.Integer)
 
 class MenuImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,5 +1,4 @@
 from PyQt5.QtWidgets import *
-#import numpy as np
 import configdialog_auto
 
 

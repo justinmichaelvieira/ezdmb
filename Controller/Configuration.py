@@ -70,7 +70,7 @@ class Configuration(object):
         self._data = dict()
         #defaults here, for first runs
         self._savedImage = "default.jpg"
-        self._configPath = QStandardPaths.writableLocation(QStandardPaths.HomeLocation) + "/dmb_config.json"
+        self._configPath = "dmb_config.json"
         #create config file if it does not already exist
         if not os.path.exists(self._configPath):
             try:
