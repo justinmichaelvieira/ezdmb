@@ -1,4 +1,4 @@
-import sys,os
+import os
 import errno
 import json
 from PyQt5.QtCore import QStandardPaths

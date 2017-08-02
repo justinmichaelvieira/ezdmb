@@ -24,7 +24,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="importTab">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -38,7 +38,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_basic">
       <attribute name="title">
@@ -96,7 +96,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Use HTML file</string>
+         <string>Use HTML files</string>
         </property>
        </widget>
        <widget class="QCheckBox" name="use_images_check">
@@ -163,7 +163,7 @@
      </widget>
      <widget class="QWidget" name="tab_images">
       <attribute name="title">
-       <string>Images</string>
+       <string>Content</string>
       </attribute>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="geometry">
@@ -275,7 +275,7 @@
          </font>
         </property>
         <property name="text">
-         <string> Rotate Images every</string>
+         <string> Rotate content every</string>
         </property>
        </widget>
       </widget>
@@ -323,7 +323,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Loaded Images:</string>
+         <string>Loaded content:</string>
         </property>
        </widget>
        <widget class="QListWidget" name="loadedContentWidget">
@@ -347,8 +347,8 @@
          <rect>
           <x>570</x>
           <y>400</y>
-          <width>261</width>
-          <height>61</height>
+          <width>281</width>
+          <height>81</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -369,10 +369,10 @@
        <widget class="QPushButton" name="addImageButton">
         <property name="geometry">
          <rect>
-          <x>190</x>
+          <x>170</x>
           <y>400</y>
-          <width>271</width>
-          <height>61</height>
+          <width>291</width>
+          <height>81</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -387,7 +387,74 @@
          </font>
         </property>
         <property name="text">
-         <string>Add Image</string>
+         <string>Add Content</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_import">
+      <attribute name="title">
+       <string>Import</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox_5">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>851</width>
+         <height>661</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="title">
+        <string>Current Imported Menu Data</string>
+       </property>
+       <widget class="QLabel" name="menuLbl">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>811</width>
+          <height>601</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_6">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>680</y>
+         <width>851</width>
+         <height>201</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="title">
+        <string>Import Menu Data</string>
+       </property>
+       <widget class="QPushButton" name="importButton">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>50</y>
+          <width>791</width>
+          <height>131</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Import from file</string>
         </property>
        </widget>
       </widget>

@@ -8,4 +8,6 @@
 *.sublime-workspace
 dmb_config.json
 menu.json
+main/*
+main.spec
 >>>>>>> Updated config interface to prepare for html, expanded rotation settings and imports.

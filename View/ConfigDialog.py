@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
+from Controller import SqliteImporter
+from pprint import pformat
 import configdialog_auto
-
 
 class ConfigDialog(QDialog, configdialog_auto.Ui_ConfigDialog):
 
@@ -12,6 +13,7 @@ class ConfigDialog(QDialog, configdialog_auto.Ui_ConfigDialog):
         self.okCancelButtonBox.accepted.connect(self.saveAndClose)
         self.addImageButton.clicked.connect(self.addContent)
         self.deleteSelectionButton.clicked.connect(self.deleteSelectedContent)
+        self.importButton.clicked.connect(self.importMenuToSqliteFromFile)
 
     def closeDialog(self):
         self.close()
@@ -43,3 +45,9 @@ class ConfigDialog(QDialog, configdialog_auto.Ui_ConfigDialog):
         self.use_menu_data_check.setChecked(bool(self._config.UseImported))
         self.rotate_images_check.setChecked(bool(self._config.RotateContent))
         self.rotateTimeBox.setValue(float(self._config.RotateContentTime))
+
+    def importMenuToSqliteFromFile(self):
+        importer = SqliteImporter.SqliteImporter()
+        menuFile = QFileDialog.getOpenFileName(self)[0]
+        menuData = importer.ImportMenuToSqliteFromFile(menuFile)
+        self.menuLbl.text = pformat(menuData)
