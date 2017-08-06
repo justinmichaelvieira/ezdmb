@@ -5,7 +5,8 @@
 
 import argparse  # Cmd line option lib
 import sys
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore
+from PyQt5.QtCore import QUrl
 from PyQt5.QtWidgets import *
 from Controller import SelectFile, Configuration
 from View import FullScreenWindow, MainWindow, ConfigDialog
@@ -43,9 +44,9 @@ def populateInstance():
     app.setOrganizationDomain("Rancorsoft.com")
     app.setApplicationName("Digital Menu Board")
     config = Configuration.Configuration()
-    fullScreenMenu = FullScreenWindow.FullScreenWindow()
-    configDialog = MainWindow.MainWindow()
-    #configDialog.current_menu.setPixmap(QtGui.QPixmap(config.SavedImage))
+    fullScreenMenu = FullScreenWindow.FullScreenWindow(config)
+    configDialog = MainWindow.MainWindow(config)
+
     advancedConfig = ConfigDialog.ConfigDialog(config)
     advancedConfig.use_images_check.setChecked(config.UseImages == "true")
     advancedConfig.use_html_file_check.setChecked(config.UseHTML == "true")

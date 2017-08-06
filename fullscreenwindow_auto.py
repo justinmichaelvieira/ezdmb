@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtWebKitWidgets
 
 from Controller import Configuration
 
@@ -38,17 +38,9 @@ class Ui_FullScreenWindow(object):
         sizePolicy.setHorizontalStretch(10)
         sizePolicy.setVerticalStretch(10)
         sizePolicy.setHeightForWidth(self.label_pic.sizePolicy().hasHeightForWidth())
+        self.label_pic = QtWebKitWidgets.QWebView()
         self.label_pic.setSizePolicy(sizePolicy)
         self.label_pic.setAutoFillBackground(True)
-        self.label_pic.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.label_pic.setText("")
-
-        #not generated!
-        config = Configuration.Configuration()
-        self.label_pic.setPixmap(QtGui.QPixmap(config.SavedImage))
-        
-        self.label_pic.setScaledContents(True)
-        self.label_pic.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_pic.setObjectName("label_pic")
         self.verticalLayout.addWidget(self.label_pic)
         FullScreenWindow.setCentralWidget(self.label_pic)
