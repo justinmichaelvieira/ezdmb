@@ -45,7 +45,7 @@ def populateInstance():
     config = Configuration.Configuration()
     fullScreenMenu = FullScreenWindow.FullScreenWindow()
     configDialog = MainWindow.MainWindow()
-    configDialog.current_menu.setPixmap(QtGui.QPixmap(config.SavedImage))
+    #configDialog.current_menu.setPixmap(QtGui.QPixmap(config.SavedImage))
     advancedConfig = ConfigDialog.ConfigDialog(config)
     advancedConfig.use_images_check.setChecked(config.UseImages == "true")
     advancedConfig.use_html_file_check.setChecked(config.UseHTML == "true")

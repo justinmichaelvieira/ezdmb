@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtWebKitWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -157,11 +157,49 @@ class Ui_MainWindow(object):
         self.current_menu.setSizePolicy(sizePolicy)
         self.current_menu.setMinimumSize(QtCore.QSize(960, 954))
         self.current_menu.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.current_menu.setText("")
-        self.current_menu.setPixmap(QtGui.QPixmap("default.jpg"))
+        #self.current_menu.setText("")
+        #self.current_menu.setPixmap(QtGui.QPixmap("default.jpg"))
         self.current_menu.setScaledContents(True)
         self.current_menu.setAlignment(QtCore.Qt.AlignCenter)
         self.current_menu.setObjectName("current_menu")
+        self.current_menu = QtWebKitWidgets.QWebView()
+        self.current_menu.setHtml('''
+              <html>
+                <head>
+                  <title>A Demo Page</title>
+
+                  <script language="javascript">
+                    // Completes the full-name control and
+                    // shows the submit button
+                    function completeAndReturnName() {
+                      var fname = document.getElementById('fname').value;
+                      var lname = document.getElementById('lname').value;
+                      var full = fname + ' ' + lname;
+
+                      document.getElementById('fullname').value = full;
+                      document.getElementById('submit-btn').style.display = 'block';
+
+                      return full;
+                    }
+                  </script>
+                </head>
+
+                <body>
+                  <form>
+                    <label for="fname">First name:</label>
+                    <input type="text" name="fname" id="fname"></input>
+                    <br />
+                    <label for="lname">Last name:</label>
+                    <input type="text" name="lname" id="lname"></input>
+                    <br />
+                    <label for="fullname">Full name:</label>
+                    <input disabled type="text" name="fullname" id="fullname"></input>
+                    <br />
+                    <input style="display: none;" type="submit" id="submit-btn"></input>
+                  </form>
+                </body>
+              </html>
+            ''')
         self.gridLayout.addWidget(self.current_menu, 0, 0, 1, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 2, 0, 1, 1)
         self.groupBox = QtWidgets.QGroupBox(self.centralWidget)
