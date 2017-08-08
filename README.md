@@ -1,9 +1,13 @@
 # ezdmb
-A dead-simple digital menu board display and configuration, written in Python.  Engineered to be the simplest, cheapest, fastest way to get your menu to display on **any** tablet or computer.  Ridiculously user friendly, with one button configuration interface.
+A dead-simple digital menu board display and configuration, written in Python.  Engineered to be the simplest, cheapest, fastest way to get your menu to display on **any** tablet or computer.  Ridiculously user friendly, with basic configuration interface.
 ### Full screen screenshot
 ![Full Screen Menu Image](/Images/354580462_orig.jpg)
-### Configuration window
-![Configuration Window](/Images/ezdmb1.PNG)
+### Configuration window (1)
+![Configuration Window 1](/Images/ezdmb1.PNG)
+### Configuration window (2)
+![Configuration Window 2](/Images/ezdmb2.PNG)
+### Configuration window (3)
+![Configuration Window 3](/Images/ezdmb3.PNG)
 
 ## Prerequisites
 - Python 3 (https://www.python.org/downloads/)
@@ -14,7 +18,11 @@ A dead-simple digital menu board display and configuration, written in Python.  
 2. Open a command line, and run `main.py` in the local ezdmb folder.  For example, on Windows I might run `python c:\Users\Justin\Documents\ezdmb\main.py`.
 
 ## Instructions / Basic Operation
-On load, both the fullscreen and configuration windows are loaded.  The configuration window can be simply closed by the user if it is not needed, leaving the fullscreen "menu board display" window open. The "Set New Image" button opens a file browser on the tablet/computer which will allow the user to select a different image.  On selection a config file, `dmb_config.json`, is written with the name of the selected menu board image.
+On load, both the fullscreen and configuration windows are loaded.  The configuration window can be simply closed by the user if it is not needed, leaving the fullscreen "menu board display" window open. 
+
+The display in the main screen of the configuration (under the text "Current menu") mirrors the full screen display.
+
+The "Display Settings" button opens configuration options.  On selection a config file, `dmb_config.json`, is written with the name of the selected menu board image.
 
 ## Code Listing / Technical Documentation
 
@@ -35,6 +43,5 @@ The `*_auto.py` are generated from Qt designer files using the `pyuic5` command 
 
 ## Coming Soon
 - Bug fixes (ongoing)
-- Installers for Windows, WinRT, Linux/android, iOS, MacOS
-  - Will include option for whether the app loads on OS startup
-- "Premium" edition with backend API and multiple menu rendering options (import price list, HTML, etc)
+- Installers + binaries for Windows, WinRT, Linux/android, iOS, MacOS
+- Option for whether the app loads on OS startup, expanded file types
