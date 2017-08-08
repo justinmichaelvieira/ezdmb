@@ -24,6 +24,12 @@ The display in the main screen of the configuration (under the text "Current men
 
 The "Display Settings" button opens configuration options.  On selection a config file, `dmb_config.json`, is written with the name of the selected menu board image.
 
+## System configuration
+The system can be configured using:
+- The "Display Settings" button and related screens
+- Manually editing the dmb_config.json file
+   
+
 ## Code Listing / Technical Documentation
 
 ### main.py
@@ -32,16 +38,15 @@ The main entry point of the code.  Note:  In a lot of scenarios, you will want t
 ### Configuration.py
 Handles configuration of the system, and outputting the config json.
 
-### /Controller/SelectFile.py
-File selection dialog behavior and overrides.
-
 ### dmb_config.pro
-Qt project file which loads all designer (`*.ui`) files.
+Qt Designer project file which loads all designer (`*.ui`) files.
 
 ### `*_auto.py`
 The `*_auto.py` are generated from Qt designer files using the `pyuic5` command (see: http://manpages.ubuntu.com/manpages/xenial/man1/pyuic5.1.html). 
 
 ## Coming Soon
-- Bug fixes (ongoing)
 - Installers + binaries for Windows, WinRT, Linux/android, iOS, MacOS
 - Option for whether the app loads on OS startup, expanded file types
+- Multi monitor support
+- Import menu data from json, yaml file
+- Menu item and sub item rendering
