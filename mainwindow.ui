@@ -449,63 +449,13 @@
       <property name="title">
        <string/>
       </property>
-      <widget class="QPushButton" name="setImageButton">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>60</x>
-         <y>21</y>
-         <width>441</width>
-         <height>71</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>421</width>
-         <height>52</height>
-        </size>
-       </property>
-       <property name="baseSize">
-        <size>
-         <width>50</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial Black</family>
-         <pointsize>22</pointsize>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-         <kerning>true</kerning>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="autoFillBackground">
-        <bool>true</bool>
-       </property>
-       <property name="text">
-        <string>Set New Image</string>
-       </property>
-      </widget>
       <widget class="QPushButton" name="pushButton_2">
        <property name="geometry">
         <rect>
-         <x>570</x>
+         <x>90</x>
          <y>20</y>
-         <width>451</width>
-         <height>71</height>
+         <width>951</width>
+         <height>91</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -516,14 +466,14 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>431</width>
-         <height>51</height>
+         <width>951</width>
+         <height>91</height>
         </size>
        </property>
        <property name="font">
         <font>
          <family>Arial Black</family>
-         <pointsize>22</pointsize>
+         <pointsize>24</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -532,7 +482,7 @@
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="text">
-        <string>Settings</string>
+        <string>Display Settings</string>
        </property>
       </widget>
      </widget>

@@ -1,19 +1,22 @@
-import sys
-import PyQt5
-from PyQt5 import Qt
 from PyQt5.QtWidgets import *
-from PyQt5 import QtCore, QtGui
+from PyQt5.QtCore import *
+
+from PyQt5.QtWebKit import QWebSettings
 from View import HtmlViewUtility
 import mainwindow_auto
 
-# create class for our Raspberry Pi GUI
 class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow):
-
     def __init__(self, config):
         super(self.__class__, self).__init__()
         self.setupUi(self) # gets defined in the UI file
-        self.setPreviewImageContent(config.SavedImage)
+        #settings = self.current_menu.settings()
+        #settings.setAttribute(QWebSettings.LocalContentCanAccessRemoteUrls, True)
+        #settings.setAttribute(QWebSettings.LocalContentCanAccessFileUrls, True)
+        #settings.setAttribute(QWebSettings.LocalStorageEnabled, True)
+        #settings.setAttribute(QWebSettings.AutoLoadImages, True)
+        self.htmlUtil = HtmlViewUtility.HtmlViewUtility(config.ContentArray,
+            config.RotateContent, config.RotateContentTime, self.current_menu, self.onRefresh)
 
-    def setPreviewImageContent(self, image):
-        hUtility = HtmlViewUtility.HtmlViewUtility()
-        self.current_menu.setHtml(hUtility.getImagePage(image))
+    @pyqtSlot(str)
+    def onRefresh(self, value):
+        self.current_menu.setHtml(value)

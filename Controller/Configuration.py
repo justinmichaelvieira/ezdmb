@@ -16,12 +16,6 @@ class Configuration(object):
         return self._data
     Data = property(get_data, set_data)
 
-    def set_savedImage(self, value):
-        self._savedImage = value
-    def get_savedImage(self):
-        return self._savedImage
-    SavedImage = property(get_savedImage, set_savedImage)
-
     def set_use_images(self, value):
         self._use_images = value
     def get_use_images(self):
@@ -65,13 +59,10 @@ class Configuration(object):
     # Initializes the object when Configuration is first instanced
     def __init__(self):
         super(self.__class__, self).__init__()
-        #private vars
         flags = os.O_CREAT | os.O_EXCL | os.O_WRONLY
         self._data = dict()
-        #defaults here, for first runs
-        self._savedImage = "default.jpg"
         self._configPath = "dmb_config.json"
-        #create config file if it does not already exist
+        # Create config file if it does not already exist
         if not os.path.exists(self._configPath):
             try:
                 file_handle = os.open(self._configPath, flags)
@@ -82,16 +73,13 @@ class Configuration(object):
                     raise
             else:  # No exception, so the file must have been created successfully.
                 with os.fdopen(file_handle, 'a') as file_obj:
-                # Using `os.fdopen` converts the handle to an object that acts like a
-                # regular Python file object, and the `with` context manager means the
-                # file will be automatically closed when we're done with it.
-                    self.SaveConfig(QStandardPaths.writableLocation(QStandardPaths.HomeLocation) + self._savedImage, True, True, True, True, "0.5", [])
-                    #json.dump(self.get_data(), file_obj)
+                    # Settings defaults here, for first runs
+                    self.SaveConfig( True, True, True, True, "0.5", ["default.jpg"])
 
         with open(self._configPath, 'r+') as json_data_file:
             self._data = json.load(json_data_file)
+
         # Set variables for the app to use
-        self.set_savedImage(self._data['saved_image'])
         self.set_use_images(self._data['use_images'])
         self.set_use_html(self._data['use_html'])
         self.set_use_imported(self._data['saved_image'])
@@ -99,15 +87,8 @@ class Configuration(object):
         self.set_rotate_content_time(float(self._data['rotate_content_time']))
         self.set_content_array (self._data['imported_content'])
 
-    def SaveNewImage(self, NewImage):
-        self.SaveConfig(NewImage, self.UseImages, self.UseHTML, self.UseImported, self.RotateContent, self.RotateContentTime, self.ContentArray)
-
-    def SaveSettings(self, UseImages, UseHTML, UseImported, RotateImages, RotateImagesTime, ImageArray):
-        self.SaveConfig(self._savedImage, UseImages, UseHTML, UseImported, RotateImages, RotateImagesTime, ImageArray)
-
     # Saves our JSON config file
-    def SaveConfig(self, NewImage, UseImages, UseHTML, UseImported, RotateContent, RotateContentTime, ContentArray):
-        self._data['saved_image'] = NewImage
+    def SaveConfig(self, UseImages, UseHTML, UseImported, RotateContent, RotateContentTime, ContentArray):
         self._data['use_images'] = UseImages
         self._data['use_html'] = UseHTML
         self._data['use_imported'] = UseImported
@@ -116,9 +97,3 @@ class Configuration(object):
         self._data['imported_content'] = ContentArray
         with open(self._configPath, 'w+') as outfile:
             json.dump(self.get_data(), outfile)
-
-    # Save text file to be rendered under a header
-    def SaveTextFile(self, fileContents):
-        textFile= open(QStandardPaths.writableLocation(QStandardPaths.HomeLocation) + "/menu.txt","w")
-        textFile.write(fileContents)
-        textFile.close()

@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebKitWidgets
+from PyQt5.QtWidgets import QTextEdit
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -175,38 +176,17 @@ class Ui_MainWindow(object):
         self.groupBox.setPalette(palette)
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
-        self.setImageButton = QtWidgets.QPushButton(self.groupBox)
-        self.setImageButton.setEnabled(True)
-        self.setImageButton.setGeometry(QtCore.QRect(60, 21, 441, 71))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.setImageButton.sizePolicy().hasHeightForWidth())
-        self.setImageButton.setSizePolicy(sizePolicy)
-        self.setImageButton.setMinimumSize(QtCore.QSize(421, 52))
-        self.setImageButton.setBaseSize(QtCore.QSize(50, 0))
-        font = QtGui.QFont()
-        font.setFamily("Arial Black")
-        font.setPointSize(22)
-        font.setBold(False)
-        font.setItalic(False)
-        font.setWeight(50)
-        font.setKerning(True)
-        self.setImageButton.setFont(font)
-        self.setImageButton.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.setImageButton.setAutoFillBackground(True)
-        self.setImageButton.setObjectName("setImageButton")
         self.pushButton_2 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_2.setGeometry(QtCore.QRect(570, 20, 451, 71))
+        self.pushButton_2.setGeometry(QtCore.QRect(90, 20, 951, 91))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
         self.pushButton_2.setSizePolicy(sizePolicy)
-        self.pushButton_2.setMinimumSize(QtCore.QSize(431, 51))
+        self.pushButton_2.setMinimumSize(QtCore.QSize(951, 91))
         font = QtGui.QFont()
         font.setFamily("Arial Black")
-        font.setPointSize(22)
+        font.setPointSize(24)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_2.setFont(font)
@@ -230,6 +210,5 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "DMB Configuration"))
         self.label.setText(_translate("MainWindow", "Digital Menu Board Config"))
         self.label_2.setText(_translate("MainWindow", "Current Menu:"))
-        self.setImageButton.setText(_translate("MainWindow", "Set New Image"))
-        self.pushButton_2.setText(_translate("MainWindow", "Settings"))
+        self.pushButton_2.setText(_translate("MainWindow", "Display Settings"))
 
