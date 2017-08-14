@@ -5,7 +5,8 @@
 
 import argparse  # Cmd line option lib
 import sys
-from PyQt5 import QtCore, QtNetwork
+import os.path as osp
+from PyQt5 import QtCore, QtNetwork, QtGui
 from PyQt5.QtWidgets import *
 from Controller import Configuration
 from View import FullScreenWindow, MainWindow, ConfigDialog
@@ -48,6 +49,7 @@ def populateInstance():
     config = Configuration.Configuration()
     fullScreenMenu = FullScreenWindow.FullScreenWindow(config)
     mainwin = MainWindow.MainWindow(config)
+    mainwin.setWindowIcon(QtGui.QIcon(osp.join(osp.dirname(__file__), 'Images/logo_256x256.jpg')))
     mainwin.show()
 
     advancedConfig = ConfigDialog.ConfigDialog(config)

@@ -22,8 +22,6 @@ On load, both the fullscreen and configuration windows are loaded.  The configur
 
 The display in the main screen of the configuration (under the text "Current menu") mirrors the full screen display.
 
-The "Display Settings" button opens configuration options.  On selection a config file, `dmb_config.json`, is written with the name of the selected menu board image.
-
 ## System configuration
 The system can be configured using:
 - The "Display Settings" button and related screens
