@@ -1,9 +1,9 @@
-import threading
+import os.path
 from PyQt5.QtCore import QUrl, pyqtSignal, QThread
-from PyQt5.QtWebKit import QWebSettings
 
 class HtmlViewUtility(QThread):
     updated = pyqtSignal(str)
+
     def __init__(self, contentArray, rotateContent, rotateTimeout, webkitWidget, onRefresh):
         QThread.__init__(self)
         self.debug = True
@@ -15,6 +15,14 @@ class HtmlViewUtility(QThread):
         self.updated.connect(onRefresh)
         self.start()
 
+    def getPage(self, fileName):
+        fileExtension = os.path.splitext(fileName)[1].lower()
+        imgExtensions = ['.jpg', '.png', '.gif', '.bmp', '.ico']
+        if fileExtension == ".html":
+            return open(fileName, 'r').read()
+        elif any(checkExt == fileExtension for checkExt in imgExtensions):
+            return self.getStretchFillImgPage(fileName)
+
     def getStretchFillImgPage(self, image):
         return '''<html>
 <body>
@@ -22,9 +30,10 @@ class HtmlViewUtility(QThread):
 </body>
 </html>
 '''
+
     def run( self ):
         for i in range(10000):
-            html = self.getStretchFillImgPage(self.contentArray[i % len(self.contentArray)])
+            html = self.getPage(self.contentArray[i % len(self.contentArray)])
             if self.debug:
                 print(html)
             self.updated.emit(str(html))

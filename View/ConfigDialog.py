@@ -1,7 +1,10 @@
-from PyQt5.QtWidgets import *
-from Controller import SqliteImporter
 from pprint import pformat
-import configdialog_auto
+
+from PyQt5.QtWidgets import *
+
+from Controller import SqliteImporter
+from View import configdialog_auto
+
 
 class ConfigDialog(QDialog, configdialog_auto.Ui_ConfigDialog):
 

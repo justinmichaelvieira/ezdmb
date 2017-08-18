@@ -1,8 +1,8 @@
-from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from PyQt5.QtWebKit import QWebSettings
-from View import HtmlViewUtility
-import fullscreenwindow_auto
+from PyQt5.QtWidgets import *
+
+from View import HtmlViewUtility, fullscreenwindow_auto
+
 
 class FullScreenWindow(QMainWindow, fullscreenwindow_auto.Ui_FullScreenWindow):
     def __init__(self, config):

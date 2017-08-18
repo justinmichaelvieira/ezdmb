@@ -1,13 +1,3 @@
-import sys
-
-import PyQt5
-from PyQt5.QtWidgets import *
-
-import argparse
-
-import dmb_config_auto
-import secdialog_auto
-
 #Set Main Image variable
 main_img = open("C:\Users\Justin\Documents\dmb_config\\new-menu.png")
 

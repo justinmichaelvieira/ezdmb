@@ -1,9 +1,8 @@
-from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 
-from PyQt5.QtWebKit import QWebSettings
-from View import HtmlViewUtility
-import mainwindow_auto
+from View import HtmlViewUtility, mainwindow_auto
+
 
 class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow):
     def __init__(self, config):
