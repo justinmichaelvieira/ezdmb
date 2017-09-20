@@ -11,18 +11,19 @@ from PyQt5.QtWidgets import *
 from Controller import Configuration
 from View import FullScreenWindow, MainWindow, ConfigDialog
 
+styleSheet = "MetroUI.qss"
+
 # This is a required defined class for argparse -JV
 class CmdArgs:
     pass
 
 # starting point of the app runtime
 def main():
-    # a new app instance
     app, fullScreenMenu, advancedConfig, mainwin = populateInstance()
     # store screen geometry
     screenWidth = fullScreenMenu.frameGeometry().width()
     screenHeight = fullScreenMenu.frameGeometry().height()
-    #size and show menu
+    # size and show menu
     fullScreenMenu.label_pic.resize(screenWidth, screenHeight)
     parseCmdLineArgs(screenHeight, screenWidth)
     # without this, the script exits immediately.
@@ -43,6 +44,11 @@ def populateInstance():
     app.setOrganizationName("Rancorsoft")
     app.setOrganizationDomain("Rancorsoft.com")
     app.setApplicationName("Digital Menu Board")
+
+    # read and apply app stylesheet
+    with open(styleSheet, "r") as f:
+        css = f.read()
+    app.setStyleSheet(css)
 
     QtNetwork.QNetworkProxyFactory.setUseSystemConfiguration(True)
 
@@ -70,6 +76,5 @@ def showAdvConfig(advancedConfig):
     advancedConfig.setUiFromConfig()
     advancedConfig.show()
 
-# python bit to figure how who started This
 if __name__ == "__main__":
     main()
