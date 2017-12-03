@@ -1,0 +1,3 @@
+[submodule "Qt-Creator-Darcula"]
+	path = submodules/Qt-Creator-Darcula
+	url = https://github.com/angryrancor/Qt-Creator-Darcula
