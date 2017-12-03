@@ -31,7 +31,7 @@ class HtmlViewUtility(QThread):
 </html>
 '''
 
-    def run( self ):
+    def run(self):
         for i in range(10000):
             html = self.getPage(self.contentArray[i % len(self.contentArray)])
             if self.debug:

@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets, QtWebKitWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 from PyQt5.QtWidgets import QTextEdit
 
 class Ui_MainWindow(object):
@@ -155,7 +155,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.current_menu.sizePolicy().hasHeightForWidth())
-        self.current_menu = QtWebKitWidgets.QWebView()
+        self.current_menu = QtWebEngineWidgets.QWebEngineView()
         self.current_menu.setSizePolicy(sizePolicy)
         self.current_menu.setMinimumSize(QtCore.QSize(960, 954))
         self.current_menu.setObjectName("current_menu")

@@ -82,7 +82,7 @@ class Configuration(object):
         # Set variables for the app to use
         self.set_use_images(self._data['use_images'])
         self.set_use_html(self._data['use_html'])
-        self.set_use_imported(self._data['saved_image'])
+        self.set_use_imported(self._data['use_imported'])
         self.set_rotate_content(self._data['rotate_content'])
         self.set_rotate_content_time(float(self._data['rotate_content_time']))
         self.set_content_array (self._data['imported_content'])

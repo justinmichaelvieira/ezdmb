@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets, QtWebKitWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 
 from Controller import Configuration
 
@@ -38,7 +38,7 @@ class Ui_FullScreenWindow(object):
         sizePolicy.setHorizontalStretch(10)
         sizePolicy.setVerticalStretch(10)
         sizePolicy.setHeightForWidth(self.label_pic.sizePolicy().hasHeightForWidth())
-        self.label_pic = QtWebKitWidgets.QWebView()
+        self.label_pic = QtWebEngineWidgets.QWebEngineView()
         self.label_pic.setSizePolicy(sizePolicy)
         self.label_pic.setAutoFillBackground(True)
         self.label_pic.setObjectName("label_pic")
