@@ -4,25 +4,31 @@
 # Rancorsoft, LLC 2016
 
 # import argparse  # Cmd line option lib
+import logging
 import sys
 import os.path as osp
 from PyQt5 import QtCore, QtNetwork, QtGui
 from PyQt5.QtWidgets import *
-from Controller import Configuration
+from Controller import Configuration, Backend
+from Controller.LoggingUtility import setupLogging
 from View import FullScreenWindow, MainWindow, ConfigDialog
 
-styleSheet = "darcula.css"
+styleSheet = "submodules/Qt-Creator-Darcula/darcula.css"
+logger = logging.getLogger()
 
 
 # starting point of the app runtime
 def main():
     app, fullScreenMenu, advancedConfig, mainwin = populateInstance()
+    setupLogging()
     # store screen geometry
     screenWidth = fullScreenMenu.frameGeometry().width()
     screenHeight = fullScreenMenu.frameGeometry().height()
     # size and show menu
     fullScreenMenu.label_pic.resize(screenWidth, screenHeight)
+    Backend.Backend()
     # without this, the script exits immediately.
+    logger.info("DMB Application started.")
     sys.exit(app.exec_())
 
 
@@ -36,9 +42,9 @@ def populateInstance():
     app.setApplicationName("Digital Menu Board")
 
     # read and apply app stylesheet
-    #with open(styleSheet, "r") as f:
-    #    css = f.read()
-    #app.setStyleSheet(css)
+    with open(styleSheet, "r") as f:
+        css = f.read()
+    app.setStyleSheet(css)
 
     QtNetwork.QNetworkProxyFactory.setUseSystemConfiguration(True)
 
