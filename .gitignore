@@ -8,3 +8,4 @@ menu.json
 main/*
 main.spec
 /dist/*
+/build/*
