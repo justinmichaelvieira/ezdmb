@@ -7,3 +7,4 @@ dmb_config.json
 menu.json
 main/*
 main.spec
+/dist/*
