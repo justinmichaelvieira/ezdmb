@@ -1,0 +1,16 @@
+{
+    "files": [
+        [
+            "Resources/resources.qrc",
+            "Resources"
+        ],
+        [
+            "View/*.ui",
+            "View"
+        ]
+    ],
+    "pyrcc": "pyrcc5",
+    "pyrcc_options": "",
+    "pyuic": "pyuic5",
+    "pyuic_options": "--from-imports"
+}

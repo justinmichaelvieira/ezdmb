@@ -1,0 +1,43 @@
+QWidget {
+    background: #ffffff;
+    border-color: #BDBDBD;
+    color: #212121;
+}
+
+QPushButton {
+    background: #448AFF;
+    border-radius: 4px;
+    border: 2px #212121;
+    color: #ffffff;
+}
+
+QPushButton::pressed {
+    background: #303F9F;
+    color: #448AFF;
+}
+
+QToolButton {
+    color: #FFFFFF;
+}
+
+QLineEdit[accessibleName="selectedFileEdit"] {
+    color: #757575;
+}
+
+QScrollArea {
+    background: #ffffff;
+}
+
+QToolButton {
+    background: #303F9F;
+    border: 0;
+}
+
+QFrame[accessibleName="navHeaderFrame"] {
+    background: #303F9F;
+}
+
+QLabel[accessibleName="titleBar"] {
+    background: #3F51B5;
+    color: #FFFFFF;
+}
