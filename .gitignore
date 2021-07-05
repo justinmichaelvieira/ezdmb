@@ -6,6 +6,7 @@ dmb_config.json
 *_ui.py
 menu.json
 main.spec
+log.txt
 main/
 dist/
 build/

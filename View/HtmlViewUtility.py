@@ -37,4 +37,4 @@ class HtmlViewUtility(QThread):
             if self.debug:
                 print(html)
             self.updated.emit(str(html))
-            self.sleep(self.rotateTimeout *60)
+            self.sleep(int(self.rotateTimeout *60))

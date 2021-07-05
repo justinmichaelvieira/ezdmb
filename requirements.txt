@@ -2,3 +2,4 @@ PyQt5 >= 5.14
 flask
 flask_sqlalchemy
 flask_restless
+PyQtWebEngine
