@@ -3,7 +3,6 @@
 *.sublime-workspace
 pyvenv.cfg
 dmb_config.json
-*_ui.py
 menu.json
 main.spec
 log.txt
@@ -14,3 +13,5 @@ __pycache__/
 .idea/
 Lib/
 Scripts/
+View/*_ui.py
+View/*_auto.py

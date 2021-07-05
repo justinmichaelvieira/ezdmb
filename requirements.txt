@@ -1,5 +1,7 @@
 PyQt5 >= 5.14
+PyQtWebEngine
+pyqt_distutils
+pyqt5ac
 flask
 flask_sqlalchemy
 flask_restless
-PyQtWebEngine

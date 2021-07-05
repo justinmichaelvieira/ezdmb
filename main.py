@@ -7,8 +7,11 @@
 import logging
 import sys
 import os.path as osp
+
 from PyQt5 import QtCore, QtNetwork, QtGui
 from PyQt5.QtWidgets import *
+import pyqt5ac
+
 from Controller import Configuration, Backend
 from Controller.LoggingUtility import setupLogging
 from View import FullScreenWindow, MainWindow, ConfigDialog
@@ -19,6 +22,10 @@ logger = logging.getLogger()
 
 # starting point of the app runtime
 def main():
+    pyqt5ac.main(rccOptions='', uicOptions='--from-imports', force=False, initPackage=True, config='',
+             ioPaths=[['View/*.ui', 'View/%%FILENAME%%_ui.py'],
+                     ['Resources/*.qrc', 'Resources/%%FILENAME%%_rc.py']])
+
     app, fullScreenMenu, advancedConfig, mainwin = populateInstance()
     setupLogging()
     # store screen geometry
