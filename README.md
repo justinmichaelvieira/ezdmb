@@ -15,7 +15,8 @@ A dead-simple digital menu board display and configuration, written in Python.  
 
 ## How to run
 1. Clone or download all files (be sure to include and install the prerequisites above, if you don't have them)!
-2. Open a command line, and run `main.py` in the local ezdmb folder.  For example, on Windows I might run `python c:\Users\Justin\Documents\ezdmb\main.py`.
+2. Run `pip install -r requirements.txt` in the directory.
+3. Open a command line, and run `main.py` in the local ezdmb folder.  For example, on Windows I might run `python c:\Users\Justin\Documents\ezdmb\main.py`.
 
 ## Instructions / Basic Operation
 On load, both the fullscreen and configuration windows are loaded.  The configuration window can be simply closed by the user if it is not needed, leaving the fullscreen "menu board display" window open. 
