@@ -10,7 +10,7 @@ class custom_build_py(build_py):
 
 setup(
     name='ezdmb',
-    version='0.1',
+    version='0.2',
     packages=[],
     url='',
     license='',

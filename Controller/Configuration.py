@@ -1,7 +1,6 @@
 import os
 import errno
 import json
-from PyQt5.QtCore import QStandardPaths
 
 # Encapsulates configuration file serialization and deserialization
 class Configuration(object):
