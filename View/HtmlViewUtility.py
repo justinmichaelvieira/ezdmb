@@ -1,10 +1,13 @@
 import os.path
 from PyQt5.QtCore import QUrl, pyqtSignal, QThread
 
+
 class HtmlViewUtility(QThread):
     updated = pyqtSignal(str)
 
-    def __init__(self, contentArray, rotateContent, rotateTimeout, webkitWidget, onRefresh):
+    def __init__(
+        self, contentArray, rotateContent, rotateTimeout, webkitWidget, onRefresh
+    ):
         QThread.__init__(self)
         self.debug = True
         self.contentArray = contentArray
@@ -17,19 +20,23 @@ class HtmlViewUtility(QThread):
 
     def getPage(self, fileName):
         fileExtension = os.path.splitext(fileName)[1].lower()
-        imgExtensions = ['.jpg', '.png', '.gif', '.bmp', '.ico']
+        imgExtensions = [".jpg", ".png", ".gif", ".bmp", ".ico"]
         if fileExtension == ".html":
-            return open(fileName, 'r').read()
+            return open(fileName, "r").read()
         elif any(checkExt == fileExtension for checkExt in imgExtensions):
             return self.getStretchFillImgPage(fileName)
 
     def getStretchFillImgPage(self, image):
-        return '''<html>
+        return (
+            """<html>
 <body>
-    <image src="file:///''' + image + '''" width="100%" height="100%" ></image>
+    <image src="file:///"""
+            + image
+            + """" width="100%" height="100%" ></image>
 </body>
 </html>
-'''
+"""
+        )
 
     def run(self):
         for i in range(10000):
@@ -37,4 +44,4 @@ class HtmlViewUtility(QThread):
             if self.debug:
                 print(html)
             self.updated.emit(str(html))
-            self.sleep(int(self.rotateTimeout *60))
+            self.sleep(int(self.rotateTimeout * 60))

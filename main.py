@@ -22,9 +22,17 @@ logger = logging.getLogger()
 
 # starting point of the app runtime
 def main():
-    pyqt5ac.main(rccOptions='', uicOptions='--from-imports', force=False, initPackage=True, config='',
-             ioPaths=[['View/*.ui', 'View/%%FILENAME%%_ui.py'],
-                     ['Resources/*.qrc', 'Resources/%%FILENAME%%_rc.py']])
+    pyqt5ac.main(
+        rccOptions="",
+        uicOptions="--from-imports",
+        force=False,
+        initPackage=True,
+        config="",
+        ioPaths=[
+            ["View/*.ui", "View/%%FILENAME%%_ui.py"],
+            ["Resources/*.qrc", "Resources/%%FILENAME%%_rc.py"],
+        ],
+    )
 
     app, fullScreenMenu, advancedConfig, mainwin = populateInstance()
     setupLogging()
@@ -58,7 +66,9 @@ def populateInstance():
     config = Configuration.Configuration()
     fullScreenMenu = FullScreenWindow.FullScreenWindow(config)
     mainwin = MainWindow.MainWindow(config)
-    mainwin.setWindowIcon(QtGui.QIcon(osp.join(osp.dirname(__file__), 'Images/logo_256x256.jpg')))
+    mainwin.setWindowIcon(
+        QtGui.QIcon(osp.join(osp.dirname(__file__), "Images/logo_256x256.jpg"))
+    )
     mainwin.show()
 
     advancedConfig = ConfigDialog.ConfigDialog(config)
