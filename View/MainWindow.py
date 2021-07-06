@@ -2,11 +2,11 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from Utility.ShortcutUtility import setEscKey
 
+from .MainWindow_ui import Ui_MainWindow
+from View import HtmlViewUtility
 
-from View import HtmlViewUtility, mainwindow_auto
 
-
-class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, config):
         super(self.__class__, self).__init__()
         self.setupUi(self)  # gets defined in the UI file
@@ -21,4 +21,5 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow):
 
     @pyqtSlot(str)
     def onRefresh(self, value):
-        self.current_menu.setHtml(value)
+        # self.current_menu.setHtml(value)
+        pass

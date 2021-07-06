@@ -1,14 +1,7 @@
-QWidget {
-    background: #ffffff;
-    border-color: #BDBDBD;
-    color: #212121;
-}
-
-QPushButton {
-    background: #448AFF;
-    border-radius: 4px;
-    border: 2px #212121;
-    color: #ffffff;
+* {
+    border-color: #2b2b2b;
+    font-size: 13px;
+    alternate-background-color: #3c3f41;
 }
 
 QPushButton::pressed {
@@ -40,4 +33,34 @@ QFrame[accessibleName="navHeaderFrame"] {
 QLabel[accessibleName="titleBar"] {
     background: #3F51B5;
     color: #FFFFFF;
+}
+
+QFrame {
+    border: none;
+}
+
+QScrollArea {
+    color: #bbbbbb;
+    background-color: #3c3f41;
+    border: none;
+    border-top: 1px solid #2b2b2b;
+    selection-background-color: #2f65ca;
+    selection-color: #bbbbbb;
+}
+QDialog QScrollArea {
+    border-top: none;
+    border: none;
+}
+
+QPlainTextEdit {
+    background-color: #2b2b2b;
+    border: none;
+    color: #bbbbbb;
+    selection-background-color: #2f65ca;
+}
+
+QGraphicsView {
+    background-color: #3c3f41;
+    border-color: #2b2b2b;
+    color: #bbbbbb;
 }

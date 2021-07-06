@@ -3,10 +3,10 @@ from pprint import pformat
 from PyQt5.QtWidgets import QDialog, QListWidgetItem, QFileDialog
 
 from Controller import SqliteImporter
-from View import configdialog_auto
+from .ConfigDialog_ui import Ui_ConfigDialog
 
 
-class ConfigDialog(QDialog, configdialog_auto.Ui_ConfigDialog):
+class ConfigDialog(QDialog, Ui_ConfigDialog):
     def __init__(self, config):
         super(self.__class__, self).__init__()
         self.setupUi(self)

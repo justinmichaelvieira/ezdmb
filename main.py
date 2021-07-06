@@ -9,32 +9,20 @@ import sys
 import os.path as osp
 
 from PyQt5 import QtCore, QtNetwork, QtGui
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QApplication
 import pyqt5ac
 
 from Controller import Configuration, Backend
 from Controller.LoggingUtility import setupLogging
 from View import FullScreenWindow, MainWindow, ConfigDialog
 
-styleSheet = "submodules/Qt-Creator-Darcula/darcula.css"
+styleSheet = "style.css"
 logger = logging.getLogger()
 
 
 # starting point of the app runtime
 def main():
-    pyqt5ac.main(
-        rccOptions="",
-        uicOptions="--from-imports",
-        force=False,
-        initPackage=True,
-        config="",
-        ioPaths=[
-            ["View/*.ui", "View/%%FILENAME%%_ui.py"],
-            ["Resources/*.qrc", "Resources/%%FILENAME%%_rc.py"],
-        ],
-    )
-
-    app, fullScreenMenu, advancedConfig, mainwin = populateInstance()
+    app, fullScreenMenu, _advancedConfig, _mainwin = populateInstance()
     setupLogging()
     # store screen geometry
     screenWidth = fullScreenMenu.frameGeometry().width()
@@ -66,6 +54,7 @@ def populateInstance():
     config = Configuration.Configuration()
     fullScreenMenu = FullScreenWindow.FullScreenWindow(config)
     mainwin = MainWindow.MainWindow(config)
+
     mainwin.setWindowIcon(
         QtGui.QIcon(osp.join(osp.dirname(__file__), "Images/logo_256x256.jpg"))
     )
@@ -80,6 +69,7 @@ def populateInstance():
 
     fullScreenMenu.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     fullScreenMenu.showFullScreen()
+    
     mainwin.pushButton_2.clicked.connect(lambda: showAdvConfig(advancedConfig))
     mainwin.raise_()
     mainwin.activateWindow()

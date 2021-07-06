@@ -1,10 +1,13 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+
 from Utility.ShortcutUtility import setEscKey
-from View import HtmlViewUtility, fullscreenwindow_auto
+from View import HtmlViewUtility
+
+from .FullScreenWindow_ui import Ui_FullScreenWindow
 
 
-class FullScreenWindow(QMainWindow, fullscreenwindow_auto.Ui_FullScreenWindow):
+class FullScreenWindow(QMainWindow, Ui_FullScreenWindow):
     def __init__(self, config):
         super(self.__class__, self).__init__()
         self.setupUi(self)
@@ -19,4 +22,5 @@ class FullScreenWindow(QMainWindow, fullscreenwindow_auto.Ui_FullScreenWindow):
 
     @pyqtSlot(str)
     def onRefresh(self, value):
-        self.label_pic.setHtml(value)
+        # self.label_pic.setHtml(value)
+        pass
