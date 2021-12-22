@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 from Utility.ShortcutUtility import setEscKey
 from View import HtmlViewUtility
 
-from .FullScreenWindow_ui import Ui_FullScreenWindow
+from View.generated.FullScreenWindow_ui import Ui_FullScreenWindow
 
 
 class FullScreenWindow(QMainWindow, Ui_FullScreenWindow):

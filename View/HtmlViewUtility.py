@@ -1,5 +1,5 @@
 import os.path
-from PyQt5.QtCore import QUrl, pyqtSignal, QThread
+from PyQt5.QtCore import pyqtSignal, QThread
 
 
 class HtmlViewUtility(QThread):
