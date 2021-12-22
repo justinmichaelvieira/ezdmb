@@ -11,17 +11,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = dmb_config
 TEMPLATE = app
 
+FORMS    += View/MainWindow.ui \
+    View/FullScreenWindow.ui \
+    View/ConfigDialog.ui \
+    View/DmbConfig.ui \
+    View/NavHeader.ui
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    configdialog.cpp
-
-HEADERS  += mainwindow.h \
-    configdialog.h
-
-FORMS    += mainwindow.ui \
-    fullscreenwindow.ui \
-    fullscreenbrowser.ui \
-    configdialog.ui
-
-RESOURCES +=
+RESOURCES += Resources/resources.qrc

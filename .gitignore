@@ -13,5 +13,4 @@ __pycache__/
 .idea/
 Lib/
 Scripts/
-View/*_ui.py
-View/*_auto.py
+View/generated/

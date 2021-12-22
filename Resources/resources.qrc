@@ -1,9 +1,8 @@
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
-<qresource>
-    <file>Images/354580462_orig.jpg</file>
-    <file>images/check.png</file>
-    <file>images/results.png</file>
-    <file>images/settings.png</file>
+<RCC>
+<qresource prefix="/">
+    <file>../Images/354580462_orig.jpg</file>
+    <file>../Resources/check.png</file>
+    <file>../Resources/results.png</file>
+    <file>../Resources/settings.png</file>
 </qresource>
 </RCC>
