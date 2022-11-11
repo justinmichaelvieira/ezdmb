@@ -1,5 +1,5 @@
 {
-    "files": [["Resources\\resources.qrc", "View\\generated"], ["View\\*.ui", "View\\generated"]],
+    "files": [["Resources/resources.qrc", "View/generated"], ["View/*.ui", "View/generated"]],
     "hooks": [],
     "pyrcc": "pyrcc5",
     "pyrcc_options": "",

@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget
-from View.generated.NavHeader_ui import Ui_Form
+from View.generated.navheader_ui import Ui_Form
 
 
 class NavHeader(QWidget, Ui_Form):

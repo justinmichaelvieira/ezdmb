@@ -14,3 +14,5 @@ __pycache__/
 Lib/
 Scripts/
 View/generated/
+5.15.2/
+aqtinstall.log

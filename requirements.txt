@@ -1,4 +1,4 @@
-PyQt5 >= 5.14
+PyQt5 >= 5.15.2
 PyQtWebEngine
 pyqt_distutils
 pyqt5ac

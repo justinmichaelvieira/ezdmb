@@ -2,7 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from Utility.ShortcutUtility import setEscKey
 
-from View.generated.MainWindow_ui import Ui_MainWindow
+from View.generated.mainwindow_ui import Ui_MainWindow
 from View import HtmlViewUtility
 
 

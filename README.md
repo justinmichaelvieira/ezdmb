@@ -9,14 +9,18 @@ A dead-simple digital menu board display and configuration, written in Python.  
 ### Configuration window (3)
 ![Configuration Window 3](/Images/ezdmb3.PNG)
 
-## Prerequisites
-- Python 3 (https://www.python.org/downloads/)
-- Qt 5 (https://www.qt.io/)
+## How to run through python3 (dev mode)
+Setup for executing the python source:
 
-## How to run
-1. Clone or download all files (be sure to include and install the prerequisites above, if you don't have them)!
-2. Run `pip install -r requirements.txt` in the directory.
-3. Open a command line, and run `main.py` in the local ezdmb folder.  For example, on Windows I might run `python main.py`.
+1. Install Python3 from (https://www.python.org/downloads/)
+2. Clone or download all files in this repo.
+3. `pip install -r requirements.txt`
+4. `sudo apt install pyqt5-dev-tools`
+5. `pip install -U pip && pip install aqtinstall`
+6. `aqt install-qt linux desktop 5.15.2`
+7. Add qt build tools to your path: `export PATH="/home/<username>/ezdmb/5.15.2/gcc_64/bin":$PATH`
+8. `python3 setup.py build_ui`
+9. `python main.py`
 
 ## Instructions / Basic Operation
 On load, both the fullscreen and configuration windows are loaded.  The configuration window can be simply closed by the user if it is not needed, leaving the fullscreen "menu board display" window open. 
@@ -39,9 +43,6 @@ Handles configuration of the system, and outputting the config json.
 
 ### dmb_config.pro
 Qt Designer project file which loads all designer (`*.ui`) files.
-
-### `*_auto.py`
-The `*_auto.py` are generated from Qt designer files using the `pyuic5` command (see: http://manpages.ubuntu.com/manpages/xenial/man1/pyuic5.1.html). 
 
 ## Coming Soon
 - Installers + binaries for Windows, WinRT, Linux/android, iOS, MacOS
