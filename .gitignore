@@ -9,7 +9,8 @@ log.txt
 main/
 dist/
 build/
-__pycache__/
+__pycache__/*
+View/__pycache__/*
 .idea/
 Lib/
 Scripts/
