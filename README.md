@@ -12,16 +12,22 @@ A dead-simple digital menu board display and configuration, written in Python.  
 ## How to run through python3 (dev mode)
 Setup for executing the python source:
 
-1. Install Python3 from (https://www.python.org/downloads/)
+1. If necessary install Python3 from (https://www.python.org/downloads/). Note: Ubuntu Desktop Edition preinstalls this.
 2. Clone or download all files in this repo: `git clone https://github.com/justinmichaelvieira/ezdmb`).
-3. Install python libraries: `pip install -r requirements.txt`
-4. Install pyqt dev tools: `sudo apt install pyqt5-dev-tools`
-5. Install the qt framework loader: `pip install -U pip && pip install aqtinstall`
-6. Use the qt framework loader to install v5.15.2: `aqt install-qt linux desktop 5.15.2`
-7. Add qt build tools to your path: `export PATH="/home/<username>/ezdmb/5.15.2/gcc_64/bin":$PATH`
-8. Finally, run the app: `python main.py`
+3. Run the environment install script: `./setup-dev-environment.sh`
+4. Run the app: `python main.py`
 
-Note: There is a set of .ui files in the View/ folder; If these are updated with Qt Designer, you would run `python3 setup.py build_ui` to regenerate them.
+### Advanced install instructions / troubleshooting install
+
+If the developer install script/procedure does not work for you, try installing manually as follows:
+
+1. Install python libraries: `pip install -r requirements.txt`
+2. Install pyqt dev tools: `sudo apt install pyqt5-dev-tools`
+3. Install the qt framework loader: `pip install -U pip && pip install aqtinstall`
+4. Use the qt framework loader to install v5.15.2: `aqt install-qt linux desktop 5.15.2`
+5. Add qt build tools to your path (replace `<username>` in the command with the username on the system): `export PATH="/home/<username>/ezdmb/5.15.2/gcc_64/bin":$PATH`
+
+Note: There is a set of .ui files in the View/ folder. If these are updated (usually they are updated with Qt Designer), you would run `python3 setup.py build_ui` to regenerate them.
 
 ## Instructions / Basic Operation
 On load, both the fullscreen and configuration windows are loaded.  The configuration window can be simply closed by the user if it is not needed, leaving the fullscreen "menu board display" window open. 
@@ -43,7 +49,7 @@ The main entry point of the code.  Note:  In a lot of scenarios, you will want t
 Handles configuration of the system, and outputting the config json.
 
 ### dmb_config.pro
-Qt Designer project file which loads all designer (`*.ui`) files.
+Qt Designer project file which loads all designer (`*.ui`) files. If you create a new .ui file, be sure to add it to this project.
 
 ## Coming Soon
 - Installers + binaries for Windows, WinRT, Linux/android, iOS, MacOS
