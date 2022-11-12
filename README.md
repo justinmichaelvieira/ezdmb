@@ -13,14 +13,15 @@ A dead-simple digital menu board display and configuration, written in Python.  
 Setup for executing the python source:
 
 1. Install Python3 from (https://www.python.org/downloads/)
-2. Clone or download all files in this repo.
-3. `pip install -r requirements.txt`
-4. `sudo apt install pyqt5-dev-tools`
-5. `pip install -U pip && pip install aqtinstall`
-6. `aqt install-qt linux desktop 5.15.2`
+2. Clone or download all files in this repo: `git clone https://github.com/justinmichaelvieira/ezdmb`).
+3. Install python libraries: `pip install -r requirements.txt`
+4. Install pyqt dev tools: `sudo apt install pyqt5-dev-tools`
+5. Install the qt framework loader: `pip install -U pip && pip install aqtinstall`
+6. Use the qt framework loader to install v5.15.2: `aqt install-qt linux desktop 5.15.2`
 7. Add qt build tools to your path: `export PATH="/home/<username>/ezdmb/5.15.2/gcc_64/bin":$PATH`
-8. `python3 setup.py build_ui`
-9. `python main.py`
+8. Finally, run the app: `python main.py`
+
+Note: There is a set of .ui files in the View/ folder; If these are updated with Qt Designer, you would run `python3 setup.py build_ui` to regenerate them.
 
 ## Instructions / Basic Operation
 On load, both the fullscreen and configuration windows are loaded.  The configuration window can be simply closed by the user if it is not needed, leaving the fullscreen "menu board display" window open. 
