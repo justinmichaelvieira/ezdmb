@@ -13,6 +13,5 @@ __pycache__/
 .idea/
 Lib/
 Scripts/
-View/generated/
 5.15.2/
 aqtinstall.log
