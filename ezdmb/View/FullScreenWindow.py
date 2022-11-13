@@ -1,25 +1,26 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-from Utility.ShortcutUtility import setEscKey
 
-from View.generated.mainwindow_ui import Ui_MainWindow
-from View import HtmlViewUtility
+from ezdmb.Utility.ShortcutUtility import setEscKey
+from ezdmb.View import HtmlViewUtility
+
+from ezdmb.View.generated.FullScreenWindow_ui import Ui_FullScreenWindow
 
 
-class MainWindow(QMainWindow, Ui_MainWindow):
+class FullScreenWindow(QMainWindow, Ui_FullScreenWindow):
     def __init__(self, config):
         super(self.__class__, self).__init__()
-        self.setupUi(self)  # gets defined in the UI file
+        self.setupUi(self)
         self.htmlUtil = HtmlViewUtility.HtmlViewUtility(
             config.ContentArray,
             config.RotateContent,
             config.RotateContentTime,
-            self.current_menu,
+            self.label_pic,
             self.onRefresh,
         )
         setEscKey(self)
 
     @pyqtSlot(str)
     def onRefresh(self, value):
-        # self.current_menu.setHtml(value)
+        # self.label_pic.setHtml(value)
         pass

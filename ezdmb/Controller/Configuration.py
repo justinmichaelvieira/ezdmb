@@ -87,7 +87,7 @@ class Configuration(object):
             else:  # No exception, so the file must have been created successfully.
                 with os.fdopen(file_handle, "a") as file_obj:
                     # Settings defaults here, for first runs
-                    self.SaveConfig(True, True, True, True, "0.5", ["default.jpg"])
+                    self.SaveConfig(True, False, False, True, "0.5", [os.getcwd() + "/ezdmb/Images/354580462_orig.jpg"])
 
         with open(self._configPath, "r+") as json_data_file:
             self._data = json.load(json_data_file)

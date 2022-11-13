@@ -12,9 +12,9 @@ from PyQt5 import QtCore, QtNetwork, QtGui
 from PyQt5.QtWidgets import QApplication
 import pyqt5ac
 
-from Controller import Configuration, Backend
-from Controller.LoggingUtility import setupLogging
-from View import FullScreenWindow, MainWindow, ConfigDialog
+from .Controller import Configuration, Backend
+from .Controller.LoggingUtility import setupLogging
+from .View import FullScreenWindow, MainWindow, ConfigDialog
 
 styleSheet = "style.css"
 logger = logging.getLogger()
@@ -62,14 +62,14 @@ def populateInstance():
 
     advancedConfig = ConfigDialog.ConfigDialog(config)
     advancedConfig.use_images_check.setChecked(config.UseImages == "true")
-    advancedConfig.use_html_file_check.setChecked(config.UseHTML == "true")
-    advancedConfig.use_menu_data_check.setChecked(config.UseImported == "true")
-    advancedConfig.rotate_images_check.setChecked(config.RotateContent == "true")
+    advancedConfig.use_html_file_check.setChecked(config.UseHTML == "false")
+    advancedConfig.use_menu_data_check.setChecked(config.UseImported == "false")
+    advancedConfig.rotate_images_check.setChecked(config.RotateContent == "false")
     advancedConfig.rotateTimeBox.setValue(float(config.RotateContentTime))
 
     fullScreenMenu.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     fullScreenMenu.showFullScreen()
-    
+
     mainwin.pushButton_2.clicked.connect(lambda: showAdvConfig(advancedConfig))
     mainwin.raise_()
     mainwin.activateWindow()

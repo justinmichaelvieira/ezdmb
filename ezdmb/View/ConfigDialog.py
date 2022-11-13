@@ -2,8 +2,8 @@ from pprint import pformat
 
 from PyQt5.QtWidgets import QDialog, QListWidgetItem, QFileDialog
 
-from Controller import SqliteImporter
-from View.generated.configdialog_ui import Ui_ConfigDialog
+from ezdmb.Controller import SqliteImporter
+from ezdmb.View.generated.configdialog_ui import Ui_ConfigDialog
 
 
 class ConfigDialog(QDialog, Ui_ConfigDialog):

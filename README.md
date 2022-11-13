@@ -15,7 +15,7 @@ Setup for executing the python source:
 1. If necessary install Python3 from (https://www.python.org/downloads/). Note: Ubuntu Desktop Edition preinstalls this.
 2. Clone or download all files in this repo: `git clone https://github.com/justinmichaelvieira/ezdmb`).
 3. Run the environment install script: `./setup-dev-environment.sh`
-4. Run the app: `python main.py`
+4. Run the app: `python3 -m ezdmb`
 
 ### Advanced install instructions / troubleshooting install
 
@@ -24,7 +24,7 @@ If the developer install script/procedure does not work for you, try installing 
 1. Install python libraries: `pip install -r requirements.txt`
 2. Install pyqt dev tools: `sudo apt install pyqt5-dev-tools`
 3. Install the qt framework loader: `pip install -U pip && pip install aqtinstall`
-4. Use the qt framework loader to install v5.15.2: `aqt install-qt linux desktop 5.15.2`
+4. Use the qt framework loader to install v5.15.2: `aqt install-qt linux desktop 5.9.0`
 5. Add qt build tools to your path (replace `<username>` in the command with the username on the system): `export PATH="/home/<username>/ezdmb/5.15.2/gcc_64/bin":$PATH`
 
 Note: There is a set of .ui files in the View/ folder. If these are updated (usually they are updated with Qt Designer), you would run `python3 setup.py build_ui` to regenerate them.
@@ -42,8 +42,8 @@ The system can be configured using:
 
 ## Code Listing / Technical Documentation
 
-### main.py
-The main entry point of the code.  Note:  In a lot of scenarios, you will want to run `python main.py` (or the compiled output equivalent) on startup of the OS.
+### __main__.py
+The main entry point of the code.  Note:  In a lot of scenarios, you will want to run `python3 -m ezdmb` (or the compiled output equivalent) on startup of the OS.
 
 ### Configuration.py
 Handles configuration of the system, and outputting the config json.

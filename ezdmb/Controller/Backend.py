@@ -1,5 +1,5 @@
-from Controller.ContentHttpServer import setupContentServer
-from Controller.RestApiServer import setupRestApi
+from ezdmb.Controller.ContentHttpServer import setupContentServer
+from ezdmb.Controller.RestApiServer import setupRestApi
 from multiprocessing import Process
 
 

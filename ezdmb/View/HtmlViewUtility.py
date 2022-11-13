@@ -30,9 +30,9 @@ class HtmlViewUtility(QThread):
         return (
             """<html>
 <body>
-    <image src="file:///"""
+    <img src="file:///"""
             + image
-            + """" width="100%" height="100%" ></image>
+            + """" width="100%" height="100%" />
 </body>
 </html>
 """

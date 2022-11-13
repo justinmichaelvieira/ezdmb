@@ -43,7 +43,7 @@ class Ui_FullScreenWindow(object):
         self.label_pic.setAutoFillBackground(True)
         self.label_pic.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.label_pic.setText("")
-        self.label_pic.setPixmap(QtGui.QPixmap("/home/justin/ezdmb/View/Images/354580462_orig.jpg"))
+        self.label_pic.setPixmap(QtGui.QPixmap("default.jpg"))
         self.label_pic.setScaledContents(True)
         self.label_pic.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_pic.setObjectName("label_pic")
