@@ -5,7 +5,8 @@ from multiprocessing import Process
 
 class Backend:
     def __init__(self):
-        self.startContentServer()
+        pass
+        # self.startContentServer()
         # self.startRestApi()
 
     def startContentServer(self):

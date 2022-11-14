@@ -3,7 +3,7 @@ from pprint import pformat
 from PyQt5.QtWidgets import QDialog, QListWidgetItem, QFileDialog
 
 from ezdmb.Controller import SqliteImporter
-from ezdmb.View.generated.configdialog_ui import Ui_ConfigDialog
+from ezdmb.View.generated.ConfigDialog_ui import Ui_ConfigDialog
 
 
 class ConfigDialog(QDialog, Ui_ConfigDialog):
@@ -32,18 +32,18 @@ class ConfigDialog(QDialog, Ui_ConfigDialog):
             for i in range(self.loadedContentWidget.count())
         ]
         self._config.SaveConfig(
-            self.use_images_check.isChecked(),
-            self.use_html_file_check.isChecked(),
-            self.use_menu_data_check.isChecked(),
-            self.rotate_images_check.isChecked(),
+            self.useImagesCheck.isChecked(),
+            self.useHtmlFileCheck.isChecked(),
+            self.useMenuDataCheck.isChecked(),
+            self.rotateImagesCheck.isChecked(),
             float(self.rotateTimeBox.value()),
             tmpContentList,
         )
 
-        self._config.UseImages = self.use_images_check.isChecked()
-        self._config.UseHTML = self.use_html_file_check.isChecked()
-        self._config.UseImported = self.use_menu_data_check.isChecked()
-        self._config.RotateContent = self.rotate_images_check.isChecked()
+        self._config.UseImages = self.useImagesCheck.isChecked()
+        self._config.UseHTML = self.useHtmlFileCheck.isChecked()
+        self._config.UseImported = self.useMenuDataCheck.isChecked()
+        self._config.RotateContent = self.rotateImagesCheck.isChecked()
         self._config.RotateContentTime = self.rotateTimeBox.value()
         self._config.ContentArray = tmpContentList
         self.close()
@@ -59,10 +59,10 @@ class ConfigDialog(QDialog, Ui_ConfigDialog):
             )
 
     def setUiFromConfig(self):
-        self.use_images_check.setChecked(bool(self._config.UseImages))
-        self.use_html_file_check.setChecked(bool(self._config.UseHTML))
-        self.use_menu_data_check.setChecked(bool(self._config.UseImported))
-        self.rotate_images_check.setChecked(bool(self._config.RotateContent))
+        self.useImagesCheck.setChecked(bool(self._config.UseImages))
+        self.useHtmlFileCheck.setChecked(bool(self._config.UseHTML))
+        self.useMenuDataCheck.setChecked(bool(self._config.UseImported))
+        self.rotateImagesCheck.setChecked(bool(self._config.RotateContent))
         self.rotateTimeBox.setValue(float(self._config.RotateContentTime))
 
     def importMenuToSqliteFromFile(self):

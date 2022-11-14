@@ -15,12 +15,11 @@ class FullScreenWindow(QMainWindow, Ui_FullScreenWindow):
             config.ContentArray,
             config.RotateContent,
             config.RotateContentTime,
-            self.label_pic,
+            self.htmlContent,
             self.onRefresh,
         )
         setEscKey(self)
 
     @pyqtSlot(str)
     def onRefresh(self, value):
-        # self.label_pic.setHtml(value)
-        pass
+        self.htmlContent.setText(value)

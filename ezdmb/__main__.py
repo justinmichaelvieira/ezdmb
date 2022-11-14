@@ -28,7 +28,7 @@ def main():
     screenWidth = fullScreenMenu.frameGeometry().width()
     screenHeight = fullScreenMenu.frameGeometry().height()
     # size and show menu
-    fullScreenMenu.label_pic.resize(screenWidth, screenHeight)
+    fullScreenMenu.htmlContent.resize(screenWidth, screenHeight)
     Backend.Backend()
     # without this, the script exits immediately.
     logger.info("DMB Application started.")
@@ -61,16 +61,17 @@ def populateInstance():
     mainwin.show()
 
     advancedConfig = ConfigDialog.ConfigDialog(config)
-    advancedConfig.use_images_check.setChecked(config.UseImages == "true")
-    advancedConfig.use_html_file_check.setChecked(config.UseHTML == "false")
-    advancedConfig.use_menu_data_check.setChecked(config.UseImported == "false")
-    advancedConfig.rotate_images_check.setChecked(config.RotateContent == "false")
+    advancedConfig.useImagesCheck.setChecked(config.UseImages == "true")
+    advancedConfig.useHtmlFileCheck.setChecked(config.UseHTML == "false")
+    advancedConfig.useMenuDataCheck.setChecked(config.UseImported == "false")
+    advancedConfig.rotateImagesCheck.setChecked(config.RotateContent == "false")
     advancedConfig.rotateTimeBox.setValue(float(config.RotateContentTime))
 
     fullScreenMenu.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     fullScreenMenu.showFullScreen()
 
-    mainwin.pushButton_2.clicked.connect(lambda: showAdvConfig(advancedConfig))
+    mainwin.editDisplaySettingsAction.triggered.connect(lambda: showAdvConfig(advancedConfig))
+    mainwin.exitAction.triggered.connect(lambda: sys.exit())
     mainwin.raise_()
     mainwin.activateWindow()
     return app, fullScreenMenu, advancedConfig, mainwin

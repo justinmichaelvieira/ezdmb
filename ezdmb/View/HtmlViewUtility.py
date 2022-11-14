@@ -28,13 +28,9 @@ class HtmlViewUtility(QThread):
 
     def getStretchFillImgPage(self, image):
         return (
-            """<html>
-<body>
-    <img src="file:///"""
+            """<img src="file://"""
             + image
             + """" width="100%" height="100%" />
-</body>
-</html>
 """
         )
 
