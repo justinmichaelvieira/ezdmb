@@ -30,7 +30,7 @@ class HtmlViewUtility(QThread):
         return f'<img src="file://{image}" style="width: 100%;height: 100%;" />'
 
     def run(self):
-        for i in range(10000):
+        while(True):
             html = self.getPage(self.contentArray[i % len(self.contentArray)])
             if self.debug:
                 print(html)

@@ -10,7 +10,6 @@ import os.path as osp
 
 from PyQt5 import QtCore, QtNetwork, QtGui
 from PyQt5.QtWidgets import QApplication
-import pyqt5ac
 
 from .Controller import Configuration, Backend
 from .Controller.LoggingUtility import setupLogging

@@ -1,9 +1,9 @@
 PyQt5 >= 5.15.2
 pyqt_distutils
-pyqt5ac
 flask
 flask_sqlalchemy
 flask_restless
 black
-pyinstaller
 aqtinstall
+pyinstaller
+auto-py-to-exe
