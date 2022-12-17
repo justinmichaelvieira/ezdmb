@@ -12,10 +12,8 @@ A dead-simple digital menu board display and configuration, written in Python.  
 ## How to run through python3 (dev mode)
 Setup for executing the python source:
 
-1. If necessary install Python3 from (https://www.python.org/downloads/). Note: Ubuntu Desktop Edition preinstalls this.
-2. Clone or download all files in this repo: `git clone https://github.com/justinmichaelvieira/ezdmb`).
-3. Run the environment install script: `./setup-dev-environment.sh`
-4. Run the app: `python3 -m ezdmb`
+1. Run the environment install script: `./setup-dev-environment.sh`
+2. Run the app: `python3 -m ezdmb`
 
 ### Advanced install instructions / troubleshooting install
 
