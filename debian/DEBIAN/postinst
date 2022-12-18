@@ -1,0 +1,105 @@
+#!/bin/bash
+
+set -ex
+
+case "$1" in
+    configure)
+        CURRUSER=${SUDO_USER:-$(whoami)}
+
+        # Set variable to indicate installing username
+        echo -e '\033[0;34mProceeding with install as user $CURRUSER.\033[0m'
+
+        # Add a script that starts ezdmb to the current users Desktop folder
+        DESKTOP_RUN_SCRIPT=$(cat << EOF
+#!/bin/bash
+python -m ezdmb
+EOF
+)
+
+        echo "$DESKTOP_RUN_SCRIPT" > /home/"$CURRUSER"/Desktop/start-ezdmb.sh
+        chmod +x /home/"$CURRUSER"/Desktop/start-ezdmb.sh
+        chown "$CURRUSER" /home/"$CURRUSER"/Desktop/start-ezdmb.sh
+
+        # Prompt user and install as-a-service, if desired
+        printf "\n\n\n\n"
+        read -r -p "Do you want the app to run at startup? [Y/n] " yn
+        case $yn in
+            [nN][oO]|[nN])
+                echo -e '\033[0;34mNot Installing run at startup components.\033[0m'
+                ;;
+            * )
+                EXEC_STRING="sh -c \"python -m ezdmb\""
+                echo -e '\033[0;34mInstalling run at startup components.\033[0m'
+                if [ -f "/etc/gdm3/custom.conf" ]; then
+                    # Ubuntu64 Autologin w/gdm
+                    sed -i 's/#  AutomaticLoginEnable = true/   AutomaticLoginEnable = true/' /etc/gdm3/custom.conf
+                    sed -i "s/#  AutomaticLogin = user1/   AutomaticLogin = $CURRUSER/" /etc/gdm3/custom.conf
+                elif [ -f "/etc/lightdm/lightdm.conf" ]; then
+                    # Raspi autologin w/lightdm
+                    sed -i 's/^greeter-hide-users=false/greeter-hide-users=true/g' /etc/lightdm/lightdm.conf
+                    sed -i 's/^greeter-allow-guest=false/\#greeter-allow-guest=true/g' /etc/lightdm/lightdm.conf
+                    sed -i 's/^greeter-show-manual-login=true/\#greeter-show-manual-login=false/g' /etc/lightdm/lightdm.conf
+                    sed -i 's/^allow-guest=false/\#allow-guest=true/g' /etc/lightdm/lightdm.conf
+                    sed -i 's/^autologin-user-timeout=10/\#autologin-user-timeout=0/g' /etc/lightdm/lightdm.conf
+                    sed -i "s/# autologin-user = User to log in with by default (overrides autologin-guest)/autologin-user = $CURRUSER/" /etc/lightdm/lightdm.conf
+                fi
+
+                # Add desktop shortcut and icon / related permissions
+                DESKTOP_ENTRY=$(cat << EOF
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Terminal=false
+Exec=$EXEC_STRING
+Name=EZDMB
+GenericName=EZDMB
+Icon=/usr/share/icons/logo-256x256.png
+EOF
+)
+
+                # /usr/share/applications/ezdmb.desktop file (provides launcher icon)
+                mkdir -p /usr/share/applications
+                chown "$CURRUSER" /usr/share/applications
+                echo "$DESKTOP_ENTRY" > /usr/share/applications/ezdmb.desktop
+                chmod +x /usr/share/applications/ezdmb.desktop
+                chown "$CURRUSER" /usr/share/applications/ezdmb.desktop
+
+                # Add .desktop file to trigger app autostart when the user autologs in
+                # and set permissions for it
+                AUTOSTART_DESKTOP_ENTRY=$(cat << EOF
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Terminal=false
+Exec=$EXEC_STRING
+Name=EZDMB
+GenericName=EZDMB
+Icon=/usr/share/icons/logo-256x256.png
+X-GNOME-Autostart-enabled=true
+X-KDE-autostart-after=panel
+EOF
+)
+
+                mkdir -p /home/"$CURRUSER"/.config/autostart/
+                echo "$AUTOSTART_DESKTOP_ENTRY" > /home/"$CURRUSER"/.config/autostart/ezdmb.desktop
+                chmod +x /home/"$CURRUSER"/.config/autostart/ezdmb.desktop
+                chown "$CURRUSER" /home/"$CURRUSER"/.config/autostart/ezdmb.desktop
+                ;;
+        esac
+
+        echo -e '\033[0;32mezdmb Installation script completed.\033[0m'
+
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0

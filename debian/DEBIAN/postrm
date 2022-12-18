@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -ex
+
+case "$1" in
+    remove)
+        CURRUSER=${SUDO_USER:-$(whoami)}
+
+        rm -f /usr/share/applications/ezdmb.desktop
+        rm -f /home/$CURRUSER/Desktop/start-ezdmb.sh
+
+        # Remove autostart and autologin, if present
+        rm -f /home/$CURRUSER/.config/autostart/ezdmb.desktop
+
+        if [ -f "/etc/gdm3/custom.conf" ]; then
+            # gdm files present on x86/64 systems
+            sed -i 's/   AutomaticLoginEnable = true/#  AutomaticLoginEnable = true/' /etc/gdm3/custom.conf
+            sed -i "s/   AutomaticLogin = $CURRUSER/#  AutomaticLogin = user1/" /etc/gdm3/custom.conf
+        elif [ -f "/etc/lightdm/lightdm.conf" ]; then
+            # lightdm files present on raspi systems; disable autologin and re-enable
+            sed -i 's/^greeter-hide-users=true/greeter-hide-users=false/g' /etc/lightdm/lightdm.conf
+            sed -i 's/^\#greeter-allow-guest=true/greeter-allow-guest=false/g' /etc/lightdm/lightdm.conf
+            sed -i 's/^\#greeter-show-manual-login=false/greeter-show-manual-login=true/g' /etc/lightdm/lightdm.conf
+            sed -i 's/^\#allow-guest=true/allow-guest=false/g' /etc/lightdm/lightdm.conf
+            sed -i 's/^\#autologin-user-timeout=0/autologin-user-timeout=10/g' /etc/lightdm/lightdm.conf
+            sed -i "s/autologin-user = $CURRUSER/# autologin-user = User to log in with by default (overrides autologin-guest)/" /etc/lightdm/lightdm.conf
+        fi
+    ;;
+
+    purge)
+
+    ;;
+
+    upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+    ;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0

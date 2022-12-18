@@ -12,8 +12,18 @@ A dead-simple digital menu board display and configuration, written in Python.  
 ## How to run through python3 (dev mode)
 Setup for executing the python source:
 
-1. Run the environment install script: `./setup-dev-environment.sh`
+1. Run the environment install script in a bash terminal: `chmod +x ./setup-dev-environment.sh && ./setup-dev-environment.sh`
 2. Run the app: `python3 -m ezdmb`
+
+## Instructions / Basic Operation
+On load, both the fullscreen and configuration windows are loaded.  The configuration window can be simply closed by the user if it is not needed, leaving the fullscreen "menu board display" window open. 
+
+The display in the main screen of the configuration (under the text "Current menu") mirrors the full screen display.
+
+## System configuration
+The system can be configured using:
+- The "Display Settings" button and related screens
+- Manually editing the dmb_config.json file
 
 ### Advanced install instructions / troubleshooting install
 
@@ -25,18 +35,14 @@ If the developer install script/procedure does not work for you, try installing 
 4. Use the qt framework loader to install v5.15.2: `aqt install-qt linux desktop 5.9.0`
 5. Add qt build tools to your path (replace `<username>` in the command with the username on the system): `export PATH="/home/<username>/ezdmb/5.15.2/gcc_64/bin":$PATH`
 
-Note: There is a set of .ui files in the View/ folder. If these are updated (usually they are updated with Qt Designer), you would run `python3 setup.py build_ui` to regenerate them.
+Note 1: There is a set of .ui files in the View/ folder. If these are updated (usually they are updated with Qt Designer), you would run `python3 setup.py build_ui` to regenerate them.
+Note 2: Qt Designer can be installed, on Ubuntu systems, with:
+```
+sudo apt-get install qttools5-dev-tools
+sudo apt-get install qttools5-dev
+```
 
-## Instructions / Basic Operation
-On load, both the fullscreen and configuration windows are loaded.  The configuration window can be simply closed by the user if it is not needed, leaving the fullscreen "menu board display" window open. 
-
-The display in the main screen of the configuration (under the text "Current menu") mirrors the full screen display.
-
-## System configuration
-The system can be configured using:
-- The "Display Settings" button and related screens
-- Manually editing the dmb_config.json file
-   
+On Windows and Mac, use the Qt Framework install packages provided at https://www.qt.io/
 
 ## Code Listing / Technical Documentation
 
@@ -45,9 +51,6 @@ The main entry point of the code.  Note:  In a lot of scenarios, you will want t
 
 ### Configuration.py
 Handles configuration of the system, and outputting the config json.
-
-### dmb_config.pro
-Qt Designer project file which loads all designer (`*.ui`) files. If you create a new .ui file, be sure to add it to this project.
 
 ## Coming Soon
 - Installers + binaries for Windows, WinRT, Linux/android, iOS, MacOS

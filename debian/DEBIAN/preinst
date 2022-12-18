@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -ex
+
+case "$1" in
+    install|upgrade|abort-upgrade)
+    ;;
+
+    *)
+        echo "preinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0
