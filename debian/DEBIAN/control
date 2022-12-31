@@ -1,0 +1,10 @@
+Package: ezdmb
+Version: 0.9.0
+Architecture: all
+Maintainer: Justin Vieira <justin@rancorsoft.com>
+Depends: python3
+Section: utils
+Priority: optional
+Homepage: https://github.com/justinmichaelvieira/ezdmb
+Description: Simple Digital Menu Board
+ Provides a simple digital menu board, with many configuration options and ways to load content.
