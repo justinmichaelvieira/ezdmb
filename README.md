@@ -51,6 +51,10 @@ Handles configuration of the system, and outputting the config json.
 ### dmb_config.pro
 Qt Designer project file which loads all designer (`*.ui`) files. If you create a new .ui file, be sure to add it to this project.
 
+### Resource files
+Resource file is at `ezdmb/Resources/resources.qrc`. In standard `PyQt5` style, the generated `resources.py` class file can be regenerated with:
+`pyrcc5 ezdmb/Resources/resources.qrc -o resources.py`.
+
 ## Coming Soon
 - Installers + binaries for Windows, WinRT, Linux/android, iOS, MacOS
 - Option for whether the app loads on OS startup, expanded file types

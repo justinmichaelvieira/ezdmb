@@ -11,7 +11,7 @@ dist/
 build/
 __pycache__/*
 View/__pycache__/*
-.idea/
+.vscode/
 Lib/
 Scripts/
 5.15.2/
