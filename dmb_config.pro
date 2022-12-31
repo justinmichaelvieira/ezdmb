@@ -12,9 +12,6 @@ TARGET = dmb_config
 TEMPLATE = app
 
 FORMS    += ezdmb/View/MainWindow.ui \
-    ezdmb/View/FullScreenWindow.ui \
-    ezdmb/View/ConfigDialog.ui \
     ezdmb/View/DmbConfig.ui \
-    ezdmb/View/NavHeader.ui
 
 RESOURCES += ezdmb/Resources/resources.qrc
