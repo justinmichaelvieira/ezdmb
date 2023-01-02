@@ -27,7 +27,7 @@ class HtmlViewUtility(QThread):
             return self.getStretchFillImgPage(fileName)
 
     def getStretchFillImgPage(self, image):
-        return f'<img src="file://{image}" style="object-fit: contain; width: 100%; height: 100%; scale: 200%;" />'
+        return f'<img src="file://{image}" />'
 
     def run(self):
         i = 0
