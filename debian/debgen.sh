@@ -2,10 +2,17 @@
 # Build script for .deb package used to install on linux platforms
 
 # Version to be used as the 'release version'
-VERSION="1.0.2"
+VERSION="0.9.0"
 
 # Make temp dir
 TMP_DIR=$(mktemp -d)
+
+# Copy image resources
+cd ../ezdmb/Resources/
+IMAGE_RESOURCES_DIR="../../debian/overlay/opt/ezdmb/Resources"
+mkdir -p "$IMAGE_RESOURCES_DIR"
+cp -v *.png "$IMAGE_RESOURCES_DIR"
+cd -
 
 # Copy overlay to temp dir
 cp -r "./overlay/"* "$TMP_DIR"

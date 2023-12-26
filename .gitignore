@@ -17,3 +17,5 @@ Scripts/
 5.15.2/
 aqtinstall.log
 output/
+debian/overlay
+python_package/ezdmb
