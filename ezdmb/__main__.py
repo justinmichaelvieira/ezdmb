@@ -55,7 +55,7 @@ def populateInstance():
     mainwin = MainWindow.MainWindow(config)
 
     mainwin.setWindowIcon(
-        QtGui.QIcon(osp.join(osp.dirname(__file__), "Images/logo_256x256.jpg"))
+        QtGui.QIcon(":/logo_256x256.jpg")
     )
     mainwin.show()
 

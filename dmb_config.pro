@@ -11,10 +11,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = dmb_config
 TEMPLATE = app
 
-FORMS    += ezdmb/View/MainWindow.ui \
-    ezdmb/View/FullScreenWindow.ui \
-    ezdmb/View/ConfigDialog.ui \
-    ezdmb/View/DmbConfig.ui \
-    ezdmb/View/NavHeader.ui
+FORMS    += ezdmb/View/DmbConfig.ui
 
 RESOURCES += ezdmb/Resources/resources.qrc
