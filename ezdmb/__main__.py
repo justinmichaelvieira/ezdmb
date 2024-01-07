@@ -11,9 +11,9 @@ import os.path as osp
 from PyQt5 import QtCore, QtNetwork, QtGui
 from PyQt5.QtWidgets import QApplication
 
-from .Controller import Configuration, Backend
-from .Controller.LoggingUtility import setupLogging
-from .View import FullScreenWindow, MainWindow, ConfigDialog
+from ezdmb.Controller import Configuration, Backend
+from ezdmb.Controller.LoggingUtility import setupLogging
+from ezdmb.View import FullScreenWindow, MainWindow, ConfigDialog
 
 styleSheet = "style.css"
 logger = logging.getLogger()
