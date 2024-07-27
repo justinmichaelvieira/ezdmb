@@ -12,7 +12,7 @@ case "$1" in
         # Add a script that starts ezdmb to the current users Desktop folder
         DESKTOP_RUN_SCRIPT=$(cat << EOF
 #!/bin/bash
-python -m ezdmb
+cd /opt/ezdmb && ./ezdmb
 EOF
 )
 
@@ -28,7 +28,7 @@ EOF
                 echo -e '\033[0;34mNot Installing run at startup components.\033[0m'
                 ;;
             * )
-                EXEC_STRING="sh -c \"python -m ezdmb\""
+                EXEC_STRING="cd /opt/ezdmb && ./ezdmb"
                 echo -e '\033[0;34mInstalling run at startup components.\033[0m'
                 if [ -f "/etc/gdm3/custom.conf" ]; then
                     # Ubuntu64 Autologin w/gdm
@@ -54,7 +54,7 @@ Terminal=false
 Exec=$EXEC_STRING
 Name=EZDMB
 GenericName=EZDMB
-Icon=/usr/share/icons/logo-256x256.png
+Icon=/usr/share/icons/ezdmb.png
 EOF
 )
 

@@ -60,11 +60,6 @@ def populateInstance():
     mainwin.show()
 
     advancedConfig = ConfigDialog.ConfigDialog(config)
-    advancedConfig.useImagesCheck.setChecked(config.UseImages == "true")
-    advancedConfig.useHtmlFileCheck.setChecked(config.UseHTML == "false")
-    advancedConfig.useMenuDataCheck.setChecked(config.UseImported == "false")
-    advancedConfig.rotateImagesCheck.setChecked(config.RotateContent == "false")
-    advancedConfig.rotateTimeBox.setValue(float(config.RotateContentTime))
 
     fullScreenMenu.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     fullScreenMenu.showFullScreen()
