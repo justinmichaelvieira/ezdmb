@@ -1,0 +1,1 @@
+PowerShell.exe -ExecutionPolicy Bypass -File "%~dp0/child.ps1"
