@@ -19,3 +19,4 @@ aqtinstall.log
 output/
 debian/overlay
 python_package/ezdmb
+docker/artifacts
