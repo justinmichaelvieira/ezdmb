@@ -27,7 +27,7 @@ def main():
     screenWidth = fullScreenMenu.frameGeometry().width()
     screenHeight = fullScreenMenu.frameGeometry().height()
     # size and show menu
-    fullScreenMenu.htmlContent.resize(screenWidth, screenHeight)
+    fullScreenMenu.contentLbl.resize(screenWidth, screenHeight)
     Backend.Backend()
     # without this, the script exits immediately.
     logger.info("DMB Application started.")
@@ -46,6 +46,7 @@ def populateInstance():
     # read and apply app stylesheet
     with open(styleSheet, "r") as f:
         css = f.read()
+
     app.setStyleSheet(css)
 
     QtNetwork.QNetworkProxyFactory.setUseSystemConfiguration(True)

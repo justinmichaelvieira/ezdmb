@@ -1,26 +1,28 @@
 from PyQt5.QtCore import Qt, pyqtSlot, QSize
 from PyQt5.QtWidgets import QMainWindow, QSizePolicy, QWidget, QFrame, QLabel, QGridLayout
+from PyQt5.QtGui import QPixmap
 
 from ezdmb.Utility.ShortcutUtility import setEscKey
-from ezdmb.View import HtmlViewUtility
+from ezdmb.View import MenuContentViewUtility
 
 
 class FullScreenWindow(QMainWindow):
     def __init__(self, config):
         super(self.__class__, self).__init__()
         self.setupUi(self)
-        self.htmlUtil = HtmlViewUtility.HtmlViewUtility(
+        self.contentViewUtil = MenuContentViewUtility.MenuContentViewUtility(
             config.ContentArray,
             config.RotateContent,
             config.RotateContentTime,
-            self.htmlContent,
+            self.contentLbl,
+            "FullScreenWindow",
             self.onRefresh,
         )
         setEscKey(self)
 
-    @pyqtSlot(str)
+    @pyqtSlot(QPixmap)
     def onRefresh(self, value):
-        self.htmlContent.setText(value)
+        self.contentLbl.setPixmap(value)
 
     def setupUi(self, FullScreenWindow):
         FullScreenWindow.setObjectName("FullScreenWindow")
@@ -48,18 +50,17 @@ class FullScreenWindow(QMainWindow):
         self.gridLayout.setObjectName("gridLayout")
         self.gridLayout_2 = QGridLayout()
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.htmlContent = QLabel(self.centralwidget)
+        self.contentLbl = QLabel(self.centralwidget)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        # sizePolicy.setHeightForWidth(self.htmlContent.sizePolicy().hasHeightForWidth())
-        self.htmlContent.setSizePolicy(sizePolicy)
-        self.htmlContent.setFrameShape(QFrame.NoFrame)
-        self.htmlContent.setLineWidth(0)
-        self.htmlContent.setTextFormat(Qt.RichText)
-        self.htmlContent.setScaledContents(True)
-        self.htmlContent.setObjectName("htmlContent")
-        self.gridLayout_2.addWidget(self.htmlContent, 0, 0, 1, 1)
+        self.contentLbl.setSizePolicy(sizePolicy)
+        self.contentLbl.setFrameShape(QFrame.NoFrame)
+        self.contentLbl.setLineWidth(0)
+        self.contentLbl.setTextFormat(Qt.RichText)
+        self.contentLbl.setScaledContents(True)
+        self.contentLbl.setObjectName("contentLbl")
+        self.gridLayout_2.addWidget(self.contentLbl, 0, 0, 1, 1)
         self.gridLayout.addLayout(self.gridLayout_2, 0, 0, 1, 1)
         FullScreenWindow.setCentralWidget(self.centralwidget)
         FullScreenWindow.setWindowTitle("Menu")

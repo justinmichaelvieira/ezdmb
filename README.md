@@ -10,7 +10,7 @@ Setup for executing the python source:
 ## Instructions / Basic Operation
 On load, both the fullscreen and configuration windows are loaded.  The configuration window can be simply closed by the user if it is not needed, leaving the fullscreen "menu board display" window open. 
 
-The display in the main screen of the configuration (under the text "Current menu") mirrors the full screen display.
+The display in the main screen of the configuration (under the text "Current menu") mirrors the full screen display. The full screen display can be closed by holding the CTRL key and pressing the ESC key on a hardware keyboard (or on-screen keyboard emulator).
 
 ## System configuration
 The system can be configured using:
@@ -51,7 +51,7 @@ The main entry point of the application. Note:  In a lot of scenarios, you will 
 Handles configuration of the system, and outputting the config json.
 
 ### `windows_install/`
-Files for building the Windows platform installer.
+`build-install-exe.sh` builds the Windows platform installer. This script requires docker installed on the local system - Docker Desktop (https://www.docker.com/products/docker-desktop/) should work on linux and windows platforms.
 
 ### `debian/`
 Files for building the Debian (linux) platform installer.
