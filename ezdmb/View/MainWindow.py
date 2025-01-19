@@ -115,7 +115,7 @@ class MainWindow(QMainWindow):
         font.setItalic(False)
         font.setWeight(50)
         self.currentMenuLabel.setFont(font)
-        self.currentMenuLabel.setStyleSheet("font-size: 96px;")
+        self.currentMenuLabel.setStyleSheet("font-size: 96px;text-align: center;")
         self.currentMenuLabel.setFrameShape(QFrame.NoFrame)
         self.currentMenuLabel.setFrameShadow(QFrame.Plain)
         self.currentMenuLabel.setLineWidth(0)

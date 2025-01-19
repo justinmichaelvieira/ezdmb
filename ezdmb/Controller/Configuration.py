@@ -72,7 +72,7 @@ class Configuration(object):
     # Initializes the object when Configuration is first instanced
     def __init__(self):
         super(self.__class__, self).__init__()
-        flags = os.O_CREAT | os.O_EXCL | os.O_WRONLY
+        flags = os.O_CREAT | os.O_RDWR
         self._data = dict()
         self._configPath = "dmb_config.json"
         # Create config file if it does not already exist

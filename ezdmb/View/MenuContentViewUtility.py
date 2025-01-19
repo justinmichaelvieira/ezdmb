@@ -1,6 +1,6 @@
 import os.path
-from PyQt5.QtCore import pyqtSignal, QThread
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import pyqtSignal, QThread, QPoint
+from PyQt5.QtGui import QPixmap, QPainter, QFont
 
 class MenuContentViewUtility(QThread):
     updated = pyqtSignal(QPixmap)
@@ -20,9 +20,15 @@ class MenuContentViewUtility(QThread):
         self.start()
 
     def getViewableFilecontent(self, fileName):
-        fileExtension = os.path.splitext(fileName)[1].lower()
         imgExtensions = [".jpg", ".png", ".gif", ".bmp", ".ico"]
-        if any(checkExt == fileExtension for checkExt in imgExtensions):
+
+        fileExtension = os.path.splitext(fileName)[1].lower()
+        if fileExtension == ".txt":
+            pix = QPixmap() # QPixmap pix = ...;
+            painter = QPainter(pix) # QPainter painter( &pix );
+            painter.setFont(QFont("Arial"));
+            painter.drawText(QPoint(100, 100), os.read());
+        elif any(checkExt == fileExtension for checkExt in imgExtensions):
             return QPixmap(fileName)
 
     def run(self):
