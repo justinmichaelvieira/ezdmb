@@ -20,12 +20,12 @@ UsePreviousTasks=no
 Name: autostart; Description: "&Add Shortcut to Start Up for All Users"; GroupDescription: "Run at Startup:"
 
 [Files]
-; Source: ezdmb\*; DestDir: {commonpf}\ezdmb\build; Flags: ignoreversion recursesubdirs uninsrestartdelete
+Source: .version; DestDir: {commonpf}\ezdmb; Flags: ignoreversion recursesubdirs uninsrestartdelete
 Source: icon.ico; DestDir: {commonpf}\ezdmb; Flags: uninsrestartdelete
 ; Source: ezdmb-x64.exe; DestDir: "{commonpf}\ezdmb"; DestName: ezdmb.exe; Check: IsWin64; Flags: uninsrestartdelete
 ; Source: ezdmb-x32.exe; DestDir: "{commonpf}\ezdmb"; DestName: ezdmb.exe; Check: "not IsWin64"; Flags: uninsrestartdelete
-Source: .version; DestDir: {commonpf}\ezdmb; Flags: ignoreversion uninsrestartdelete
-Source: dmb_config.json; DestDir: {commonpf}\ezdmb; Flags: onlyifdoesntexist uninsrestartdelete
+; Source: .version; DestDir: {commonpf}\ezdmb; Flags: ignoreversion uninsrestartdelete
+; Source: dmb_config.json; DestDir: {commonpf}\ezdmb; Flags: onlyifdoesntexist uninsrestartdelete
 
 [Dirs]
 Name: {commonappdata}\ezdmb; Flags: uninsneveruninstall
