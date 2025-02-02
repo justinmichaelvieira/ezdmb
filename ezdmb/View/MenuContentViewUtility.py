@@ -48,4 +48,4 @@ class MenuContentViewUtility(QThread):
             if self.debug:
                 print(self.windowName + ": Displaying image " + str(index))
 
-            self.sleep(int(self.rotateTimeout * 60))
+            self.sleep(int(self.rotateTimeout))
