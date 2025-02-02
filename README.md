@@ -38,9 +38,6 @@ On Windows and Mac, use the Qt Framework install packages provided at https://ww
 
 ## Code Listing / Technical Documentation
 
-### `dmb_config.pro`
-Qt Designer project file which loads all designer (`*.ui`) files. If you create a new .ui file, be sure to add it to this project.
-
 ### `ezdmb/`
 The ezdmb package. Contains source python for the application.
 
