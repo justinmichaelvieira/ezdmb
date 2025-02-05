@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import QApplication
 
 from ezdmb.Controller import Configuration, Backend
 from ezdmb.Controller.LoggingUtility import setupLogging
-from ezdmb.View import FullScreenWindow, MainWindow, ConfigDialog
+from ezdmb.View import FullScreenWindow, ConfigDialog, PreviewWindow
 
 styleSheet = "style.css"
 logger = logging.getLogger()
@@ -53,7 +53,7 @@ def populateInstance():
 
     config = Configuration.Configuration()
     fullScreenMenu = FullScreenWindow.FullScreenWindow(config)
-    mainwin = MainWindow.MainWindow(config)
+    mainwin = PreviewWindow.MainWindow(config)
 
     mainwin.setWindowIcon(
         QtGui.QIcon(":/logo_256x256.jpg")

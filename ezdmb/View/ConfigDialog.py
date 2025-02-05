@@ -350,5 +350,6 @@ class ConfigDialog(QDialog):
         self.currentImportedMenuDataBox.setTitle("Current Imported Menu Data")
         self.importButton.setText("Import from file")
         self.settingsTabs.setTabText(self.settingsTabs.indexOf(self.importTab), "Import")
-        self.settingsTabs.setCurrentIndex(0)
+
+        self.settingsTabs.setCurrentIndex(1)
         

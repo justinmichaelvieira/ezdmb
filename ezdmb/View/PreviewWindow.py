@@ -41,6 +41,7 @@ class MainWindow(QMainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setIconSize(QSize(18, 18))
         MainWindow.setDocumentMode(False)
+
         self.centralWidget = QWidget(MainWindow)
         sizePolicy = QSizePolicy(
             QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding
@@ -54,6 +55,7 @@ class MainWindow(QMainWindow):
         self.centralWidget.setMinimumSize(QSize(200, 200))
         self.centralWidget.setStyleSheet("")
         self.centralWidget.setObjectName("centralWidget")
+
         self.gridLayout_2 = QGridLayout(self.centralWidget)
         self.gridLayout_2.setContentsMargins(11, 0, 11, 0)
         self.gridLayout_2.setSpacing(6)
@@ -63,6 +65,7 @@ class MainWindow(QMainWindow):
         self.gridLayout.setSpacing(6)
         self.gridLayout.setObjectName("gridLayout")
         self.gridLayout_2.addLayout(self.gridLayout, 2, 0, 1, 1)
+
         self.headerLabel = QLabel(self.centralWidget)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -72,6 +75,7 @@ class MainWindow(QMainWindow):
         )
         self.headerLabel.setSizePolicy(sizePolicy)
         self.headerLabel.setMinimumSize(QSize(0, 60))
+
         font = QFont()
         font.setFamily("Arial")
         font.setPointSize(24)
@@ -81,8 +85,10 @@ class MainWindow(QMainWindow):
         self.headerLabel.setFont(font)
         self.headerLabel.setFrameShape(QFrame.NoFrame)
         self.headerLabel.setAlignment(Qt.AlignCenter)
+        self.headerLabel.setText("Digital Menu Board Config")
         self.headerLabel.setObjectName("headerLabel")
         self.gridLayout_2.addWidget(self.headerLabel, 0, 0, 1, 1)
+
         self.currentMenuGroupBox = QGroupBox(self.centralWidget)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -95,10 +101,12 @@ class MainWindow(QMainWindow):
         self.currentMenuGroupBox.setTitle("")
         self.currentMenuGroupBox.setFlat(True)
         self.currentMenuGroupBox.setObjectName("currentMenuGroupBox")
+    
         self.horizontalLayout = QHBoxLayout(self.currentMenuGroupBox)
         self.horizontalLayout.setContentsMargins(4, 0, 0, 0)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
+
         self.currentMenuLabel = QLabel(self.currentMenuGroupBox)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -108,6 +116,7 @@ class MainWindow(QMainWindow):
         )
         self.currentMenuLabel.setSizePolicy(sizePolicy)
         self.currentMenuLabel.setMinimumSize(QSize(200, 200))
+        self.currentMenuLabel.setText("Current Content")
         font = QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(64)
@@ -122,42 +131,43 @@ class MainWindow(QMainWindow):
         self.currentMenuLabel.setScaledContents(False)
         self.currentMenuLabel.setObjectName("currentMenuLabel")
 
-        spacerSizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        spacerSizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.spacerLblLeft = QLabel(self.currentMenuGroupBox)
         self.spacerLblLeft.setSizePolicy(spacerSizePolicy)
-        self.spacerLblLeft.setMinimumSize(QSize(300, 200))
+        self.spacerLblLeft.setMinimumSize(QSize(640, 480))
         self.horizontalLayout.addWidget(self.spacerLblLeft)
+
         self.spacerLblRight = QLabel(self.currentMenuGroupBox)
         self.spacerLblRight.setSizePolicy(spacerSizePolicy)
         self.spacerLblRight.setMinimumSize(QSize(300, 200))
+
         self.horizontalLayout.addWidget(self.currentMenuLabel)
         self.horizontalLayout.addWidget(self.spacerLblRight)
         self.gridLayout_2.addWidget(self.currentMenuGroupBox, 1, 0, 1, 1)
+        
         MainWindow.setCentralWidget(self.centralWidget)
+
         self.menuBar = QMenuBar(MainWindow)
         self.menuBar.setGeometry(QRect(0, 0, 800, 29))
         self.menuBar.setObjectName("menuBar")
         self.menuFile = QMenu(self.menuBar)
+        self.menuFile.setTitle("File")
         self.menuFile.setObjectName("menuFile")
+
         MainWindow.setMenuBar(self.menuBar)
+
         self.editDisplaySettingsAction = QAction(MainWindow)
-        self.editDisplaySettingsAction.setObjectName(
-            "editDisplaySettingsAction"
-        )
+        self.editDisplaySettingsAction.setText("Edit Display Settings")
+        self.editDisplaySettingsAction.setObjectName("editDisplaySettingsAction")
+
         self.exitAction = QAction(MainWindow)
+        self.exitAction.setText("Exit")
         self.exitAction.setObjectName("exitAction")
+
         self.menuFile.addAction(self.editDisplaySettingsAction)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.exitAction)
         self.menuBar.addAction(self.menuFile.menuAction())
 
-        self.retranslateUi(MainWindow)
-        QMetaObject.connectSlotsByName(MainWindow)
-
-    def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle("DMB Configuration")
-        self.headerLabel.setText("Digital Menu Board Config")
-        self.currentMenuLabel.setText("Current Content")
-        self.menuFile.setTitle("File")
-        self.editDisplaySettingsAction.setText("Edit Display Settings")
-        self.exitAction.setText("Exit")
+        QMetaObject.connectSlotsByName(MainWindow)
