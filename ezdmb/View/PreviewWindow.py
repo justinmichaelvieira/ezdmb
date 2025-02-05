@@ -52,7 +52,7 @@ class MainWindow(QMainWindow):
             self.centralWidget.sizePolicy().hasHeightForWidth()
         )
         self.centralWidget.setSizePolicy(sizePolicy)
-        self.centralWidget.setMinimumSize(QSize(200, 200))
+        self.centralWidget.setMinimumSize(QSize(600, 400))
         self.centralWidget.setStyleSheet("")
         self.centralWidget.setObjectName("centralWidget")
 
@@ -74,7 +74,7 @@ class MainWindow(QMainWindow):
             self.headerLabel.sizePolicy().hasHeightForWidth()
         )
         self.headerLabel.setSizePolicy(sizePolicy)
-        self.headerLabel.setMinimumSize(QSize(0, 60))
+        self.headerLabel.setMinimumSize(QSize(400, 200))
 
         font = QFont()
         font.setFamily("Arial")
@@ -97,7 +97,7 @@ class MainWindow(QMainWindow):
             self.currentMenuGroupBox.sizePolicy().hasHeightForWidth()
         )
         self.currentMenuGroupBox.setSizePolicy(sizePolicy)
-        self.currentMenuGroupBox.setMinimumSize(QSize(200, 200))
+        self.currentMenuGroupBox.setMinimumSize(QSize(400, 400))
         self.currentMenuGroupBox.setTitle("")
         self.currentMenuGroupBox.setFlat(True)
         self.currentMenuGroupBox.setObjectName("currentMenuGroupBox")
@@ -109,11 +109,7 @@ class MainWindow(QMainWindow):
 
         self.currentMenuLabel = QLabel(self.currentMenuGroupBox)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.currentMenuLabel.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy.setHeightForWidth(self.currentMenuLabel.sizePolicy().hasHeightForWidth())
         self.currentMenuLabel.setSizePolicy(sizePolicy)
         self.currentMenuLabel.setMinimumSize(QSize(200, 200))
         self.currentMenuLabel.setText("Current Content")
@@ -129,22 +125,11 @@ class MainWindow(QMainWindow):
         self.currentMenuLabel.setFrameShadow(QFrame.Plain)
         self.currentMenuLabel.setLineWidth(0)
         self.currentMenuLabel.setScaledContents(False)
+        self.currentMenuLabel.setAlignment(Qt.AlignCenter)
         self.currentMenuLabel.setObjectName("currentMenuLabel")
 
-        spacerSizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.spacerLblLeft = QLabel(self.currentMenuGroupBox)
-        self.spacerLblLeft.setSizePolicy(spacerSizePolicy)
-        self.spacerLblLeft.setMinimumSize(QSize(640, 480))
-        self.horizontalLayout.addWidget(self.spacerLblLeft)
-
-        self.spacerLblRight = QLabel(self.currentMenuGroupBox)
-        self.spacerLblRight.setSizePolicy(spacerSizePolicy)
-        self.spacerLblRight.setMinimumSize(QSize(300, 200))
-
         self.horizontalLayout.addWidget(self.currentMenuLabel)
-        self.horizontalLayout.addWidget(self.spacerLblRight)
         self.gridLayout_2.addWidget(self.currentMenuGroupBox, 1, 0, 1, 1)
-        
         MainWindow.setCentralWidget(self.centralWidget)
 
         self.menuBar = QMenuBar(MainWindow)
