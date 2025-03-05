@@ -1,12 +1,10 @@
 # main.py
 # DMB startup script
 # Justin Vieira [justin@rancorsoft.com] / Richard Haynes / Adam Brody
-# Rancorsoft, LLC 2016
+# Rancorsoft, LLC
 
-# import argparse  # Cmd line option lib
 import logging
 import sys
-import os.path as osp
 
 from PyQt5 import QtCore, QtNetwork, QtGui
 from PyQt5.QtWidgets import QApplication
