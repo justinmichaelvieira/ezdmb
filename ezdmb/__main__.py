@@ -11,7 +11,7 @@ import os.path as osp
 from PyQt5 import QtCore, QtNetwork, QtGui
 from PyQt5.QtWidgets import QApplication
 
-from ezdmb.Controller import Configuration, Backend
+from ezdmb.Controller import Configuration
 from ezdmb.Controller.LoggingUtility import setupLogging
 from ezdmb.View import FullScreenWindow, ConfigDialog, PreviewWindow
 
@@ -28,7 +28,6 @@ def main():
     screenHeight = fullScreenMenu.frameGeometry().height()
     # size and show menu
     fullScreenMenu.contentLbl.resize(screenWidth, screenHeight)
-    Backend.Backend()
     # without this, the script exits immediately.
     logger.info("DMB Application started.")
     sys.exit(app.exec_())
