@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
 )
 
-from ezdmb.Utility.ShortcutUtility import setEscKey
+from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey
 from ezdmb.View import MenuContentViewUtility
 
 
@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
             "MainWindow",
             self.onRefresh,
         )
-        setEscKey(self)
+        setCloseOnEscKey(self)
 
     @pyqtSlot(QPixmap)
     def onRefresh(self, value):

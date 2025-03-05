@@ -2,39 +2,24 @@ from PyQt5.QtCore import Qt, pyqtSlot, QSize
 from PyQt5.QtWidgets import QMainWindow, QSizePolicy, QWidget, QFrame, QLabel, QGridLayout
 from PyQt5.QtGui import QPixmap
 
-from ezdmb.Utility.ShortcutUtility import setEscKey
+from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey
 from ezdmb.View import MenuContentViewUtility
 
 
 class FullScreenWindow(QMainWindow):
     def __init__(self, config):
         super(self.__class__, self).__init__()
-        self.setupUi(self)
-        self.contentViewUtil = MenuContentViewUtility.MenuContentViewUtility(
-            config.ContentArray,
-            config.RotateContent,
-            config.RotateContentTime,
-            self.contentLbl,
-            "FullScreenWindow",
-            self.onRefresh,
-        )
-        setEscKey(self)
 
-    @pyqtSlot(QPixmap)
-    def onRefresh(self, value):
-        self.contentLbl.setPixmap(value)
-
-    def setupUi(self, FullScreenWindow):
-        FullScreenWindow.setObjectName("FullScreenWindow")
-        FullScreenWindow.setWindowModality(Qt.WindowModal)
-        FullScreenWindow.setEnabled(True)
+        self.setObjectName("FullScreenWindow")
+        self.setWindowModality(Qt.WindowModal)
+        self.setEnabled(True)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        FullScreenWindow.setSizePolicy(sizePolicy)
-        FullScreenWindow.setMinimumSize(QSize(200, 200))
-        FullScreenWindow.setAutoFillBackground(True)
-        self.centralwidget = QWidget(FullScreenWindow)
+        self.setSizePolicy(sizePolicy)
+        self.setMinimumSize(QSize(200, 200))
+        self.setAutoFillBackground(True)
+        self.centralwidget = QWidget(self)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -59,5 +44,19 @@ class FullScreenWindow(QMainWindow):
         self.contentLbl.setObjectName("contentLbl")
         self.gridLayout_2.addWidget(self.contentLbl, 0, 0, 1, 1)
         self.gridLayout.addLayout(self.gridLayout_2, 0, 0, 1, 1)
-        FullScreenWindow.setCentralWidget(self.centralwidget)
-        FullScreenWindow.setWindowTitle("Menu")
+        self.setCentralWidget(self.centralwidget)
+        self.setWindowTitle("Menu")
+
+        self.contentViewUtil = MenuContentViewUtility.MenuContentViewUtility(
+            config.ContentArray,
+            config.RotateContent,
+            config.RotateContentTime,
+            self.contentLbl,
+            "FullScreenWindow",
+            self.onRefresh,
+        )
+        setCloseOnEscKey(self)
+
+    @pyqtSlot(QPixmap)
+    def onRefresh(self, value):
+        self.contentLbl.setPixmap(value)

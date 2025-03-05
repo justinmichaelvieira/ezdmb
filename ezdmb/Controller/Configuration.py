@@ -87,15 +87,12 @@ class Configuration(object):
             else:  # No exception, so the file must have been created successfully.
                 with os.fdopen(file_handle, "a") as file_obj:
                     # Settings defaults here, for first runs
-                    self.SaveConfig(True, False, False, True, "15", [f'{os.getcwd()}/ezdmb/Images/354580462_orig.jpg'])
+                    self.SaveConfig(True, "15", [f'{os.getcwd()}/ezdmb/Images/354580462_orig.jpg'])
 
         with open(self._configPath, "r+") as json_data_file:
             self._data = json.load(json_data_file)
 
         # Set variables for the app to use
-        self.set_use_images(self._data["use_images"])
-        self.set_use_html(self._data["use_html"])
-        self.set_use_imported(self._data["use_imported"])
         self.set_rotate_content(self._data["rotate_content"])
         self.set_rotate_content_time(int(self._data["rotate_content_time"]))
         self.set_content_array(self._data["imported_content"])
@@ -103,16 +100,10 @@ class Configuration(object):
     # Saves our JSON config file
     def SaveConfig(
         self,
-        UseImages,
-        UseHTML,
-        UseImported,
         RotateContent,
         RotateContentTime,
         ContentArray,
     ):
-        self._data["use_images"] = UseImages
-        self._data["use_html"] = UseHTML
-        self._data["use_imported"] = UseImported
         self._data["rotate_content"] = RotateContent
         self._data["rotate_content_time"] = int(RotateContentTime)
         self._data["imported_content"] = ContentArray

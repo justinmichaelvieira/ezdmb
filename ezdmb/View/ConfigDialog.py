@@ -5,7 +5,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (
     QCheckBox,
     QDialog,
-    QDialogButtonBox,
+    # QDialogButtonBox,
     QDoubleSpinBox,
     QFileDialog,
     QFrame,
@@ -28,94 +28,24 @@ from ezdmb.Controller import SqliteImporter
 class ConfigDialog(QDialog):
     def __init__(self, config):
         super(self.__class__, self).__init__()
-        self.setupUi(self)
-
-        # Display list of loaded content files for the DMB in the loadedContentWidget
-        for i in config.ContentArray:
-            item = QListWidgetItem("%s" % str(i))
-            self.loadedContentWidget.addItem(item)
-
-        self._config = config
-        self.saveCancelButtonBox.rejected.connect(self.closeDialog)
-        self.saveCancelButtonBox.accepted.connect(self.saveAndClose)
-        self.addImageButton.clicked.connect(self.addContent)
-        self.deleteSelectionButton.clicked.connect(self.deleteSelectedContent)
-        self.importButton.clicked.connect(self.importMenuToSqliteFromFile)
-
-    def closeDialog(self):
-        self.close()
-
-    def saveAndClose(self):
-        tmpContentList = [
-            str(self.loadedContentWidget.item(i).text())
-            for i in range(self.loadedContentWidget.count())
-        ]
-        self._config.SaveConfig(
-            self.useImagesCheck.isChecked(),
-            self.useHtmlFileCheck.isChecked(),
-            self.useMenuDataCheck.isChecked(),
-            self.rotateImagesCheck.isChecked(),
-            float(self.rotateTimeBox.value()),
-            tmpContentList,
-        )
-
-        self._config.UseImages = self.useImagesCheck.isChecked()
-        self._config.UseHTML = self.useHtmlFileCheck.isChecked()
-        self._config.UseImported = self.useMenuDataCheck.isChecked()
-        self._config.RotateContent = self.rotateImagesCheck.isChecked()
-        self._config.RotateContentTime = self.rotateTimeBox.value()
-        self._config.ContentArray = tmpContentList
-        self.close()
-
-    def addContent(self):
-        contentFile = QFileDialog.getOpenFileName(self)[0]
-        self.loadedContentWidget.addItem(contentFile)
-
-    def deleteSelectedContent(self):
-        for SelectedItem in self.loadedContentWidget.selectedItems():
-            self.loadedContentWidget.takeItem(
-                self.loadedContentWidget.row(SelectedItem)
-            )
-
-    def setUiFromConfig(self):
-        self.useImagesCheck.setChecked(bool(self._config.UseImages))
-        self.useHtmlFileCheck.setChecked(bool(self._config.UseHTML))
-        self.useMenuDataCheck.setChecked(bool(self._config.UseImported))
-        self.rotateImagesCheck.setChecked(bool(self._config.RotateContent))
-        self.rotateTimeBox.setValue(float(self._config.RotateContentTime))
-
-    def importMenuToSqliteFromFile(self):
-        importer = SqliteImporter.SqliteImporter()
-        menuFile = QFileDialog.getOpenFileName(self)[0]
-        try:
-            menuData = importer.ImportMenuToSqliteFromFile(menuFile)
-        except AttributeError:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Warning)
-            msg.setText("Could not load menu file.")
-            msg.setInformativeText('The menu file could not be loaded; Please make sure the menu file is in the proper format.')
-            msg.setWindowTitle("Could not load menu file.")
-            msg.exec_()
-
-    def setupUi(self, ConfigDialog):
-        ConfigDialog.setObjectName("ConfigDialog")
-        ConfigDialog.setWindowModality(Qt.ApplicationModal)
-        ConfigDialog.resize(401, 331)
+        self.setObjectName("ConfigDialog")
+        self.setWindowModality(Qt.ApplicationModal)
+        self.resize(401, 331)
     
         sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(ConfigDialog.sizePolicy().hasHeightForWidth())
-        ConfigDialog.setSizePolicy(sizePolicy)
-        ConfigDialog.setMinimumSize(QSize(400, 300))
-        self.verticalLayout_6 = QVBoxLayout(ConfigDialog)
+        sizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
+        self.setSizePolicy(sizePolicy)
+        self.setMinimumSize(QSize(400, 300))
+        self.verticalLayout_6 = QVBoxLayout(self)
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_6.setSpacing(0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         
         minMinSizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 
-        self.settingsTabs = QTabWidget(ConfigDialog)
+        self.settingsTabs = QTabWidget(self)
         self.settingsTabs.setSizePolicy(minMinSizePolicy)
         self.settingsTabs.setMinimumSize(QSize(200, 180))
 
@@ -141,63 +71,8 @@ class ConfigDialog(QDialog):
         self.settingsTabs.setTabPosition(QTabWidget.North)
         self.settingsTabs.setTabShape(QTabWidget.Rounded)
         self.settingsTabs.setObjectName("settingsTabs")
-        self.typesTab = QWidget()
 
         minExpMinExpSizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
-
-        self.typesTab.setSizePolicy(minExpMinExpSizePolicy)
-        self.typesTab.setMinimumSize(QSize(500, 300))
-        self.typesTab.setObjectName("typesTab")
-        self.verticalLayout_4 = QVBoxLayout(self.typesTab)
-        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_4.setSpacing(0)
-        self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.groupBox = QGroupBox(self.typesTab)
-        self.groupBox.setSizePolicy(minExpMinExpSizePolicy)
-        self.groupBox.setMinimumSize(QSize(100, 100))
-
-        self.groupBox.setFont(sixteenPtFont)
-        self.groupBox.setTitle("")
-        self.groupBox.setObjectName("groupBox")
-        self.verticalLayout = QVBoxLayout(self.groupBox)
-        self.verticalLayout.setContentsMargins(-1, 0, 0, 0)
-        self.verticalLayout.setSpacing(0)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.useImagesCheck = QCheckBox(self.groupBox)
-
-        minExpandingFixedPolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
-        self.useImagesCheck.setSizePolicy(minExpandingFixedPolicy)
-        self.useImagesCheck.setMinimumSize(QSize(100, 40))
-
-        self.useImagesCheck.setFont(fourteenPtFont)
-        self.useImagesCheck.setObjectName("useImagesCheck")
-        self.verticalLayout.addWidget(self.useImagesCheck)
-
-        self.useHtmlFileCheck = QCheckBox(self.groupBox)
-        self.useHtmlFileCheck.setMinimumSize(QSize(100, 40))
-        self.useHtmlFileCheck.setFont(fourteenPtFont)
-        self.useHtmlFileCheck.setObjectName("useHtmlFileCheck")
-        self.verticalLayout.addWidget(self.useHtmlFileCheck)
-
-        self.useMenuDataCheck = QCheckBox(self.groupBox)
-        self.useMenuDataCheck.setSizePolicy(minExpandingFixedPolicy)
-        self.useMenuDataCheck.setMinimumSize(QSize(100, 40))
-        self.useMenuDataCheck.setFont(fourteenPtFont)
-        self.useMenuDataCheck.setObjectName("useMenuDataCheck")
-        self.verticalLayout.addWidget(self.useMenuDataCheck)
-
-        self.saveCancelButtonBox = QDialogButtonBox(self.groupBox)
-        self.saveCancelButtonBox.setSizePolicy(minExpandingFixedPolicy)
-        self.saveCancelButtonBox.setMinimumSize(QSize(140, 30))
-
-        self.saveCancelButtonBox.setFont(twelvePtFont)
-        self.saveCancelButtonBox.setLayoutDirection(Qt.LeftToRight)
-        self.saveCancelButtonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Save)
-        self.saveCancelButtonBox.setCenterButtons(True)
-        self.saveCancelButtonBox.setObjectName("saveCancelButtonBox")
-        self.verticalLayout.addWidget(self.saveCancelButtonBox)
-        self.verticalLayout_4.addWidget(self.groupBox)
-        self.settingsTabs.addTab(self.typesTab, "")
 
         self.contentTab = QWidget()
         self.contentTab.setSizePolicy(minExpMinExpSizePolicy)
@@ -304,41 +179,9 @@ class ConfigDialog(QDialog):
         self.verticalLayout_5.addWidget(self.groupBox_3)
 
         self.settingsTabs.addTab(self.contentTab, "")
-
-        self.importTab = QWidget()
-        self.importTab.setObjectName("importTab")
-
-        self.verticalLayout_7 = QVBoxLayout(self.importTab)
-        self.verticalLayout_7.setObjectName("verticalLayout_7")
-        self.currentImportedMenuDataBox = QGroupBox(self.importTab)
-
-        self.importMenuDataBox = QGroupBox(self.importTab)
-        self.importMenuDataBox.setFont(sixteenPtFont)
-        self.importMenuDataBox.setTitle("")
-        self.importMenuDataBox.setAlignment(Qt.AlignCenter)
-        self.importMenuDataBox.setFlat(True)
-        self.importMenuDataBox.setObjectName("importMenuDataBox")
-
-        self.verticalLayout_8 = QVBoxLayout(self.importMenuDataBox)
-        self.verticalLayout_8.setContentsMargins(0, 0, -1, -1)
-        self.verticalLayout_8.setObjectName("verticalLayout_8")
-
-        self.importButton = QPushButton(self.importMenuDataBox)
-        self.importButton.setSizePolicy(fixedFixedSizePolicy)
-        self.importButton.setMinimumSize(QSize(200, 60))
-        self.importButton.setObjectName("importButton")
-        self.verticalLayout_8.addWidget(self.importButton)
-
-        self.verticalLayout_7.addWidget(self.importMenuDataBox)
-
-        self.settingsTabs.addTab(self.importTab, "")
         self.verticalLayout_6.addWidget(self.settingsTabs)
 
-        ConfigDialog.setWindowTitle("Settings")
-        self.useImagesCheck.setText("Use images")
-        self.useHtmlFileCheck.setText("Use HTML files")
-        self.useMenuDataCheck.setText("Use menu data import")
-        self.settingsTabs.setTabText(self.settingsTabs.indexOf(self.typesTab), "Types")
+        self.setWindowTitle("Settings")
         self.groupBox_2.setTitle("Rotation settings")
         self.rotateImagesCheck.setText(" Rotate content every")
         self.secondsLabel.setText("seconds")
@@ -347,9 +190,67 @@ class ConfigDialog(QDialog):
         self.addImageButton.setText("Add Content")
         self.deleteSelectionButton.setText("Delete Selection")
         self.settingsTabs.setTabText(self.settingsTabs.indexOf(self.contentTab), "Content")
-        self.currentImportedMenuDataBox.setTitle("Current Imported Menu Data")
-        self.importButton.setText("Import from file")
-        self.settingsTabs.setTabText(self.settingsTabs.indexOf(self.importTab), "Import")
 
-        self.settingsTabs.setCurrentIndex(1)
-        
+        self.settingsTabs.setCurrentIndex(0)
+
+        # Display list of loaded content files for the DMB in the loadedContentWidget
+        for i in config.ContentArray:
+            item = QListWidgetItem("%s" % str(i))
+            self.loadedContentWidget.addItem(item)
+
+        self._config = config
+        self.addImageButton.clicked.connect(self.addContent)
+        self.deleteSelectionButton.clicked.connect(self.deleteSelectedContent)
+
+    def closeDialog(self):
+        self.close()
+
+    def getContentList(self):
+        return [
+            str(self.loadedContentWidget.item(i).text())
+            for i in range(self.loadedContentWidget.count())
+        ]
+
+    def saveUpdatedConfig(self):
+        self._config.SaveConfig(
+            self.rotateImagesCheck.isChecked(),
+            float(self.rotateTimeBox.value()),
+            self.getContentList(),
+        )
+
+    def saveAndClose(self):
+        self._config.RotateContent = self.rotateImagesCheck.isChecked()
+        self._config.RotateContentTime = self.rotateTimeBox.value()
+        self._config.ContentArray = self.getContentList()
+        self.saveUpdatedConfig()
+        self.close()
+
+    def addContent(self):
+        contentFile = QFileDialog.getOpenFileName(self)[0]
+        self.loadedContentWidget.addItem(contentFile)
+        self.saveUpdatedConfig()
+
+    def deleteSelectedContent(self):
+        for SelectedItem in self.loadedContentWidget.selectedItems():
+            self.loadedContentWidget.takeItem(
+                self.loadedContentWidget.row(SelectedItem)
+            )
+
+        self.saveUpdatedConfig()
+
+    def setUiFromConfig(self):
+        self.rotateImagesCheck.setChecked(bool(self._config.RotateContent))
+        self.rotateTimeBox.setValue(float(self._config.RotateContentTime))
+
+    def importMenuToSqliteFromFile(self):
+        importer = SqliteImporter.SqliteImporter()
+        menuFile = QFileDialog.getOpenFileName(self)[0]
+        try:
+            menuData = importer.ImportMenuToSqliteFromFile(menuFile)
+        except AttributeError:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setText("Could not load menu file.")
+            msg.setInformativeText('The menu file could not be loaded; Please make sure the menu file is in the proper format.')
+            msg.setWindowTitle("Could not load menu file.")
+            msg.exec_()
