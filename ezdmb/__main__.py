@@ -32,9 +32,6 @@ def main():
 
 
 def populateInstance():
-    # Todo: It's probably safer to just host a local webserver for content.
-    # For now --disable-web-security allows local files in our html.
-    sys.argv.append("--disable-web-security")
     app = QApplication(sys.argv)
     app.setOrganizationName("Rancorsoft")
     app.setOrganizationDomain("Rancorsoft.com")
@@ -45,8 +42,6 @@ def populateInstance():
         css = f.read()
 
     app.setStyleSheet(css)
-
-    QtNetwork.QNetworkProxyFactory.setUseSystemConfiguration(True)
 
     config = Configuration.Configuration()
     fullScreenMenu = FullScreenWindow.FullScreenWindow(config)
