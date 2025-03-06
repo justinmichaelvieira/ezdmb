@@ -44,29 +44,28 @@ def populateInstance():
     app.setStyleSheet(css)
 
     config = Configuration.Configuration()
-    fullScreenMenu = FullScreenWindow.FullScreenWindow(config)
-    mainwin = PreviewWindow.MainWindow(config)
+    fullScreenWin = FullScreenWindow.FullScreenWindow(config)
+    previewWin = PreviewWindow.MainWindow(config)
 
-    mainwin.setWindowIcon(
+    previewWin.setWindowIcon(
         QtGui.QIcon(":/logo_256x256.jpg")
     )
-    mainwin.show()
+    previewWin.show()
 
-    advancedConfig = ConfigDialog.ConfigDialog(config)
+    configWin = ConfigDialog.ConfigDialog(config)
 
-    fullScreenMenu.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-    fullScreenMenu.showFullScreen()
+    fullScreenWin.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+    fullScreenWin.showFullScreen()
 
-    mainwin.editDisplaySettingsAction.triggered.connect(lambda: showAdvConfig(advancedConfig))
-    mainwin.exitAction.triggered.connect(lambda: sys.exit())
-    mainwin.raise_()
-    mainwin.activateWindow()
-    return app, fullScreenMenu, advancedConfig, mainwin
+    previewWin.editDisplaySettingsAction.triggered.connect(lambda: showConfig(configWin))
+    previewWin.exitAction.triggered.connect(lambda: sys.exit())
+    previewWin.raise_()
+    previewWin.activateWindow()
+    return app, fullScreenWin, configWin, previewWin
 
 
-def showAdvConfig(advancedConfig):
-    advancedConfig.setUiFromConfig()
-    advancedConfig.show()
+def showConfig(win):
+    win.show()
 
 
 if __name__ == "__main__":
