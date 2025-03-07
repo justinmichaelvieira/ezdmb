@@ -13,7 +13,6 @@ from PyQt5.QtWidgets import (
     QLabel,
     QListWidget,
     QListWidgetItem,
-    QMessageBox,
     QPushButton,
     QSizePolicy,
     QTabWidget,
@@ -21,7 +20,6 @@ from PyQt5.QtWidgets import (
     QWidget
 )
 
-from ezdmb.Controller import SqliteImporter
 from ezdmb.Controller.Configuration import Configuration
 
 
@@ -234,16 +232,3 @@ class ConfigDialog(QDialog):
     def setUiFromConfig(self):
         self.rotateImagesCheck.setChecked(bool(self._config.RotateContent))
         self.rotateTimeBox.setValue(float(self._config.RotateContentTime))
-
-    def importMenuToSqliteFromFile(self):
-        importer = SqliteImporter.SqliteImporter()
-        menuFile = QFileDialog.getOpenFileName(self)[0]
-        try:
-            _menuData = importer.ImportMenuToSqliteFromFile(menuFile)
-        except AttributeError:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Warning)
-            msg.setText("Could not load menu file.")
-            msg.setInformativeText('The menu file could not be loaded; Please make sure the menu file is in the proper format.')
-            msg.setWindowTitle("Could not load menu file.")
-            msg.exec_()
