@@ -22,12 +22,12 @@ from PyQt5.QtWidgets import (
 )
 
 from ezdmb.Controller import SqliteImporter
+from ezdmb.Controller.Configuration import Configuration
 
 
 class ConfigDialog(QDialog):
-    def __init__(self, config):
+    def __init__(self, config: Configuration):
         super(self.__class__, self).__init__()
-
         self._config = config
 
         # widgets
@@ -136,13 +136,6 @@ class ConfigDialog(QDialog):
         self.vLayout2.setSpacing(0)
         self.vLayout2.setObjectName("vLayout2")
 
-        self.loadedContentLbl = QLabel(self.addRemoveGrpBox)
-        self.loadedContentLbl.setSizePolicy(minExpMinExpSizePolicy)
-        self.loadedContentLbl.setMinimumSize(QSize(200, 32))
-        self.loadedContentLbl.setFont(twelvePtFont)
-        self.loadedContentLbl.setObjectName("loadedContentLbl")
-        self.vLayout2.addWidget(self.loadedContentLbl)
-
         self.loadedContentWidget = QListWidget(self.addRemoveGrpBox)
         self.loadedContentWidget.setSizePolicy(minExpMinExpSizePolicy)
         self.loadedContentWidget.setMinimumSize(QSize(200, 20))
@@ -182,8 +175,7 @@ class ConfigDialog(QDialog):
         self.rotationSettingsGrpBox.setTitle("Rotation settings")
         self.rotateImagesCheck.setText(" Rotate content every")
         self.secondsLabel.setText("seconds")
-        self.addRemoveGrpBox.setTitle("Add/Remove")
-        self.loadedContentLbl.setText("Loaded content:")
+        self.addRemoveGrpBox.setTitle("Add/Remove content")
         self.addContentButton.setText("Add Content")
         self.deleteSelectionButton.setText("Delete Selection")
         self.settingsTabs.setTabText(self.settingsTabs.indexOf(self.contentTab), "Content")
@@ -227,8 +219,9 @@ class ConfigDialog(QDialog):
 
     def addContent(self):
         contentFile = QFileDialog.getOpenFileName(self)[0]
-        self.loadedContentWidget.addItem(contentFile)
-        self.saveUpdatedConfig()
+        if contentFile != "":
+            self.loadedContentWidget.addItem(contentFile)
+            self.saveUpdatedConfig()
 
     def deleteSelectedContent(self):
         for SelectedItem in self.loadedContentWidget.selectedItems():
@@ -246,7 +239,7 @@ class ConfigDialog(QDialog):
         importer = SqliteImporter.SqliteImporter()
         menuFile = QFileDialog.getOpenFileName(self)[0]
         try:
-            menuData = importer.ImportMenuToSqliteFromFile(menuFile)
+            _menuData = importer.ImportMenuToSqliteFromFile(menuFile)
         except AttributeError:
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Warning)

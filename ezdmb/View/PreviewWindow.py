@@ -24,9 +24,7 @@ class MainWindow(QMainWindow):
         super(self.__class__, self).__init__()
         self.setupUi(self)
         self.contentUtil = MenuContentViewUtility.MenuContentViewUtility(
-            config.ContentArray,
-            config.RotateContent,
-            config.RotateContentTime,
+            config,
             self.headerLabel,
             "MainWindow",
             self.onRefresh,
@@ -36,6 +34,12 @@ class MainWindow(QMainWindow):
     @pyqtSlot(QPixmap)
     def onRefresh(self, value):
         self.headerLabel.setPixmap(value)
+
+    @pyqtSlot(dict)
+    def onConfigUpdated(self, data):
+        self.contentViewUtil.contentArray = data["imported_content"]
+        self.contentViewUtil.rotateContent = data["rotate_content"]
+        self.contentViewUtil.rotateTimeout = data["rotate_content_time"]
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")

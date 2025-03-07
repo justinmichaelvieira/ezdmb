@@ -1,24 +1,33 @@
-import io
 import os.path
-from PyQt5.QtCore import pyqtSignal, QThread
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, QThread
 from PyQt5.QtGui import QPixmap
+from ezdmb.Controller.Configuration import Configuration
 
 class MenuContentViewUtility(QThread):
-    updated = pyqtSignal(QPixmap)
+    contentUpdated = pyqtSignal(QPixmap)
 
     def __init__(
-        self, contentArray, rotateContent, rotateTimeout, pixmap, windowName, onRefresh
+        self, config: Configuration, pixmap, windowName, onRefresh
     ):
         QThread.__init__(self)
+        self._config = config
+
         self.debug = True
-        self.contentArray = contentArray
-        self.rotateContent = rotateContent
-        self.rotateTimeout = rotateTimeout
+        self.contentArray = self._config.ContentArray
+        self.rotateContent = self._config.RotateContent
+        self.rotateTimeout = self._config.RotateContentTime
         self.count = 0
         self.pixmap = pixmap
         self.windowName = windowName
-        self.updated.connect(onRefresh)
+        self.contentUpdated.connect(onRefresh)
+        self._config.configUpdated.connect(self.onConfigUpdated)
         self.start()
+
+    @pyqtSlot(dict)
+    def onConfigUpdated(self, data):
+        self.contentArray = data["imported_content"]
+        self.rotateContent = data["rotate_content"]
+        self.rotateTimeout = data["rotate_content_time"]
 
     def getViewableFilecontent(self, fileName):
         imgExtensions = [".jpg", ".png", ".gif", ".bmp", ".ico"]
@@ -42,7 +51,7 @@ class MenuContentViewUtility(QThread):
             img = self.getViewableFilecontent(pixels)
             if img is not None:
                 self.pixmap.setPixmap(img)
-                self.updated.emit(img)
+                self.contentUpdated.emit(img)
             i += 1
 
             if self.debug:

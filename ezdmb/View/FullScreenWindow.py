@@ -1,14 +1,16 @@
-from PyQt5.QtCore import Qt, pyqtSlot, QSize
+from PyQt5.QtCore import Qt, pyqtSlot, QSize, QObject
 from PyQt5.QtWidgets import QMainWindow, QSizePolicy, QWidget, QFrame, QLabel, QGridLayout
 from PyQt5.QtGui import QPixmap
 
 from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey
 from ezdmb.View import MenuContentViewUtility
+from ezdmb.Controller.Configuration import Configuration
 
 
 class FullScreenWindow(QMainWindow):
-    def __init__(self, config):
+    def __init__(self, config: Configuration):
         super(self.__class__, self).__init__()
+        self._config = config
 
         self.setObjectName("FullScreenWindow")
         self.setWindowModality(Qt.WindowModal)
@@ -48,9 +50,7 @@ class FullScreenWindow(QMainWindow):
         self.setWindowTitle("Menu")
 
         self.contentViewUtil = MenuContentViewUtility.MenuContentViewUtility(
-            config.ContentArray,
-            config.RotateContent,
-            config.RotateContentTime,
+            self._config,
             self.contentLbl,
             "FullScreenWindow",
             self.onRefresh,
