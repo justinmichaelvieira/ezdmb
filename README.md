@@ -16,6 +16,8 @@ File > Edit Display Settings in the DMB Configuration window allows access to
 
 ![Display settings](sample2.png "Display settings")
 
+![Settings window up close](sample3.png "Settings window up close")
+
 ### Advanced install instructions / troubleshooting install
 
 If the developer install script/procedure does not work for you, try installing manually as follows:
@@ -30,5 +32,4 @@ On Windows and Mac, use the Qt Framework install packages provided at https://ww
 
 ## Roadmap
 - Load on startup option in win + linux installers
-- Multi monitor options
 - Import and render menu data from json, yml file
