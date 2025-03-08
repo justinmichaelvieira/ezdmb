@@ -1,7 +1,7 @@
 # ezdmb
 A dead-simple digital menu board display and configuration, written in Python.  Engineered to be the simplest, cheapest, fastest way to get your menu to display on **any** tablet or computer.  Ridiculously user friendly, with basic configuration interface.
 
-[ezdmb UI](sample1.png "ezdmb UI)
+![ezdmb UI](sample1.png "ezdmb UI")
 
 ## How to run through python3 (dev mode)
 1. Run the environment install script in a bash terminal: `chmod +x ./setup-dev-environment.sh && ./setup-dev-environment.sh`
@@ -14,7 +14,7 @@ A dead-simple digital menu board display and configuration, written in Python.  
 ## Configuration
 File > Edit Display Settings in the DMB Configuration window allows access to 
 
-[Display settings](sample2.png "Display settings")
+![Display settings](sample2.png "Display settings")
 
 ### Advanced install instructions / troubleshooting install
 
