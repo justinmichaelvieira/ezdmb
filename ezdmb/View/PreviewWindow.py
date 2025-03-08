@@ -19,7 +19,7 @@ from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey
 from ezdmb.View import MenuContentViewUtility
 
 
-class MainWindow(QMainWindow):
+class PreviewWindow(QMainWindow):
     def __init__(self, config):
         super(self.__class__, self).__init__()
         self.setupUi(self)

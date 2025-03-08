@@ -45,7 +45,7 @@ def populateInstance():
 
     config = Configuration.Configuration()
     fullScreenWin = FullScreenWindow.FullScreenWindow(config)
-    previewWin = PreviewWindow.MainWindow(config)
+    previewWin = PreviewWindow.PreviewWindow(config)
 
     previewWin.setWindowIcon(
         QtGui.QIcon(":/logo_256x256.jpg")
