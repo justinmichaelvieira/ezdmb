@@ -2,7 +2,7 @@
 FROM amake/innosetup
 
 # Copy iss script for build, and files to bundle
-COPY ./ezdmb-installer.iss ./work/ezdmb-installer.iss
-COPY ./icon.ico ./work/icon.ico
-COPY ./dmb_config.json ./work/dmb_config.json
-COPY ./.version ./work/.version
+COPY ezdmb-installer.iss ./ezdmb-installer.iss
+COPY artifacts/icon.ico ./icon.ico
+COPY artifacts/dmb_config.json ./dmb_config.json
+COPY artifacts/.version ./.version

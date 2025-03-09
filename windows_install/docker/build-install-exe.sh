@@ -8,5 +8,5 @@
 
 mkdir artifacts/ &> /dev/null
 docker pull amake/innosetup
-docker run --name innosetup -v "$PWD:/artifacts" --rm -i amake/innosetup ezdmb-installer.iss &&
+docker run --name innosetup -v "$PWD/artifacts/" --rm -i amake/innosetup ezdmb-installer.iss &&
 echo "Windows installer build complete. Python resources copied; You may now run 'python setup.py bdist_wheel' in the python_package folder."

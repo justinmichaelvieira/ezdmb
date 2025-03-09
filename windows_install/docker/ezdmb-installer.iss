@@ -2,7 +2,7 @@
 
 [Setup] 
 AppName=ezdmb
-AppVerName=ezdmb v1.0.1
+AppVerName=ezdmb v0.9.2
 ChangesEnvironment=yes
 DefaultDirName={commonpf}\ezdmb
 DefaultGroupName=ezdmb
@@ -20,8 +20,8 @@ UsePreviousTasks=no
 Name: autostart; Description: "&Add Shortcut to Start Up for All Users"; GroupDescription: "Run at Startup:"
 
 [Files]
-Source: .version; DestDir: {commonpf}\ezdmb; Flags: ignoreversion recursesubdirs uninsrestartdelete
-Source: icon.ico; DestDir: {commonpf}\ezdmb; Flags: uninsrestartdelete
+Source: {src}\artifacts\.version; DestDir: {commonpf}\ezdmb; Flags: ignoreversion recursesubdirs uninsrestartdelete
+Source: {src}\artifacts\icon.ico; DestDir: {commonpf}\ezdmb; Flags: uninsrestartdelete
 ; Source: ezdmb-x64.exe; DestDir: "{commonpf}\ezdmb"; DestName: ezdmb.exe; Check: IsWin64; Flags: uninsrestartdelete
 ; Source: ezdmb-x32.exe; DestDir: "{commonpf}\ezdmb"; DestName: ezdmb.exe; Check: "not IsWin64"; Flags: uninsrestartdelete
 ; Source: .version; DestDir: {commonpf}\ezdmb; Flags: ignoreversion uninsrestartdelete
@@ -33,8 +33,6 @@ Name: {commonappdata}\ezdmb; Flags: uninsneveruninstall
 [Icons]
 Name: "{commondesktop}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""{app}\ezdmb.exe"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico
 Name: "{group}\Run ezdmb"; Filename: "{cmd}"; Parameters: "/C ""{app}\ezdmb.exe"" ezdmb"; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico
-Name: "{group}\App Folder"; Filename: {commonpf}\ezdmb; IconFilename: {app}\icon.ico; Flags: foldershortcut
-Name: "{group}\Config Folder"; Filename: {commonappdata}\ezdmb; IconFilename: {app}\icon.ico; Flags: foldershortcut
 Name: "{commonstartup}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""{app}\ezdmb.exe"" ezdmb"; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico; Tasks: autostart
 
 [Run]
