@@ -4,6 +4,9 @@
 # Version to be used as the 'release version'
 VERSION="0.9.2"
 
+# Update version in control file
+sed -i -e 's/Version: .*/Version: '$VERSION'/g' DEBIAN/control
+
 # Make temp dir
 TMP_DIR=$(mktemp -d)
 
