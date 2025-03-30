@@ -2,7 +2,7 @@
 # Build script for .deb package used to install on linux platforms
 
 # Version to be used as the 'release version'
-VERSION="0.9.0"
+VERSION="0.9.2"
 
 # Make temp dir
 TMP_DIR=$(mktemp -d)
