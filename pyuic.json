@@ -1,8 +1,0 @@
-{
-    "files": [["ezdmb/Resources/resources.qrc"]],
-    "hooks": [],
-    "pyrcc": "pyrcc5",
-    "pyrcc_options": "",
-    "pyuic": "pyuic5",
-    "pyuic_options": "--from-import"
-}

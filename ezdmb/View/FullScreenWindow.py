@@ -2,13 +2,13 @@ from PyQt5.QtCore import Qt, pyqtSlot, QSize, QObject
 from PyQt5.QtWidgets import QMainWindow, QSizePolicy, QWidget, QFrame, QLabel, QGridLayout
 from PyQt5.QtGui import QPixmap
 
-from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey
+from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey, setOpenOnOKey
 from ezdmb.View import MenuContentViewUtility
 from ezdmb.Controller.Configuration import Configuration
 
 
 class FullScreenWindow(QMainWindow):
-    def __init__(self, config: Configuration):
+    def __init__(self, config: Configuration, reopenPreviewWindow):
         super(self.__class__, self).__init__()
         self._config = config
 
@@ -56,6 +56,7 @@ class FullScreenWindow(QMainWindow):
             self.onRefresh,
         )
         setCloseOnEscKey(self)
+        setOpenOnOKey(self, reopenPreviewWindow)
 
     @pyqtSlot(QPixmap)
     def onRefresh(self, value):

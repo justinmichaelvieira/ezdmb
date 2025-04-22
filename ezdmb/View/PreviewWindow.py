@@ -15,18 +15,18 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
 )
 
-from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey
+from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey, setOpenOnOKey
 from ezdmb.View import MenuContentViewUtility
 
 
 class PreviewWindow(QMainWindow):
     def __init__(self, config):
         super(self.__class__, self).__init__()
-        self.setupUi(self)
+        self.setupUi()
         self.contentUtil = MenuContentViewUtility.MenuContentViewUtility(
             config,
             self.headerLabel,
-            "MainWindow",
+            "PreviewWindow",
             self.onRefresh,
         )
         setCloseOnEscKey(self)
@@ -41,12 +41,12 @@ class PreviewWindow(QMainWindow):
         self.contentViewUtil.rotateContent = data["rotate_content"]
         self.contentViewUtil.rotateTimeout = data["rotate_content_time"]
 
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.setIconSize(QSize(18, 18))
-        MainWindow.setDocumentMode(False)
+    def setupUi(self):
+        self.setObjectName("self")
+        self.setIconSize(QSize(18, 18))
+        self.setDocumentMode(False)
 
-        self.centralWidget = QWidget(MainWindow)
+        self.centralWidget = QWidget(self)
         sizePolicy = QSizePolicy(
             QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding
         )
@@ -134,22 +134,22 @@ class PreviewWindow(QMainWindow):
 
         self.horizontalLayout.addWidget(self.currentMenuLabel)
         self.gridLayout_2.addWidget(self.currentMenuGroupBox, 1, 0, 1, 1)
-        MainWindow.setCentralWidget(self.centralWidget)
+        self.setCentralWidget(self.centralWidget)
 
-        self.menuBar = QMenuBar(MainWindow)
+        self.menuBar = QMenuBar(self)
         self.menuBar.setGeometry(QRect(0, 0, 800, 29))
         self.menuBar.setObjectName("menuBar")
         self.menuFile = QMenu(self.menuBar)
         self.menuFile.setTitle("File")
         self.menuFile.setObjectName("menuFile")
 
-        MainWindow.setMenuBar(self.menuBar)
+        self.setMenuBar(self.menuBar)
 
-        self.editDisplaySettingsAction = QAction(MainWindow)
+        self.editDisplaySettingsAction = QAction(self)
         self.editDisplaySettingsAction.setText("Edit Display Settings")
         self.editDisplaySettingsAction.setObjectName("editDisplaySettingsAction")
 
-        self.exitAction = QAction(MainWindow)
+        self.exitAction = QAction(self)
         self.exitAction.setText("Exit")
         self.exitAction.setObjectName("exitAction")
 
@@ -158,5 +158,8 @@ class PreviewWindow(QMainWindow):
         self.menuFile.addAction(self.exitAction)
         self.menuBar.addAction(self.menuFile.menuAction())
 
-        MainWindow.setWindowTitle("DMB Configuration")
-        QMetaObject.connectSlotsByName(MainWindow)
+        self.setWindowTitle("Preview / Configuration")
+        QMetaObject.connectSlotsByName(self)
+
+    def setOpenLambda(self, reopenLambda):
+        setOpenOnOKey(self, reopenLambda)

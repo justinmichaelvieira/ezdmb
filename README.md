@@ -1,22 +1,28 @@
 # ezdmb
-A dead-simple digital menu board display and configuration, written in Python.  Engineered to be the simplest, cheapest, fastest way to get your menu to display on **any** tablet or computer.  Ridiculously user friendly, with basic configuration interface.
 
-![ezdmb UI](sample1.png "ezdmb UI")
+![ezdmb logo](readme_images/logo_crop.png "ezdmb logo")
+
+A dead-simple digital menu board display and configuration, written in Python.  Engineered to be the simplest, cheapest, fastest way to get your menu to display on **any** tablet or computer. Engineered for user-friendliness, with a simple, basic, configuration interface that easily allows rotation of images and quick configuration.
+
+![ezdmb UI](readme_images/sample1.png "ezdmb UI")
 
 ## How to run through python3 (dev mode)
 1. Run the environment install script in a bash terminal: `chmod +x ./setup-dev-environment.sh && ./setup-dev-environment.sh`
 2. Run the app: `python3 -m ezdmb`
 
 ## Basic Operation
-- On load, both the fullscreen and configuration windows are loaded.  The configuration window can be simply closed by the user if it is not needed, leaving the fullscreen "menu board display" window open.
-- The 'Esc' key on the keyboard can be used to exit the application.
+- On app start, both the Main (fullscreen) and Preview/Configuration windows are shown on the desktop.
+- The Settings window can be closed with the "X" icon at top right of the window if further settings changes are not currently needed.
+- The 'Esc' key is used to exit the application.
+- Clicking or tapping the Main window and then pressing the 'o' key will reopen the Preview/Configuration window.
 
 ## Configuration
-File > Edit Display Settings in the DMB Configuration window allows access to 
+ "Edit Display Settings" in the "File" dropdown menu of the Settings window allows access to a settings window, which is used to:
+ - Add and remove content to display
+ - Rotation settings, to allow content to be changed in the Menu Board Display
+![Display settings](readme_images/sample2.png "Display settings")
 
-![Display settings](sample2.png "Display settings")
-
-![Settings window up close](sample3.png "Settings window up close")
+![Settings window up close](readme_images/sample3.png "Configuration window up close")
 
 ### Advanced install instructions / troubleshooting install
 

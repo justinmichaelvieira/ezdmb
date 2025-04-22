@@ -13,8 +13,8 @@ from ezdmb.Controller import Configuration
 from ezdmb.Controller.LoggingUtility import setupLogging
 from ezdmb.View import FullScreenWindow, ConfigDialog, PreviewWindow
 
-styleSheet = "style.css"
-logger = logging.getLogger()
+_styleSheet = "style.css"
+_logger = logging.getLogger()
 
 
 # starting point of the app runtime
@@ -27,7 +27,7 @@ def main():
     # size and show menu
     fullScreenMenu.contentLbl.resize(screenWidth, screenHeight)
     # without this, the script exits immediately.
-    logger.info("DMB Application started.")
+    _logger.info("DMB Application started.")
     sys.exit(app.exec_())
 
 
@@ -38,35 +38,40 @@ def populateInstance():
     app.setApplicationName("Digital Menu Board")
 
     # read and apply app stylesheet
-    with open(styleSheet, "r") as f:
+    with open(_styleSheet, "r") as f:
         css = f.read()
 
     app.setStyleSheet(css)
 
-    config = Configuration.Configuration()
-    fullScreenWin = FullScreenWindow.FullScreenWindow(config)
-    previewWin = PreviewWindow.PreviewWindow(config)
+    # child windows
+    _config = Configuration.Configuration()
+    _previewWin = PreviewWindow.PreviewWindow(_config)
+    _configWin = ConfigDialog.ConfigDialog(_config)
 
-    previewWin.setWindowIcon(
+    _previewWin.setWindowIcon(
         QtGui.QIcon(":/logo_256x256.jpg")
     )
-    previewWin.show()
+    # allow preview window to be reopened with 'o' key
+    previewWindowOpenLambda = lambda: showAndBringToFront(_previewWin)
+    _fullScreenWin = FullScreenWindow.FullScreenWindow(_config, previewWindowOpenLambda)
 
-    configWin = ConfigDialog.ConfigDialog(config)
+    # show preview window on load
+    previewWindowOpenLambda()
 
-    fullScreenWin.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-    fullScreenWin.showFullScreen()
+    _fullScreenWin.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+    _fullScreenWin.showFullScreen()
 
-    previewWin.editDisplaySettingsAction.triggered.connect(lambda: showConfig(configWin))
-    previewWin.exitAction.triggered.connect(lambda: sys.exit())
-    previewWin.raise_()
-    previewWin.activateWindow()
-    return app, fullScreenWin, configWin, previewWin
+    showConfigAction = lambda: _configWin.show()
+    _previewWin.editDisplaySettingsAction.triggered.connect(showConfigAction)
+    _previewWin.exitAction.triggered.connect(lambda: sys.exit())
+    _previewWin.raise_()
+    _previewWin.activateWindow()
+    return app, _fullScreenWin, _configWin, _previewWin
 
-
-def showConfig(win):
-    win.show()
-
+def showAndBringToFront(window):
+    window.show()
+    window.raise_()
+    window.activateWindow()
 
 if __name__ == "__main__":
     main()
