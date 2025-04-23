@@ -10,4 +10,4 @@ cd - || exit
 # copy the executable and stylesheet to the overlay folder
 mkdir -p overlay/opt/ezdmb
 cp ../ezdmb/dist/ezdmb overlay/opt/ezdmb/ezdmb
-cp ../style.css overlay/opt/ezdmbstyle.css
+cp ../style.css overlay/opt/ezdmb/style.css
