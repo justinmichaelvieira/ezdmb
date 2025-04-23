@@ -37,7 +37,7 @@ def populateInstance():
     app.setOrganizationDomain("Rancorsoft.com")
     app.setApplicationName("Digital Menu Board")
 
-    # read and apply app stylesheet
+    # apply app stylesheet
     with open(_styleSheet, "r") as f:
         css = f.read()
 
