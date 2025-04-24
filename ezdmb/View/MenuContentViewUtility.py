@@ -3,6 +3,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot, QThread
 from PyQt5.QtGui import QPixmap
 from ezdmb.Controller.Configuration import Configuration
 
+
 class MenuContentViewUtility(QThread):
     contentUpdated = pyqtSignal(QPixmap)
 
@@ -45,7 +46,7 @@ class MenuContentViewUtility(QThread):
 
     def run(self):
         i = 0
-        while(True):
+        while (True):
             index = i % len(self.contentArray)
             pixels = self.contentArray[index]
             img = self.getViewableFilecontent(pixels)

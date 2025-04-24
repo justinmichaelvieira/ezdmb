@@ -105,7 +105,7 @@ class PreviewWindow(QMainWindow):
         self.currentMenuGroupBox.setTitle("")
         self.currentMenuGroupBox.setFlat(True)
         self.currentMenuGroupBox.setObjectName("currentMenuGroupBox")
-    
+
         self.horizontalLayout = QHBoxLayout(self.currentMenuGroupBox)
         self.horizontalLayout.setContentsMargins(4, 0, 0, 0)
         self.horizontalLayout.setSpacing(0)

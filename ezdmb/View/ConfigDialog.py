@@ -1,5 +1,3 @@
-from pprint import pformat
-
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (
@@ -32,7 +30,7 @@ class ConfigDialog(QDialog):
         self.setObjectName("ConfigDialog")
         self.setWindowModality(Qt.ApplicationModal)
         self.resize(401, 331)
-    
+
         preferredSizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         preferredSizePolicy.setHorizontalStretch(0)
         preferredSizePolicy.setVerticalStretch(0)
@@ -43,7 +41,7 @@ class ConfigDialog(QDialog):
         self.vLayout6.setContentsMargins(0, 0, 0, 0)
         self.vLayout6.setSpacing(0)
         self.vLayout6.setObjectName("vLayout6")
-        
+
         minMinSizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         minExpMinExpSizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         fixedFixedSizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)

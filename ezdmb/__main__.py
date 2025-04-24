@@ -6,7 +6,7 @@
 import logging
 import sys
 
-from PyQt5 import QtCore, QtNetwork, QtGui
+from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QApplication
 
 from ezdmb.Controller import Configuration
@@ -51,27 +51,34 @@ def populateInstance():
     _previewWin.setWindowIcon(
         QtGui.QIcon(":/logo_256x256.jpg")
     )
+
     # allow preview window to be reopened with 'o' key
-    previewWindowOpenLambda = lambda: showAndBringToFront(_previewWin)
-    _fullScreenWin = FullScreenWindow.FullScreenWindow(_config, previewWindowOpenLambda)
+    def openPreviewWindow():
+        showAndBringToFront(_previewWin)
+
+    _fullScreenWin = FullScreenWindow.FullScreenWindow(_config, openPreviewWindow)
 
     # show preview window on load
-    previewWindowOpenLambda()
+    openPreviewWindow()
 
     _fullScreenWin.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     _fullScreenWin.showFullScreen()
 
-    showConfigAction = lambda: _configWin.show()
-    _previewWin.editDisplaySettingsAction.triggered.connect(showConfigAction)
+    def showConfig():
+        _configWin.show()
+
+    _previewWin.editDisplaySettingsAction.triggered.connect(showConfig)
     _previewWin.exitAction.triggered.connect(lambda: sys.exit())
     _previewWin.raise_()
     _previewWin.activateWindow()
     return app, _fullScreenWin, _configWin, _previewWin
 
+
 def showAndBringToFront(window):
     window.show()
     window.raise_()
     window.activateWindow()
+
 
 if __name__ == "__main__":
     main()

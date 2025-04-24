@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt, pyqtSlot, QSize, QObject
+from PyQt5.QtCore import Qt, pyqtSlot, QSize
 from PyQt5.QtWidgets import QMainWindow, QSizePolicy, QWidget, QFrame, QLabel, QGridLayout
 from PyQt5.QtGui import QPixmap
 

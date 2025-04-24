@@ -9,16 +9,20 @@ with open(join(CURDIR, "requirements.txt")) as rs:
 
 cmdclass = {}
 
+
 class custom_s_dist(sdist):
     def run(self):
         self.run_command('build_ui')
         super().run()
 
+
 cmdclass["sdist"] = custom_s_dist
+
 
 class custom_build_ui(build_ui):
     def run(self):
         build_ui.run(self)
+
 
 cmdclass["build_ui"] = custom_build_ui
 
