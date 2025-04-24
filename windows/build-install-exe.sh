@@ -6,7 +6,11 @@
 # If, for some reason, this script fails, docker/ezdmb-installer.iss can still be used to generate
 # a windows installer, with the innosetup IDE, from within Windows.
 
+cd windows_install/docker || exit
+
 mkdir artifacts/ &> /dev/null
 docker pull amake/innosetup
 docker run --name innosetup -v "$PWD/artifacts/" --rm -i amake/innosetup ezdmb-installer.iss &&
-echo "Windows installer build complete. Python resources copied; You may now run 'python setup.py bdist_wheel' in the python_package folder."
+echo "Windows installer build complete. You may now run 'python setup.py bdist_wheel' in the python_package folder."
+
+cd - || exit
