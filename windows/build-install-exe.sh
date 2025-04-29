@@ -9,8 +9,8 @@
 cd windows_install/docker || exit
 
 mkdir artifacts/ &> /dev/null
-docker pull amake/innosetup
-docker run --name innosetup -v "$PWD/artifacts/" --rm -i amake/innosetup ezdmb-installer.iss &&
+DOCKER_BUILDKIT=1 sudo docker build -t ezdmb/inno-builder .
+docker run --name inno-build-instance -v "$PWD:/work" -v "${PWD}/artifacts:/artifacts" --rm -i ezdmb/inno-builder ezdmb-installer.iss &&
 echo "Windows installer build complete. You may now run 'python setup.py bdist_wheel' in the python_package folder."
 
 cd - || exit
