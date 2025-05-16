@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtCore import QSize, Qt, QRect, QMetaObject, pyqtSlot
+from PyQt5.QtCore import QSize, Qt, QRect, pyqtSlot
 from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtWidgets import (
     QMainWindow,
@@ -16,7 +16,7 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
 )
 
-from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey, setOpenOnOKey
+from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey
 from ezdmb.View import MenuContentViewUtility
 
 
@@ -141,7 +141,7 @@ class PreviewWindow(QMainWindow):
         self.menuBar.setGeometry(QRect(0, 0, 800, 29))
         self.menuBar.setObjectName("menuBar")
         self.setMenuBar(self.menuBar)
-    
+
         self.menuFile = QMenu(self.menuBar)
         self.menuFile.setTitle("File")
         self.menuFile.setObjectName("menuFile")

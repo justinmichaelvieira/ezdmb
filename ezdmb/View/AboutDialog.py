@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (
 
 from ezdmb.version import version
 
+
 class AboutDialog(QDialog):
     def __init__(self):
         super().__init__()

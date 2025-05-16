@@ -47,10 +47,10 @@ def populateInstance():
 
     _config = Configuration.Configuration()
     _configWin = ConfigDialog.ConfigDialog(_config)
-    
+
     def showConfig():
         _configWin.show()
-    
+
     def showAboutWindow():
         _aboutWin.show()
 
