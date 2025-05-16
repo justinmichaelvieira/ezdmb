@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QApplication
 
 from ezdmb.Controller import Configuration
 from ezdmb.Controller.LoggingUtility import setupLogging
-from ezdmb.View import FullScreenWindow, ConfigDialog, PreviewWindow
+from ezdmb.View import AboutDialog, FullScreenWindow, ConfigDialog, PreviewWindow
 
 _styleSheet = "style.css"
 _logger = logging.getLogger()
@@ -43,32 +43,29 @@ def populateInstance():
 
     app.setStyleSheet(css)
 
-    # child windows
+    _aboutWin = AboutDialog.AboutDialog()
+
     _config = Configuration.Configuration()
-    _previewWin = PreviewWindow.PreviewWindow(_config)
     _configWin = ConfigDialog.ConfigDialog(_config)
+    
+    def showConfig():
+        _configWin.show()
+    
+    def showAboutWindow():
+        _aboutWin.show()
 
-    _previewWin.setWindowIcon(
-        QtGui.QIcon(":/logo_256x256.jpg")
-    )
+    _previewWin = PreviewWindow.PreviewWindow(_config, showConfig, showAboutWindow)
+    _previewWin.setWindowIcon(QtGui.QIcon(":/logo_256x256.jpg"))
 
-    # allow preview window to be reopened with 'o' key
     def openPreviewWindow():
         showAndBringToFront(_previewWin)
 
     _fullScreenWin = FullScreenWindow.FullScreenWindow(_config, openPreviewWindow)
 
-    # show preview window on load
-    openPreviewWindow()
-
     _fullScreenWin.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     _fullScreenWin.showFullScreen()
 
-    def showConfig():
-        _configWin.show()
-
-    _previewWin.editDisplaySettingsAction.triggered.connect(showConfig)
-    _previewWin.exitAction.triggered.connect(lambda: sys.exit())
+    openPreviewWindow()
     _previewWin.raise_()
     _previewWin.activateWindow()
     return app, _fullScreenWin, _configWin, _previewWin

@@ -1,3 +1,4 @@
+import sys
 from PyQt5.QtCore import QSize, Qt, QRect, QMetaObject, pyqtSlot
 from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtWidgets import (
@@ -20,9 +21,9 @@ from ezdmb.View import MenuContentViewUtility
 
 
 class PreviewWindow(QMainWindow):
-    def __init__(self, config):
+    def __init__(self, config, showConfig, showAboutWindow):
         super(self.__class__, self).__init__()
-        self.setupUi()
+        self.setupUi(showConfig, showAboutWindow)
         self.contentUtil = MenuContentViewUtility.MenuContentViewUtility(
             config,
             self.headerLabel,
@@ -41,7 +42,7 @@ class PreviewWindow(QMainWindow):
         self.contentViewUtil.rotateContent = data["rotate_content"]
         self.contentViewUtil.rotateTimeout = data["rotate_content_time"]
 
-    def setupUi(self):
+    def setupUi(self, showConfig, showAboutWindow):
         self.setObjectName("self")
         self.setIconSize(QSize(18, 18))
         self.setDocumentMode(False)
@@ -139,27 +140,34 @@ class PreviewWindow(QMainWindow):
         self.menuBar = QMenuBar(self)
         self.menuBar.setGeometry(QRect(0, 0, 800, 29))
         self.menuBar.setObjectName("menuBar")
+        self.setMenuBar(self.menuBar)
+    
         self.menuFile = QMenu(self.menuBar)
         self.menuFile.setTitle("File")
         self.menuFile.setObjectName("menuFile")
 
-        self.setMenuBar(self.menuBar)
-
         self.editDisplaySettingsAction = QAction(self)
         self.editDisplaySettingsAction.setText("Edit Display Settings")
         self.editDisplaySettingsAction.setObjectName("editDisplaySettingsAction")
+        self.editDisplaySettingsAction.triggered.connect(showConfig)
+        self.menuFile.addAction(self.editDisplaySettingsAction)
 
         self.exitAction = QAction(self)
         self.exitAction.setText("Exit")
         self.exitAction.setObjectName("exitAction")
-
-        self.menuFile.addAction(self.editDisplaySettingsAction)
+        self.exitAction.triggered.connect(lambda: sys.exit())
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.exitAction)
         self.menuBar.addAction(self.menuFile.menuAction())
 
-        self.setWindowTitle("Preview / Configuration")
-        QMetaObject.connectSlotsByName(self)
+        self.menuHelp = QMenu(self.menuBar)
+        self.menuHelp.setTitle("Help")
+        self.menuHelp.setObjectName("menuHelp")
+        self.showAboutAction = QAction(self)
+        self.showAboutAction.setText("About")
+        self.showAboutAction.setObjectName("aboutAction")
+        self.showAboutAction.triggered.connect(showAboutWindow)
+        self.menuHelp.addAction(self.showAboutAction)
+        self.menuBar.addAction(self.menuHelp.menuAction())
 
-    def setOpenLambda(self, reopenLambda):
-        setOpenOnOKey(self, reopenLambda)
+        self.setWindowTitle("Preview / Configuration")
