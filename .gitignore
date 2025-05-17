@@ -20,3 +20,4 @@ output/
 debian/overlay
 python_package/ezdmb
 docker/artifacts
+windows_install/docker/artifacts/ezdmb_x64.exe
