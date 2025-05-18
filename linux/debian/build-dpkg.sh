@@ -11,11 +11,11 @@ sed -i -e 's/Version: .*/Version: '$VERSION'/g' DEBIAN/control
 TMP_DIR=$(mktemp -d)
 
 # Copy image resources
-cd ../ezdmb/Resources/
+cd ../src/ezdmb/Resources/ || exit
 IMAGE_RESOURCES_DIR="../../debian/overlay/opt/ezdmb/Resources"
 mkdir -p "$IMAGE_RESOURCES_DIR"
-cp -v *.png "$IMAGE_RESOURCES_DIR"
-cd -
+cp -v ./*.png "$IMAGE_RESOURCES_DIR"
+cd - || exit
 
 # Copy overlay to temp dir
 cp -r "./overlay/"* "$TMP_DIR"

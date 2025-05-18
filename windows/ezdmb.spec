@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['../ezdmb/__main__.py'],
+    ['../src/ezdmb/__main__.py'],
     pathex=[],
     binaries=[],
     datas=[],
