@@ -1,7 +1,5 @@
 from os.path import dirname, join, abspath
 from setuptools import setup, find_packages
-from setuptools.command.sdist import sdist
-from src.ezdmb import version
 
 CURDIR = dirname(abspath(__file__))
 with open(join(CURDIR, "requirements.txt")) as rs:
@@ -12,7 +10,7 @@ with open(join(CURDIR, "README.md"), "r", encoding="utf-8") as fh:
 
 setup(
     name='ezdmb',
-    version=version,
+    version="0.9.2",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/justinmichaelvieira/ezdmb",
