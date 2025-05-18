@@ -18,12 +18,11 @@ setup(
         "Bug Tracker": "https://github.com/mahesh-maximus/helloworld-pyp/issues",
     },
     classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: LGPL-3.0-only"
+        "Programming Language :: Python :: 3"
     ],
     package_dir={'':"src"},
     packages=find_packages("src"),
-    license='GNU Lesser General Public License version 3',
+    license='LGPL-3.0-only',
     author='Justin Vieira',
     author_email='justin@rancorsoft.com',
     description='A dead-simple digital menu board configurator and display.',
