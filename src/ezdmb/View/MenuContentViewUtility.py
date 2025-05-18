@@ -34,10 +34,6 @@ class MenuContentViewUtility(QThread):
         imgExtensions = [".jpg", ".png", ".gif", ".bmp", ".ico"]
 
         fileExtension = os.path.splitext(fileName)[1].lower()
-        # if fileExtension == ".txt":
-        #     painter = QPainter(self.pixmap) # QPainter painter( &pix );
-        #     painter.setFont(QFont("Arial"));
-        #     painter.drawText(QPoint(100, 100), "Test");
 
         if any(checkExt == fileExtension for checkExt in imgExtensions):
             return QPixmap(fileName)
@@ -47,15 +43,18 @@ class MenuContentViewUtility(QThread):
     def run(self):
         i = 0
         while (True):
-            index = i % len(self.contentArray)
-            pixels = self.contentArray[index]
-            img = self.getViewableFilecontent(pixels)
-            if img is not None:
-                self.pixmap.setPixmap(img)
-                self.contentUpdated.emit(img)
-            i += 1
+            if len(self.contentArray) > 0:
+                index = i % len(self.contentArray)
+                pixels = self.contentArray[index]
+                img = self.getViewableFilecontent(pixels)
+                if img is not None:
+                    self.pixmap.setPixmap(img)
+                    self.contentUpdated.emit(img)
+                i += 1
 
-            if self.debug:
-                print(self.windowName + ": Displaying image " + str(index))
+                if self.debug:
+                    print(self.windowName + ": Displaying image " + str(index))
+            else:
+                print("No content to display; Skipping rotation.")
 
             self.sleep(int(self.rotateTimeout))

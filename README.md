@@ -1,10 +1,10 @@
 # ezdmb
 
-![ezdmb logo](readme_images/logo_crop.png "ezdmb logo")
+![ezdmb logo](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/logo_crop.png "ezdmb logo")
 
 A dead-simple digital menu board display and configuration, written in Python.  Engineered to be the simplest, cheapest, fastest way to get your menu to display on **any** tablet or computer. Engineered for user-friendliness, with a simple, basic, configuration interface that easily allows rotation of images and quick configuration.
 
-![ezdmb UI](readme_images/sample1.png "ezdmb UI")
+![ezdmb UI](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/sample1.png "ezdmb UI")
 
 ## How to run through python3 (dev mode)
 1. Run the environment install script in a bash terminal: `chmod +x ./setup-dev-environment.sh && ./setup-dev-environment.sh`
@@ -20,9 +20,9 @@ A dead-simple digital menu board display and configuration, written in Python.  
  "Edit Display Settings" in the "File" dropdown menu of the Settings window allows access to a settings window, which is used to:
  - Add and remove content to display
  - Rotation settings, to allow content to be changed in the Menu Board Display
-![Display settings](readme_images/sample2.png "Display settings")
+![Display settings](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/sample2.png "Display settings")
 
-![Settings window up close](readme_images/sample3.png "Configuration window up close")
+![Settings window up close](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/sample3.png "Configuration window up close")
 
 ### Advanced install instructions / troubleshooting install
 

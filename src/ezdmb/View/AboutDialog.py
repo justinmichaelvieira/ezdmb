@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
 )
 
-from ezdmb.version import version
+from ezdmb import __version__
 
 
 class AboutDialog(QDialog):
@@ -14,7 +14,7 @@ class AboutDialog(QDialog):
 
         self.setWindowTitle("About ezdmb")
 
-        message = QLabel("ezdmb v" + version + "\nGithub: https://github.com/justinmichaelvieira/ezdmb\n")
+        message = QLabel("ezdmb v" + __version__ + "\nGithub: https://github.com/justinmichaelvieira/ezdmb\n")
 
         self.buttonBox = QDialogButtonBox(QDialogButtonBox.Close)
         self.buttonBox.accepted.connect(self.accept)
