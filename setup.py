@@ -51,7 +51,7 @@ setup(
     description='A dead-simple digital menu board configurator and display.',
     install_requires=REQS,
     python_requires=">=3.4",
-    cmdclass=cmdclass
+    cmdclass=cmdclass,
     entry_points={
         "console_scripts": [
             "ezdmb = ezdmb.__main__:main"
