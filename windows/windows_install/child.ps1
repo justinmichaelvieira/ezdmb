@@ -6,9 +6,16 @@ if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     exit;
 }
 
-# Use TLS1.2 instead of TLS1.0 by default for http requests, if available.
-# This works around connection/compatibility issues with some webservers that
-# force TLS 1.2, and early versions of Powershell.
+$tempFolder = $env:TEMP
+
+# Turn on log of this scripts console output.
+# See: https://stackoverflow.com/a/60663349/106625
+$logPath = "$tempFolder\ezdmb-install.log"
+Start-Transcript -Path "$logPath"
+
+# Use TLS1.2 instead of TLS1.0 for http requests, if available.
+# Works around compatibility issue with TLS 1.2 servers and
+# defaulted TLS 1.0 in Powershell v1 & v2
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
 
 # Via: https://stackoverflow.com/a/4647985/106625
@@ -30,28 +37,6 @@ function Write-ColorOutput($ForegroundColor) {
     # restore the original color
     $host.UI.RawUI.ForegroundColor = $fc
 }
-
-$tempFolder = $env:TEMP
-
-# Log file. Via: https://stackoverflow.com/a/60663349/106625
-$logPath = "$tempFolder\ezdmb-install.log"
-Start-Transcript -Path "$logPath"
-
-# Package cloud repository to use, and token used to give read-only access to the repo
-$pcRepo = "ezdmb"
-$pcRepoToken = "" // FIXME
-$depsRepo = "ezdmbwindeps"
-$depsRepoToken = "" // FIXME
-
-# Python version expected (used to verify installed successfully)
-$pyVersion = "3.10.4"
-
-$pyExeDestination = "$tempFolder\\$pyExe"
-$appWheelFileDestination = "$tempFolder\\$appWheelFile"
-$depsWheelFileDestination = "$tempFolder\\$depsWheelFile"
-
-# Set up download client object
-$client = New-Object System.Net.WebClient
 
 function PauseForAnyKey ($message)
 {
@@ -92,8 +77,21 @@ function AttemptDownload {
     }
 }
 
-# If python3 found in script dir, copy it to tmp folder.
-CopyToTempIfExistsInScriptDir($pyExe)
+# Python version expected (used to verify installed successfully)
+$pyVersion = "3.13.3"
+$pyExe = "python-$pyVersion.exe"
+
+if ([Environment]::Is64BitOperatingSystem) {
+    $pyExeSource = "https://www.python.org/ftp/python/$pyVersion/python-$pyVersion-amd64.exe"
+}
+else {
+    $pyExeSource = "https://www.python.org/ftp/python/$pyVersion/python-$pyVersion.exe"
+}
+
+$pyExeDestination = "$tempFolder\\$pyExe"
+
+# Set up download client object
+$client = New-Object System.Net.WebClient
 
 # If python3 not previously copied or downloaded directly into tmp folder
 # download it directly to tmp folder.
@@ -117,8 +115,13 @@ if ($cmdOutput -Match "$pyVersion") {
     # Install pip
     Start-Process "py" -Wait -NoNewWindow -ArgumentList "-m ensurepip --upgrade"
 
-    # Install python "wheel" binary format package
-    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install wheel"
+    # Install qt platform + PyQt5
+    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install aqtinstall==3.2.1"
+    Start-Process "aqt" -Wait -NoNewWindow -ArgumentList "aqt install windows 5.15.2"
+    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install PyQt5"
+
+    # Install ezdmb package
+    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install ezdmb"
 } else {
     Write-ColorOutput red ("*******************************************************")
     Write-ColorOutput red ("ERROR: Python $pyVersion did not install correctly.")
@@ -131,13 +134,4 @@ if ($cmdOutput -Match "$pyVersion") {
     exit 1
 }
 
-# Download deps python package from PackageCloud, if wheel file not existing in script dir
-CopyToTempIfExistsInScriptDir($depsWheelFile)
-if (-not(Test-Path -Path $depsWheelFileDestination -PathType Leaf)) {
-    Write-ColorOutput blue ("$depsWheelFile not in script dir; Getting ezdmbwindeps package off dist server...")
-    Start-Process "py" -Wait -NoNewWindow -ArgumentList "-m pip install ezdmbwindeps --no-cache-dir --force-reinstall --index-url=https://`"$depsRepoToken`":@packagecloud.io/ezdmb/`"$depsRepo`"/pypi/simple"
-}
-else {
-    Write-ColorOutput blue ("$depsWheelFileDestination found; Executing wheel found in script directory...")
-    Start-Process "py" -Wait -NoNewWindow -ArgumentList "-m pip install --no-cache-dir --force-reinstall `"$depsWheelFileDestination`""
-}
+# TODO: Launch iss installer to add shortcuts and run on startup here

@@ -3,4 +3,3 @@ pyqt_distutils
 black
 aqtinstall
 pyinstaller
-pillow
