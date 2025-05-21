@@ -8,11 +8,15 @@ case "$1" in
 
         # Set variable to indicate installing username
         echo -e '\033[0;34mProceeding with install as user $CURRUSER.\033[0m'
+        
+        sudo pip3 install aqtinstall
 
+        # install qt
+        sudo aqt install-qt linux desktop 5.15.12
         # Add a script that starts ezdmb to the current users Desktop folder
         DESKTOP_RUN_SCRIPT=$(cat << EOF
 #!/bin/bash
-cd /opt/ezdmb && ./ezdmb
+cd /opt/ezdmb && python3 -m ezdmb
 EOF
 )
 
@@ -28,14 +32,14 @@ EOF
                 echo -e '\033[0;34mNot Installing run at startup components.\033[0m'
                 ;;
             * )
-                EXEC_STRING="cd /opt/ezdmb && ./ezdmb"
+                EXEC_STRING="cd /opt/ezdmb && python -m ezdmb"
                 echo -e '\033[0;34mInstalling run at startup components.\033[0m'
                 if [ -f "/etc/gdm3/custom.conf" ]; then
-                    # Ubuntu64 Autologin w/gdm
+                    # Turn on Ubuntu64 Autologin w/gdm
                     sed -i 's/#  AutomaticLoginEnable = true/   AutomaticLoginEnable = true/' /etc/gdm3/custom.conf
                     sed -i "s/#  AutomaticLogin = user1/   AutomaticLogin = $CURRUSER/" /etc/gdm3/custom.conf
                 elif [ -f "/etc/lightdm/lightdm.conf" ]; then
-                    # Raspi autologin w/lightdm
+                    # Turn on Raspi autologin w/lightdm
                     sed -i 's/^greeter-hide-users=false/greeter-hide-users=true/g' /etc/lightdm/lightdm.conf
                     sed -i 's/^greeter-allow-guest=false/\#greeter-allow-guest=true/g' /etc/lightdm/lightdm.conf
                     sed -i 's/^greeter-show-manual-login=true/\#greeter-show-manual-login=false/g' /etc/lightdm/lightdm.conf
@@ -44,7 +48,7 @@ EOF
                     sed -i "s/# autologin-user = User to log in with by default (overrides autologin-guest)/autologin-user = $CURRUSER/" /etc/lightdm/lightdm.conf
                 fi
 
-                # Add desktop shortcut and icon / related permissions
+                # Install desktop shortcut and icon / related permissions
                 DESKTOP_ENTRY=$(cat << EOF
 [Desktop Entry]
 Encoding=UTF-8
@@ -58,7 +62,7 @@ Icon=/usr/share/icons/ezdmb.png
 EOF
 )
 
-                # /usr/share/applications/ezdmb.desktop file (provides launcher icon)
+                # Install /usr/share/applications/ezdmb.desktop file (provides launcher icon)
                 mkdir -p /usr/share/applications
                 chown "$CURRUSER" /usr/share/applications
                 echo "$DESKTOP_ENTRY" > /usr/share/applications/ezdmb.desktop

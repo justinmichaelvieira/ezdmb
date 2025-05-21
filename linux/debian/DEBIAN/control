@@ -1,8 +1,12 @@
 Package: ezdmb
+<<<<<<< Updated upstream:linux/debian/DEBIAN/control
 Version: 0.9.5
+=======
+Version: 0.9.2
+>>>>>>> Stashed changes:debian/DEBIAN/control
 Architecture: all
 Maintainer: Justin Vieira <justin@rancorsoft.com>
-Depends: python3
+Depends: python3, python3-pip
 Section: utils
 Priority: optional
 Homepage: https://github.com/justinmichaelvieira/ezdmb
