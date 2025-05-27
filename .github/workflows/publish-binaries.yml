@@ -20,13 +20,13 @@ jobs:
             asset_name: ezdmb_x64.exe
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build
       run: cargo build --release --locked
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: windows/windows_install/docker//${{ matrix.artifact_name }}
+        file: windows/windows_install/docker/${{ matrix.artifact_name }}
         asset_name: ${{ matrix.asset_name }}
         tag: ${{ github.ref }}
