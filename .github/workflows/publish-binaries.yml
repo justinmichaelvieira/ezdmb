@@ -1,32 +1,36 @@
-name: Publish
+name: Docker Image CI
 
 on:
   push:
-    tags:
-      - '*'
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-  publish:
-    name: Publish for ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-        #   - os: ubuntu-latest
-        #     artifact_name: ezdmb.dpkg
-        #     asset_name: ezdmb-dpkg-amd64
-          - os: windows-latest
-            artifact_name: ezdmb_x64.exe
-            asset_name: ezdmb_x64.exe
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: cargo build --release --locked
-    - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: windows/windows_install/docker/${{ matrix.artifact_name }}
-        asset_name: ${{ matrix.asset_name }}
-        tag: ${{ github.ref }}
+    compile:
+        name: Build and run the container
+        runs-on: ubuntu-latest
+        steps:
+          - name: Set up QEMU
+            uses: docker/setup-qemu-action@v1
+          - name: Set up Docker Buildx
+            uses: docker/setup-buildx-action@v1
+          - name: Login to DockerHub
+            uses: docker/login-action@v1
+            with:
+              username: ${{ secrets.DOCKERHUB_USERNAME }}
+              password: ${{ secrets.DOCKERHUB_TOKEN }}
+          - name: Build and push
+            uses: docker/build-push-action@v2
+            with:
+              push: true
+              tags: rancorsoft1/ezdmb
+          - name: Check out the repo
+            uses: actions/checkout@v2
+          - name: Run the build process with Docker
+            uses: addnab/docker-run-action@v3
+            with:
+                image: rancorsoft1/ezdmb:latest
+                options: -v ${{ github.workspace }}:/data
+                run: |
+                    echo "Hello World"
