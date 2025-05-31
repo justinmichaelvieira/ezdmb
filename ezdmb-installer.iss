@@ -7,7 +7,7 @@ ChangesEnvironment=yes
 DefaultDirName={commonpf}\ezdmb
 DefaultGroupName=ezdmb
 OutputBaseFilename=ezdmb_x64
-OutputDir=.
+OutputDir=./work
 PrivilegesRequired=admin
 
 ; Logs for all installer runs will collect in %TEMP/Setup Log <date> #<number of setup runs today>.txt
@@ -22,7 +22,7 @@ Name: autostart; Description: "&Add Shortcut to Start Up for All Users"; GroupDe
 [Files]
 Source: artifacts\.version; DestDir: {commonpf}\ezdmb; Flags: ignoreversion recursesubdirs uninsrestartdelete
 Source: artifacts\icon.ico; DestDir: {commonpf}\ezdmb; Flags: uninsrestartdelete
-Source: artifacts\dmb_config.json; DestDir: {commonpf}\ezdmb; Flags: onlyifdoesntexist uninsrestartdelete
+; Source: artifacts\dmb_config.json; DestDir: {commonpf}\ezdmb; Flags: onlyifdoesntexist uninsrestartdelete
 ; TODO: INCLUDE EXES BELOW
 ; Source: ezdmb-x64.exe; DestDir: "{commonpf}\ezdmb"; DestName: ezdmb.exe; Check: IsWin64; Flags: uninsrestartdelete
 ; Source: ezdmb-x32.exe; DestDir: "{commonpf}\ezdmb"; DestName: ezdmb.exe; Check: "not IsWin64"; Flags: uninsrestartdelete
