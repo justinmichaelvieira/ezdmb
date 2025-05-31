@@ -32,3 +32,5 @@ jobs:
             with:
                 image: rancorsoft1/ezdmb:latest
                 options: -v ${{ github.workspace }}:/work
+                run: |
+                    iscc ezdmb-installer.iss
