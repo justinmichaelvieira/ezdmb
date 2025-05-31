@@ -5,3 +5,5 @@ FROM amake/innosetup
 COPY ezdmb-installer.iss ./ezdmb-installer.iss
 COPY artifacts/icon.ico ./icon.ico
 COPY artifacts/.version ./.version
+
+CMD ["ezdmb-installer.iss"]
