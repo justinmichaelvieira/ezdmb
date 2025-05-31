@@ -25,6 +25,7 @@ jobs:
             with:
               push: true
               tags: rancorsoft1/ezdmb:latest
+              context: .
           - name: Check out the repo
             uses: actions/checkout@v2
           - name: Run the build process with Docker
@@ -32,7 +33,3 @@ jobs:
             with:
                 image: rancorsoft1/ezdmb:latest
                 options: -v ${{ github.workspace }}:/work
-                run: |
-                    mkdir -p build && chmod -R a+w build
-                    umask a+w
-                    iscc ezdmb-installer.iss
