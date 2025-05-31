@@ -25,7 +25,6 @@ jobs:
             with:
               push: true
               tags: rancorsoft1/ezdmb:latest
-              context: .
           - name: Check out the repo
             uses: actions/checkout@v2
           - name: Run the build process with Docker
