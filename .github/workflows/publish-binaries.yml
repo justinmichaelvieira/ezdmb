@@ -31,6 +31,6 @@ jobs:
             uses: addnab/docker-run-action@v3
             with:
                 image: rancorsoft1/ezdmb:latest
-                options: -v ${{ github.workspace }}:/windows/windows_install/docker
+                options: -v ${{ github.workspace }}:/work
                 run: |
                     echo "Hello World"
