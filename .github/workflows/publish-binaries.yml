@@ -34,3 +34,7 @@ jobs:
                 options: -v ${{ github.workspace }}:/work --user root
                 run: |
                     iscc ezdmb-installer.iss
+          - uses: actions/upload-artifact@v4
+            with:
+              name: ezdmb_x64.exe
+              path: ezdmb_x64.exe
