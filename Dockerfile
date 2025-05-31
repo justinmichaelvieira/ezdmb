@@ -12,4 +12,5 @@ COPY artifacts/.version ./.version
 
 CMD ["ezdmb-installer.iss"]
 
-COPY --from=build \work\ezdmb_x64.exe /ezdmb_x64.exe
+FROM scratch
+COPY --from=build Z:\work\ezdmb_x64.exe /ezdmb_x64.exe
