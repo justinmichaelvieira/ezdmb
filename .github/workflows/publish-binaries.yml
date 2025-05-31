@@ -31,6 +31,6 @@ jobs:
             uses: addnab/docker-run-action@v3
             with:
                 image: rancorsoft1/ezdmb:latest
-                options: -v ${{ github.workspace }}:/work
+                options: -v ${{ github.workspace }}:/work ezdmb-installer.iss
                 run: |
                     echo "Hello World"
