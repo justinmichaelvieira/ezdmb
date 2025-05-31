@@ -7,7 +7,7 @@ ChangesEnvironment=yes
 DefaultDirName={commonpf}\ezdmb
 DefaultGroupName=ezdmb
 OutputBaseFilename=ezdmb_x64
-OutputDir=./work
+OutputDir=.
 PrivilegesRequired=admin
 
 ; Logs for all installer runs will collect in %TEMP/Setup Log <date> #<number of setup runs today>.txt
