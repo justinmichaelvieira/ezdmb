@@ -1,5 +1,5 @@
 # Use amake/innosetup on the public docker repo as a base
-FROM amake/innosetup
+FROM amake/innosetup as build
 
 # See: https://github.com/amake/innosetup-docker/issues/7#issuecomment-1312605128
 USER root
@@ -11,3 +11,5 @@ COPY artifacts/icon.ico ./icon.ico
 COPY artifacts/.version ./.version
 
 CMD ["ezdmb-installer.iss"]
+
+COPY --from=build \work\ezdmb_x64.exe /ezdmb_x64.exe
