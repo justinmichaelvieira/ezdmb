@@ -16,6 +16,7 @@ jobs:
           - name: Build the project
             run: |
               pip install -r requirements.txt
+              cd src/ezdmb
               pyinstaller --onefile __main__.py
               ren "__main__.exe" "ezdmb.exe" 
           - name: Upload the executable
