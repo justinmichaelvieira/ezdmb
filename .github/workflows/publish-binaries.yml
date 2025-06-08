@@ -23,7 +23,7 @@ jobs:
           - name: Upload the executable
             uses: actions/upload-artifact@v4
             with:
-              name: ezdmb.exe
+              path: src/ezdmb/dist/ezdmb.exe
     compile-installer:
         name: Build and run the container
         runs-on: ubuntu-latest
