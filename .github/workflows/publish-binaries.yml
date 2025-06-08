@@ -37,7 +37,9 @@ jobs:
             with:
               name: ezdmb.exe
           - name: Move the executable to artifact directory
-            run: mv ezdmb.exe ${{ github.workspace }}/../artifacts/ezdmb.exe
+            run: |
+              ls
+              mv ezdmb.exe ${{ github.workspace }}/../artifacts/ezdmb.exe
           - name: Set up QEMU
             uses: docker/setup-qemu-action@v1
           - name: Set up Docker Buildx
