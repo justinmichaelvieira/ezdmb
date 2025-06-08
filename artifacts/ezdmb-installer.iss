@@ -23,7 +23,7 @@ Name: autostart; Description: "&Add Shortcut to Start Up for All Users"; GroupDe
 Source: artifacts\.version; DestDir: {commonpf}\ezdmb; Flags: ignoreversion recursesubdirs uninsrestartdelete
 Source: artifacts\style.css; DestDir: {commonpf}\ezdmb; Flags: ignoreversion recursesubdirs uninsrestartdelete
 Source: artifacts\icon.ico; DestDir: {commonpf}\ezdmb; Flags: uninsrestartdelete
-Source: ezdmb.exe; DestDir: "{commonpf}\ezdmb"; DestName: ezdmb.exe; Flags: uninsrestartdelete
+Source: artifacts\ezdmb.exe; DestDir: "{commonpf}\ezdmb"; DestName: ezdmb.exe; Flags: uninsrestartdelete
 
 [Dirs]
 Name: {commonappdata}\ezdmb; Flags: uninsneveruninstall
