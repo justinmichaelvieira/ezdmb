@@ -18,6 +18,7 @@ jobs:
               pip install -r requirements.txt
               cd src/ezdmb
               pyinstaller --onefile __main__.py
+              cd dist
               ren "__main__.exe" "ezdmb.exe" 
           - name: Upload the executable
             uses: actions/upload-artifact@v4
