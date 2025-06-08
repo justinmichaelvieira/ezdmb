@@ -51,6 +51,7 @@ jobs:
           - name: Build and push
             uses: docker/build-push-action@v2
             with:
+              context: .
               push: true
               tags: rancorsoft1/ezdmb:latest
           - name: Run the installer build process with Docker

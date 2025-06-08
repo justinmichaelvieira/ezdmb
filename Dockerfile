@@ -1,5 +1,5 @@
 # Use amake/innosetup on the public docker repo as a base
-FROM amake/innosetup as build
+FROM amake/innosetup AS build
 
 # See: https://github.com/amake/innosetup-docker/issues/7#issuecomment-1312605128
 USER root
