@@ -2,11 +2,11 @@
 
 [Setup] 
 AppName=ezdmb
-AppVerName=ezdmb v0.9.5
+AppVerName=ezdmb v0.9.9
 ChangesEnvironment=yes
 DefaultDirName={commonpf}\ezdmb
 DefaultGroupName=ezdmb
-OutputBaseFilename=ezdmb_x64
+OutputBaseFilename=ezdmb_installer
 OutputDir=.
 PrivilegesRequired=admin
 
@@ -21,19 +21,17 @@ Name: autostart; Description: "&Add Shortcut to Start Up for All Users"; GroupDe
 
 [Files]
 Source: artifacts\.version; DestDir: {commonpf}\ezdmb; Flags: ignoreversion recursesubdirs uninsrestartdelete
+Source: artifacts\style.css; DestDir: {commonpf}\ezdmb; Flags: ignoreversion recursesubdirs uninsrestartdelete
 Source: artifacts\icon.ico; DestDir: {commonpf}\ezdmb; Flags: uninsrestartdelete
-; Source: artifacts\dmb_config.json; DestDir: {commonpf}\ezdmb; Flags: onlyifdoesntexist uninsrestartdelete
-; TODO: INCLUDE EXES BELOW
-; Source: ezdmb-x64.exe; DestDir: "{commonpf}\ezdmb"; DestName: ezdmb.exe; Check: IsWin64; Flags: uninsrestartdelete
-; Source: ezdmb-x32.exe; DestDir: "{commonpf}\ezdmb"; DestName: ezdmb.exe; Check: "not IsWin64"; Flags: uninsrestartdelete
+Source: ezdmb.exe; DestDir: "{commonpf}\ezdmb"; DestName: ezdmb.exe; Flags: uninsrestartdelete
 
 [Dirs]
 Name: {commonappdata}\ezdmb; Flags: uninsneveruninstall
 
 [Icons]
 Name: "{commondesktop}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""{app}\ezdmb.exe"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico
-Name: "{group}\Run ezdmb"; Filename: "{cmd}"; Parameters: "/C ""{app}\ezdmb.exe"" ezdmb"; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico
-Name: "{commonstartup}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""{app}\ezdmb.exe"" ezdmb"; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico; Tasks: autostart
+Name: "{group}\Run ezdmb"; Filename: "{cmd}"; Parameters: "/C ""{app}\ezdmb.exe"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico
+Name: "{commonstartup}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""{app}\ezdmb.exe"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico; Tasks: autostart
 
 [Run]
 ; Copy log, so %TEMP%/ezdmb_setup.log always contains log entries from the last installer run.

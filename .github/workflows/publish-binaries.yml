@@ -7,7 +7,22 @@ on:
     branches: [ master ]
 
 jobs:
-    compile:
+    compile-windows-exe:
+        name: Compile Windows Executable
+        runs-on: windows-latest
+        steps:
+          - name: Check out the repo
+            uses: actions/checkout@v2
+          - name: Build the project
+            run: |
+              cd ezdmb
+              pyinstaller --onefile __main__.py
+              ren "__main__.exe" "ezdmb.exe" 
+          - name: Upload the executable
+            uses: actions/upload-artifact@v4
+            with:
+              name: ezdmb.exe
+    compile-installer:
         name: Build and run the container
         runs-on: ubuntu-latest
         steps:
@@ -27,7 +42,12 @@ jobs:
               tags: rancorsoft1/ezdmb:latest
           - name: Check out the repo
             uses: actions/checkout@v2
-          - name: Run the build process with Docker
+          - uses: actions/download-artifact@v2
+            with:
+              name: ezdmb.exe
+          - name: Move the executable to artifact directory
+            run: mv ezdmb.exe ${{ github.workspace }}/artifacts/ezdmb.exe
+          - name: Run the installer build process with Docker
             uses: addnab/docker-run-action@v3
             with:
                 image: rancorsoft1/ezdmb:latest
@@ -36,5 +56,5 @@ jobs:
                     iscc ezdmb-installer.iss
           - uses: actions/upload-artifact@v4
             with:
-              name: ezdmb_x64.exe
-              path: ezdmb_x64.exe
+              name: ezdmb_installer.exe
+              path: ezdmb_installer.exe
