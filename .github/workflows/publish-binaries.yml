@@ -24,7 +24,9 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
               path: src/ezdmb/dist/ezdmb.exe
+              retention-days: 1
     compile-installer:
+        needs: compile-windows-exe
         name: Build and run the container
         runs-on: ubuntu-latest
         steps:
