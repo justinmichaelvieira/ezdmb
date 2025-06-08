@@ -9,6 +9,6 @@ RUN chown -R root /home
 COPY ezdmb-installer.iss ./ezdmb-installer.iss
 COPY artifacts/icon.ico ./icon.ico
 COPY artifacts/.version ./.version
-COPY artifacts/ezdmb.exe ./ezdmb.exe
+COPY ezdmb.exe ./ezdmb.exe
 
 CMD ["ezdmb-installer.iss"]
