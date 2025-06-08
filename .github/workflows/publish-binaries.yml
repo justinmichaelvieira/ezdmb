@@ -31,6 +31,13 @@ jobs:
         name: Build Windows Installer
         runs-on: ubuntu-latest
         steps:
+          - name: Check out the repo
+            uses: actions/checkout@v2
+          - uses: actions/download-artifact@v4
+            with:
+              name: ezdmb.exe
+          - name: Move the executable to artifact directory
+            run: mv ezdmb.exe ${{ github.workspace }}/artifacts/ezdmb.exe
           - name: Set up QEMU
             uses: docker/setup-qemu-action@v1
           - name: Set up Docker Buildx
@@ -45,13 +52,6 @@ jobs:
             with:
               push: true
               tags: rancorsoft1/ezdmb:latest
-          - name: Check out the repo
-            uses: actions/checkout@v2
-          - uses: actions/download-artifact@v4
-            with:
-              name: ezdmb.exe
-          - name: Move the executable to artifact directory
-            run: mv ezdmb.exe ${{ github.workspace }}/artifacts/ezdmb.exe
           - name: Run the installer build process with Docker
             uses: addnab/docker-run-action@v3
             with:
