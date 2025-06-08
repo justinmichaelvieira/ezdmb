@@ -15,7 +15,6 @@ jobs:
             uses: actions/checkout@v2
           - name: Build the project
             run: |
-              cd ezdmb
               pyinstaller --onefile __main__.py
               ren "__main__.exe" "ezdmb.exe" 
           - name: Upload the executable
