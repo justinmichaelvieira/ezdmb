@@ -8,7 +8,7 @@ on:
 
 jobs:
     compile-windows-exe:
-        name: Compile Windows Executable
+        name: Build Windows Executable
         runs-on: windows-latest
         steps:
           - name: Check out the repo
@@ -23,11 +23,12 @@ jobs:
           - name: Upload the executable
             uses: actions/upload-artifact@v4
             with:
+              name: ezdmb.exe
               path: src/ezdmb/dist/ezdmb.exe
               retention-days: 1
     compile-installer:
         needs: compile-windows-exe
-        name: Build and run the container
+        name: Build Windows Installer
         runs-on: ubuntu-latest
         steps:
           - name: Set up QEMU
