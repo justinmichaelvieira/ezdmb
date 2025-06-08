@@ -33,9 +33,16 @@ jobs:
         steps:
           - name: Check out the repo
             uses: actions/checkout@v2
+          - name: cd artifacts dir
+            run: |
+              cd artifacts/
           - uses: actions/download-artifact@v4
             with:
               name: ezdmb.exe
+          - name: cd outer dir
+            run: |
+              ls
+              cd ../
           - name: Print files in the current directory
             run: |
               pwd
