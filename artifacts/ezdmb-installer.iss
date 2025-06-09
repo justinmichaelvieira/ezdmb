@@ -20,10 +20,10 @@ UsePreviousTasks=no
 Name: autostart; Description: "&Add Shortcut to Start Up for All Users"; GroupDescription: "Run at Startup:"
 
 [Files]
-Source: .version; DestDir: {commonpf}\ezdmb; Flags: ignoreversion uninsrestartdelete
-Source: style.css; DestDir: {commonpf}\ezdmb; Flags: ignoreversion uninsrestartdelete
-Source: icon.ico; DestDir: {commonpf}\ezdmb; Flags: ignoreversion uninsrestartdelete
-Source: ezdmb.exe; DestDir: "{commonpf}\ezdmb"; Flags: ignoreversion uninsrestartdelete
+Source: artifacts\.version; DestDir: {commonpf}\ezdmb; Flags: ignoreversion uninsrestartdelete
+Source: artifacts\style.css; DestDir: {commonpf}\ezdmb; Flags: ignoreversion uninsrestartdelete
+Source: artifacts\icon.ico; DestDir: {commonpf}\ezdmb; Flags: ignoreversion uninsrestartdelete
+Source: artifacts\ezdmb.exe; DestDir: "{commonpf}\ezdmb"; Flags: ignoreversion uninsrestartdelete
 
 [Dirs]
 Name: {commonappdata}\ezdmb; Flags: uninsneveruninstall

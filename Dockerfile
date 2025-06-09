@@ -11,4 +11,4 @@ COPY artifacts/icon.ico ./icon.ico
 COPY artifacts/.version ./.version
 COPY artifacts/ezdmb.exe ./ezdmb.exe
 
-CMD ["ezdmb-installer.iss"]
+CMD ["artifacts/ezdmb-installer.iss"]
