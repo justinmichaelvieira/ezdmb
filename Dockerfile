@@ -6,9 +6,9 @@ USER root
 RUN chown -R root /home
 
 # Copy iss script for build, and files to bundle
-COPY artifacts/ezdmb-installer.iss ./ezdmb-installer.iss
+COPY ezdmb-installer.iss ./ezdmb-installer.iss
 COPY artifacts/icon.ico ./icon.ico
 COPY artifacts/.version ./.version
 COPY artifacts/ezdmb.exe ./ezdmb.exe
 
-CMD ["artifacts/ezdmb-installer.iss"]
+CMD ["ezdmb-installer.iss"]
