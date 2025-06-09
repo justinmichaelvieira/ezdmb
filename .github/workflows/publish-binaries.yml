@@ -70,7 +70,7 @@ jobs:
     bundle-install-scripts:
         # This job bundles the installer exe with install.bat and child.ps1
         needs: compile-windows-exe
-        name: Build windows installer exe
+        name: Buindle installer with necessary platform scripts
         runs-on: ubuntu-latest
 
         steps:
