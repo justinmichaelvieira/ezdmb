@@ -1,10 +1,9 @@
-name: Docker Image CI
+name: Windows installer build bundle
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    tags:
+    - 'v*'
 
 jobs:
     compile-windows-exe:
@@ -26,19 +25,20 @@ jobs:
               name: ezdmb.exe
               path: src/ezdmb/dist/ezdmb.exe
               retention-days: 1
+
     compile-installer:
         needs: compile-windows-exe
-        name: Build Windows Installer
+        name: Build windows installer exe
         runs-on: ubuntu-latest
+
         steps:
           - name: Check out the repo
             uses: actions/checkout@v2
           - uses: actions/download-artifact@v4
             with:
               name: ezdmb.exe
-          - name: Move executable to artifacts directory
-            run: |
-              mv ezdmb.exe artifacts/
+          - name: Move exe to build artifacts directory
+            run:  mv ezdmb.exe artifacts/
           - name: Set up QEMU
             uses: docker/setup-qemu-action@v1
           - name: Set up Docker Buildx
@@ -65,3 +65,51 @@ jobs:
             with:
               name: ezdmb_installer.exe
               path: ezdmb_installer.exe
+              retention-days: 1
+
+    bundle-install-scripts:
+        # This job bundles the installer exe with install.bat and child.ps1
+        needs: compile-windows-exe
+        name: Build windows installer exe
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: Check out the repo
+            uses: actions/checkout@v2
+          - uses: actions/download-artifact@v4
+            with:
+              name: ezdmb_installer.exe
+          - name: Move installer exe to build artifacts directory
+            run:  mv ezdmb_installer.exe artifacts/
+          - name: Bundle installer with scripts
+            run: |
+              mkdir -p installbundle
+              cp artifacts/ezdmb_installer.exe installbundle/
+              cp src/ezdmb/windows/windows_install/install.bat installbundle/
+              cp src/ezdmb//windows/windows_install/child.ps1 installbundle/
+              cd installbundle
+              $VERSION=$(git describe --abbrev=0)
+              zip -j -r ezdmb-${VERSION}.zip ./*
+          - name: Create Release
+            id: create_release
+            uses: actions/create-release@v1
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            with:
+              tag_name: ${{ github.ref }}
+              release_name: Release ${{ github.ref }}
+              draft: false
+              prerelease: false
+          - name: Upload Release Asset
+          id: upload-release-asset 
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            # This pulls from the CREATE RELEASE step above, referencing it's ID to get its 
+            # outputs object, which include a `upload_url`. See this blog post for more info:
+            # https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ezdmb-${VERSION}.zip
+            asset_name: ezdmb-installer-${VERSION}.zip
+            asset_content_type: application/zip
