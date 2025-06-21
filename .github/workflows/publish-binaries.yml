@@ -72,6 +72,7 @@ jobs:
         needs: compile-installer
         name: Bundle installer with necessary platform scripts
         runs-on: ubuntu-latest
+        permissions: write-all
 
         steps:
           - name: Check out the repo

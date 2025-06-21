@@ -2,7 +2,7 @@
 
 [Setup] 
 AppName=ezdmb
-AppVerName=ezdmb v0.9.20
+AppVerName=ezdmb v0.9.21
 ChangesEnvironment=yes
 DefaultDirName={commonpf}\ezdmb
 DefaultGroupName=ezdmb
