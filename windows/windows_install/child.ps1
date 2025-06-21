@@ -77,6 +77,8 @@ function AttemptDownload {
     }
 }
 
+$appVersion = "v0.9.13"
+
 # Python version expected (used to verify installed successfully)
 $pyVersion = "3.13.3"
 $pyExe = "python-$pyVersion.exe"
@@ -89,6 +91,9 @@ else {
 }
 
 $pyExeDestination = "$tempFolder\\$pyExe"
+$appInstallerExe = "ezdmb_installer$appVersion.exe"
+$appInstallerSource = "https://github.com/justinmichaelvieira/ezdmb/archive/refs/tags/$appInstallerExe"
+$appInstallerDestination = "$tempFolder\\ezdmb_installer$appVersion.exe"
 
 # Set up download client object
 $client = New-Object System.Net.WebClient
@@ -120,8 +125,15 @@ if ($cmdOutput -Match "$pyVersion") {
     Start-Process "aqt" -Wait -NoNewWindow -ArgumentList "aqt install windows 5.15.2"
     Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install PyQt5"
 
-    # Install ezdmb package
-    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install ezdmb"
+    # If app install exe not previously copied or downloaded directly into tmp folder
+    # download it directly to tmp folder.
+    if (-not(Test-Path -Path  $appInstallerDestination -PathType Leaf)) {
+        AttemptDownload -client $client -fileSource $appInstallerSource -fileDestination $appInstallerDestination
+    }
+    else {
+        Write-ColorOutput blue ("$appInstallerExe found; Skipping download.")
+    }
+    Start-Process $appInstallExeDestination -Wait -NoNewWindow
 } else {
     Write-ColorOutput red ("*******************************************************")
     Write-ColorOutput red ("ERROR: Python $pyVersion did not install correctly.")
@@ -134,4 +146,3 @@ if ($cmdOutput -Match "$pyVersion") {
     exit 1
 }
 
-# TODO: Launch iss installer to add shortcuts and run on startup here

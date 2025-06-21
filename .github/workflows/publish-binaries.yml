@@ -85,8 +85,8 @@ jobs:
             run: |
               mkdir -p installbundle
               cp artifacts/ezdmb_installer.exe installbundle/
-              cp src/ezdmb/windows/windows_install/install.bat installbundle/
-              cp src/ezdmb//windows/windows_install/child.ps1 installbundle/
+              cp src/windows/windows_install/install.bat installbundle/
+              cp src/windows/windows_install/child.ps1 installbundle/
               cd installbundle
               $VERSION=$(git describe --abbrev=0)
               zip -j -r ezdmb-${VERSION}.zip ./*
