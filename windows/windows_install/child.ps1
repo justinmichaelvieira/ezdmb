@@ -77,7 +77,7 @@ function AttemptDownload {
     }
 }
 
-$appVersion = "v0.9.13"
+$appVersion = "v0.9.19"
 
 # Python version expected (used to verify installed successfully)
 $pyVersion = "3.13.3"
@@ -91,9 +91,11 @@ else {
 }
 
 $pyExeDestination = "$tempFolder\\$pyExe"
-$appInstallerExe = "ezdmb_installer$appVersion.exe"
-$appInstallerSource = "https://github.com/justinmichaelvieira/ezdmb/archive/refs/tags/$appInstallerExe"
-$appInstallerDestination = "$tempFolder\\ezdmb_installer$appVersion.exe"
+$appInstallerZip = "ezdmb_install.zip"
+$appInstallerExe = "ezdmb_install.exe"
+$appInstallerSource = "https://github.com/justinmichaelvieira/ezdmb/archive/refs/tags/$appVersion/$appInstallerZip"
+$appInstallerZipDestination = "$tempFolder\\$appInstallerZip"
+$appInstallerExeDestination = "$tempFolder\\$appInstallerExe"
 
 # Set up download client object
 $client = New-Object System.Net.WebClient
@@ -127,13 +129,14 @@ if ($cmdOutput -Match "$pyVersion") {
 
     # If app install exe not previously copied or downloaded directly into tmp folder
     # download it directly to tmp folder.
-    if (-not(Test-Path -Path  $appInstallerDestination -PathType Leaf)) {
-        AttemptDownload -client $client -fileSource $appInstallerSource -fileDestination $appInstallerDestination
+    if (-not(Test-Path -Path  $appInstallerZipDestination -PathType Leaf)) {
+        AttemptDownload -client $client -fileSource $appInstallerSource -fileDestination $appInstallerZipDestination
     }
     else {
-        Write-ColorOutput blue ("$appInstallerExe found; Skipping download.")
+        Write-ColorOutput blue ("$appInstallerZip found; Skipping download.")
     }
-    Start-Process $appInstallExeDestination -Wait -NoNewWindow
+    Expand-Archive -Path $appInstallerZipDestination
+    Start-Process $appInstallerExeDestination -Wait -NoNewWindow
 } else {
     Write-ColorOutput red ("*******************************************************")
     Write-ColorOutput red ("ERROR: Python $pyVersion did not install correctly.")

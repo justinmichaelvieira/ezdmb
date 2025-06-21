@@ -2,11 +2,11 @@
 
 [Setup] 
 AppName=ezdmb
-AppVerName=ezdmb v0.9.18
+AppVerName=ezdmb v0.9.19
 ChangesEnvironment=yes
 DefaultDirName={commonpf}\ezdmb
 DefaultGroupName=ezdmb
-OutputBaseFilename=ezdmb_installer
+OutputBaseFilename=ezdmb_setup
 OutputDir=.
 PrivilegesRequired=admin
 

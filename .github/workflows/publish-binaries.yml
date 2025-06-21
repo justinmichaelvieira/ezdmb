@@ -63,8 +63,8 @@ jobs:
                     iscc ezdmb-installer.iss
           - uses: actions/upload-artifact@v4
             with:
-              name: ezdmb_installer.exe
-              path: ezdmb_installer.exe
+              name: ezdmb_setup.exe
+              path: ezdmb_setup.exe
               retention-days: 1
 
     bundle-install-scripts:
@@ -78,19 +78,18 @@ jobs:
             uses: actions/checkout@v2
           - uses: actions/download-artifact@v4
             with:
-              name: ezdmb_installer.exe
+              name: ezdmb_setup.exe
           - name: Move installer exe to build artifacts directory
-            run:  mv ezdmb_installer.exe artifacts/
+            run:  mv ezdmb_setup.exe artifacts/
           - name: Bundle installer with scripts
             run: |
               mkdir -p installbundle
               ls -la
-              cp artifacts/ezdmb_installer.exe installbundle/
+              cp artifacts/ezdmb_setup.exe installbundle/
               cp windows/windows_install/install.bat installbundle/
               cp windows/windows_install/child.ps1 installbundle/
               cd installbundle
-              VERSION=$(git describe --abbrev=0)
-              zip -j -r ezdmb-${VERSION}.zip ./*
+              zip -j -r ezdmb_install.zip ./*
           - name: Create Release
             id: create_release
             uses: actions/create-release@v1
@@ -111,6 +110,6 @@ jobs:
               # outputs object, which include a `upload_url`. See this blog post for more info:
               # https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
               upload_url: ${{ steps.create_release.outputs.upload_url }}
-              asset_path: ezdmb-${VERSION}.zip
+              asset_path: ezdmb_install.zip
               asset_name: ezdmb-installer-${VERSION}.zip
               asset_content_type: application/zip
