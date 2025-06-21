@@ -77,7 +77,7 @@ function AttemptDownload {
     }
 }
 
-$appVersion = "v0.9.19"
+$appVersion = "v0.9.20"
 
 # Python version expected (used to verify installed successfully)
 $pyVersion = "3.13.3"
