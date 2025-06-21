@@ -89,7 +89,7 @@ jobs:
               cp windows/windows_install/install.bat installbundle/
               cp windows/windows_install/child.ps1 installbundle/
               cd installbundle
-              $VERSION=$(git describe --abbrev=0)
+              VERSION=$(git describe --abbrev=0)
               zip -j -r ezdmb-${VERSION}.zip ./*
           - name: Create Release
             id: create_release
