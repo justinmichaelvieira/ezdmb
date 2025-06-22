@@ -77,7 +77,7 @@ function AttemptDownload {
     }
 }
 
-$appVersion = "v0.9.21"
+$appVersion = "v0.9.22"
 
 # Python version expected (used to verify installed successfully)
 $pyVersion = "3.13.3"
@@ -135,7 +135,7 @@ if ($cmdOutput -Match "$pyVersion") {
     else {
         Write-ColorOutput blue ("$appInstallerZip found; Skipping download.")
     }
-    Expand-Archive -Path $appInstallerZipDestination
+    Expand-Archive -Path $appInstallerZipDestination -DestinationPath $tempFolder
     Start-Process $appInstallerExeDestination -Wait -NoNewWindow
 } else {
     Write-ColorOutput red ("*******************************************************")
