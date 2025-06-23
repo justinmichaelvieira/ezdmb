@@ -90,7 +90,8 @@ jobs:
               cp windows/windows_install/install.bat installbundle/
               cp artifacts/ezdmb_setup.exe installbundle/ezdmb_installer_dependencies/
               cp windows/windows_install/child.ps1 installbundle/ezdmb_installer_dependencies/
-              zip -r ezdmb_install.zip installbundle
+              cd installbundle
+              zip -r ezdmb_install.zip ./*
           - name: Create Release
             id: create_release
             uses: actions/create-release@v1
