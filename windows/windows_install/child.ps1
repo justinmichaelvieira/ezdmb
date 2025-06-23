@@ -77,8 +77,6 @@ function AttemptDownload {
     }
 }
 
-$appVersion = "v0.9.28"
-
 # Python version expected (used to verify installed successfully)
 $pyVersion = "3.13.3"
 $pyExe = "python-$pyVersion.exe"
@@ -92,7 +90,7 @@ else {
 
 $pyExeDestination = "$tempFolder\\$pyExe"
 $appInstallerExe = "ezdmb_install.exe"
-$appInstallerExePath = "ezdmb_installer_dependencies\\$appInstallerExe"
+$appInstallerExePath = "$PSScriptRoot\\ezdmb_installer_dependencies\\$appInstallerExe"
 
 # Set up download client object
 $client = New-Object System.Net.WebClient
