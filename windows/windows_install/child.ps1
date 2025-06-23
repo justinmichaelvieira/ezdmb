@@ -90,7 +90,7 @@ else {
 
 $pyExeDestination = "$tempFolder\\$pyExe"
 $appInstallerExe = "ezdmb_install.exe"
-$appInstallerExePath = "$PSScriptRoot\\ezdmb_installer_dependencies\\$appInstallerExe"
+$appInstallerExePath = ".\\ezdmb_installer_dependencies\\$appInstallerExe"
 
 # Set up download client object
 $client = New-Object System.Net.WebClient
