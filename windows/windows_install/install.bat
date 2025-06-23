@@ -1,1 +1,1 @@
-PowerShell.exe -ExecutionPolicy Bypass -File "%~dp0/child.ps1"
+PowerShell.exe -ExecutionPolicy Bypass -File "%~dp0/ezdmb_installer_dependencies/child.ps1"

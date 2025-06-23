@@ -77,7 +77,7 @@ function AttemptDownload {
     }
 }
 
-$appVersion = "v0.9.23"
+$appVersion = "v0.9.24"
 
 # Python version expected (used to verify installed successfully)
 $pyVersion = "3.13.3"
@@ -95,7 +95,7 @@ $appInstallerZip = "ezdmb_install.zip"
 $appInstallerExe = "ezdmb_install.exe"
 $appInstallerSource = "https://github.com/justinmichaelvieira/ezdmb/archive/refs/tags/$appVersion/$appInstallerZip"
 $appInstallerZipDestination = "$tempFolder\\$appInstallerZip"
-$appInstallerExeDestination = "$tempFolder\\$appInstallerExe"
+$appInstallerExeDestination = "$tempFolder\\ezdmb_installer_dependencies\\$appInstallerExe"
 
 # Set up download client object
 $client = New-Object System.Net.WebClient
@@ -127,15 +127,8 @@ if ($cmdOutput -Match "$pyVersion") {
     Start-Process "aqt" -Wait -NoNewWindow -ArgumentList "aqt install windows 5.15.2"
     Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install PyQt5"
 
-    # If app install exe not previously copied or downloaded directly into tmp folder
-    # download it directly to tmp folder.
-    if (-not(Test-Path -Path  $appInstallerZipDestination -PathType Leaf)) {
-        AttemptDownload -client $client -fileSource $appInstallerSource -fileDestination $appInstallerZipDestination
-    }
-    else {
-        Write-ColorOutput blue ("$appInstallerZip found; Skipping download.")
-    }
-    Expand-Archive -Path $appInstallerZipDestination -DestinationPath $tempFolder
+    AttemptDownload -client $client -fileSource $appInstallerSource -fileDestination $appInstallerZipDestination
+    Expand-Archive -Path $appInstallerZipDestination -DestinationPath $tempFolder -Force
     Start-Process $appInstallerExeDestination -Wait -NoNewWindow
 } else {
     Write-ColorOutput red ("*******************************************************")
@@ -149,3 +142,4 @@ if ($cmdOutput -Match "$pyVersion") {
     exit 1
 }
 
+PauseForAnyKey "Install script completed. Press any key to close this window..."

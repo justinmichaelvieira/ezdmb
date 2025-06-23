@@ -85,10 +85,11 @@ jobs:
           - name: Bundle installer with scripts
             run: |
               mkdir -p installbundle
+              mkdir -p installbundle/ezdmb_installer_dependencies
               ls -la
-              cp artifacts/ezdmb_setup.exe installbundle/
               cp windows/windows_install/install.bat installbundle/
-              cp windows/windows_install/child.ps1 installbundle/
+              cp artifacts/ezdmb_setup.exe installbundle/ezdmb_installer_dependencies/
+              cp windows/windows_install/child.ps1 installbundle/ezdmb_installer_dependencies/
               zip -j -r ezdmb_install.zip installbundle
           - name: Create Release
             id: create_release
