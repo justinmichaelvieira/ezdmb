@@ -10,7 +10,7 @@ $tempFolder = $env:TEMP
 
 # Turn on log of this scripts console output.
 # See: https://stackoverflow.com/a/60663349/106625
-$logPath = "$tempFolder\ezdmb-install.log"
+$logPath = "$tempFolder//ezdmb-install.log"
 Start-Transcript -Path "$logPath"
 
 # Use TLS1.2 instead of TLS1.0 for http requests, if available.
@@ -77,7 +77,7 @@ function AttemptDownload {
     }
 }
 
-$appVersion = "v0.9.27"
+$appVersion = "v0.9.28"
 
 # Python version expected (used to verify installed successfully)
 $pyVersion = "3.13.3"
@@ -91,11 +91,8 @@ else {
 }
 
 $pyExeDestination = "$tempFolder\\$pyExe"
-$appInstallerZip = "ezdmb_install.zip"
 $appInstallerExe = "ezdmb_install.exe"
-$appInstallerSource = "https://github.com/justinmichaelvieira/ezdmb/archive/refs/tags/$appVersion/$appInstallerZip"
-$appInstallerZipDestination = "$tempFolder\\$appInstallerZip"
-$appInstallerExeDestination = "$tempFolder\\ezdmb_installer_dependencies\\$appInstallerExe"
+$appInstallerExePath = "ezdmb_installer_dependencies\\$appInstallerExe"
 
 # Set up download client object
 $client = New-Object System.Net.WebClient
@@ -127,9 +124,7 @@ if ($cmdOutput -Match "$pyVersion") {
     Start-Process "aqt" -Wait -NoNewWindow -ArgumentList "aqt install windows 5.15.2"
     Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install PyQt5"
 
-    AttemptDownload -client $client -fileSource $appInstallerSource -fileDestination $appInstallerZipDestination
-    Expand-Archive -Path $appInstallerZipDestination -DestinationPath $tempFolder -Force
-    Start-Process $appInstallerExeDestination -Wait -NoNewWindow
+    Start-Process $appInstallerExePath -Wait -NoNewWindow
 } else {
     Write-ColorOutput red ("*******************************************************")
     Write-ColorOutput red ("ERROR: Python $pyVersion did not install correctly.")
