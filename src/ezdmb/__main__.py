@@ -13,7 +13,74 @@ from ezdmb.Controller import Configuration
 from ezdmb.Controller.LoggingUtility import setupLogging
 from ezdmb.View import AboutDialog, FullScreenWindow, ConfigDialog, PreviewWindow
 
-_styleSheet = "style.css"
+_styleSheet = """
+* {
+    border-color: #2b2b2b;
+    font-size: 13px;
+    alternate-background-color: #3c3f41;
+}
+
+QPushButton::pressed {
+    background: #303F9F;
+    color: #448AFF;
+}
+
+QToolButton {
+    color: #FFFFFF;
+}
+
+QLineEdit[accessibleName="selectedFileEdit"] {
+    color: #757575;
+}
+
+QScrollArea {
+    background: #ffffff;
+}
+
+QToolButton {
+    background: #303F9F;
+    border: 0;
+}
+
+QFrame[accessibleName="navHeaderFrame"] {
+    background: #303F9F;
+}
+
+QLabel[accessibleName="titleBar"] {
+    background: #3F51B5;
+    color: #FFFFFF;
+}
+
+QFrame {
+    border: none;
+}
+
+QScrollArea {
+    color: #bbbbbb;
+    background-color: #3c3f41;
+    border: none;
+    border-top: 1px solid #2b2b2b;
+    selection-background-color: #2f65ca;
+    selection-color: #bbbbbb;
+}
+QDialog QScrollArea {
+    border-top: none;
+    border: none;
+}
+
+QPlainTextEdit {
+    background-color: #2b2b2b;
+    border: none;
+    color: #bbbbbb;
+    selection-background-color: #2f65ca;
+}
+
+QGraphicsView {
+    background-color: #3c3f41;
+    border-color: #2b2b2b;
+    color: #bbbbbb;
+}
+"""
 _logger = logging.getLogger()
 
 
@@ -37,11 +104,7 @@ def populateInstance():
     app.setOrganizationDomain("Rancorsoft.com")
     app.setApplicationName("Digital Menu Board")
 
-    # apply app stylesheet
-    with open(_styleSheet, "r") as f:
-        css = f.read()
-
-    app.setStyleSheet(css)
+    app.setStyleSheet(_styleSheet)
 
     _aboutWin = AboutDialog.AboutDialog()
 
