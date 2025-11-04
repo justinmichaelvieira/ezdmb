@@ -10,7 +10,7 @@ with open(join(CURDIR, "README.md"), "r", encoding="utf-8") as fh:
 
 setup(
     name='ezdmb',
-    version="0.9.35",
+    version="0.9.36",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/justinmichaelvieira/ezdmb",

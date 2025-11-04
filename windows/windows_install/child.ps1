@@ -119,7 +119,8 @@ if ($cmdOutput -Match "$pyVersion") {
     # Install qt platform + PyQt5
     Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install aqtinstall==3.2.1"
     Start-Process "aqt" -Wait -NoNewWindow -ArgumentList "aqt install windows 5.15.2"
-    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install PyQt5 ezdmb"
+    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install PyQt5"
+    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install ezdmb --force-reinstall"
 
     Start-Process $appInstallerExe -Wait -NoNewWindow
 } else {
