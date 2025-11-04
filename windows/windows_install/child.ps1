@@ -10,7 +10,7 @@ $tempFolder = $env:TEMP
 
 # Turn on log of this scripts console output.
 # See: https://stackoverflow.com/a/60663349/106625
-$logPath = "$tempFolder//ezdmb-install.log"
+$logPath = "$tempFolder\\ezdmb-install.log"
 Start-Transcript -Path "$logPath"
 
 # Use TLS1.2 instead of TLS1.0 for http requests, if available.
@@ -47,7 +47,7 @@ function PauseForAnyKey ($message)
     }
     else {
         Write-Host "$message" -ForegroundColor Yellow
-        $x = $host.ui.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+        $host.ui.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     }
 }
 
@@ -89,8 +89,7 @@ else {
 }
 
 $pyExeDestination = "$tempFolder\\$pyExe"
-$appInstallerExe = "ezdmb_install.exe"
-$appInstallerExePath = ".\\ezdmb_installer_dependencies\\$appInstallerExe"
+$appInstallerExe = "$PSScriptRoot\\ezdmb_setup.exe"
 
 # Set up download client object
 $client = New-Object System.Net.WebClient
@@ -120,9 +119,9 @@ if ($cmdOutput -Match "$pyVersion") {
     # Install qt platform + PyQt5
     Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install aqtinstall==3.2.1"
     Start-Process "aqt" -Wait -NoNewWindow -ArgumentList "aqt install windows 5.15.2"
-    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install PyQt5"
+    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install PyQt5 ezdmb"
 
-    Start-Process $appInstallerExePath -Wait -NoNewWindow
+    Start-Process $appInstallerExe -Wait -NoNewWindow
 } else {
     Write-ColorOutput red ("*******************************************************")
     Write-ColorOutput red ("ERROR: Python $pyVersion did not install correctly.")
@@ -134,5 +133,3 @@ if ($cmdOutput -Match "$pyVersion") {
     PauseForAnyKey "Press any key to close this window..."
     exit 1
 }
-
-PauseForAnyKey "Install script completed. Press any key to close this window..."

@@ -2,7 +2,7 @@
 
 [Setup] 
 AppName=ezdmb
-AppVerName=ezdmb v0.9.30
+AppVerName=ezdmb v0.9.31
 ChangesEnvironment=yes
 DefaultDirName={commonpf}\ezdmb
 DefaultGroupName=ezdmb
@@ -23,15 +23,14 @@ Name: autostart; Description: "&Add Shortcut to Start Up for All Users"; GroupDe
 Source: artifacts\.version; DestDir: {commonpf}\ezdmb; Flags: ignoreversion uninsrestartdelete
 Source: artifacts\style.css; DestDir: {commonpf}\ezdmb; Flags: ignoreversion uninsrestartdelete
 Source: artifacts\icon.ico; DestDir: {commonpf}\ezdmb; Flags: ignoreversion uninsrestartdelete
-Source: artifacts\ezdmb.exe; DestDir: "{commonpf}\ezdmb"; Flags: ignoreversion uninsrestartdelete
 
 [Dirs]
 Name: {commonappdata}\ezdmb; Flags: uninsneveruninstall
 
 [Icons]
-Name: "{commondesktop}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""{app}\ezdmb.exe"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico
-Name: "{group}\Run ezdmb"; Filename: "{cmd}"; Parameters: "/C ""{app}\ezdmb.exe"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico
-Name: "{commonstartup}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""{app}\ezdmb.exe"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico; Tasks: autostart
+Name: "{commondesktop}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico
+Name: "{group}\Run ezdmb"; Filename: "{cmd}"; Parameters: "/C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico
+Name: "{commonstartup}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico; Tasks: autostart
 
 [Run]
 ; Copy log, so %TEMP%/ezdmb_setup.log always contains log entries from the last installer run.

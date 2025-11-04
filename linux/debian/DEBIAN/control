@@ -1,5 +1,5 @@
 Package: ezdmb
-Version: 0.9.30
+Version: 0.9.31
 Architecture: all
 Maintainer: Justin Vieira <justin@rancorsoft.com>
 Depends: python3, python3-pip

@@ -2,7 +2,7 @@
 # Build script for .deb package used to install on linux platforms
 
 # Version to be used as the 'release version'
-VERSION="0.9.30"
+VERSION="0.9.31"
 
 # Update version in control file
 sed -i -e 's/Version: .*/Version: '$VERSION'/g' DEBIAN/control
