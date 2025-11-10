@@ -1,6 +1,8 @@
+import logging
 import os
 import errno
 import json
+from pathlib import Path
 from PyQt5.QtCore import pyqtSignal, QObject
 
 
@@ -71,9 +73,22 @@ class Configuration(QObject):
     # Initializes the object when Configuration is first instanced
     def __init__(self):
         super(self.__class__, self).__init__()
+        # self._logger = logger
+
         flags = os.O_CREAT | os.O_RDWR
         self._data = dict()
-        self._configPath = "dmb_config.json"
+
+        if os.name == 'nt':
+            appdata_path = os.path.join(os.getenv('APPDATA'), 'ezdmb')
+        else:
+            appdata_path = os.path.join(str(Path.home()), '.ezdmb')
+
+        # self._logger.info(f"Configuration path: {appdata_path}")
+
+        # Create appdata directory if it does not already exist
+        os.makedirs(appdata_path, exist_ok=True)
+
+        self._configPath = os.path.join(appdata_path, "dmb_config.json")
         # Create config file if it does not already exist
         if not os.path.exists(self._configPath):
             try:
