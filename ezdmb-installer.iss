@@ -28,9 +28,9 @@ Source: artifacts\icon.ico; DestDir: {commonpf}\ezdmb; Flags: ignoreversion unin
 Name: {commonappdata}\ezdmb; Flags: uninsneveruninstall
 
 [Icons]
-Name: "{commondesktop}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico AfterInstall: SetElevationBit('{commondesktop}\Run ezdmb.lnk')
-Name: "{group}\Run ezdmb"; Filename: "{cmd}"; Parameters: "/C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico AfterInstall: SetElevationBit('{group}\Run ezdmb.lnk')
-Name: "{commonstartup}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico; Tasks: autostart AfterInstall: SetElevationBit('{commonstartup}\Run ezdmb.lnk')
+Name: "{commondesktop}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico; AfterInstall: SetElevationBit('{commondesktop}\Run ezdmb.lnk')
+Name: "{group}\Run ezdmb"; Filename: "{cmd}"; Parameters: "/C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico; AfterInstall: SetElevationBit('{group}\Run ezdmb.lnk')
+Name: "{commonstartup}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico; Tasks: autostart; AfterInstall: SetElevationBit('{commonstartup}\Run ezdmb.lnk')
 
 [Run]
 ; Copy log, so %TEMP%/ezdmb_setup.log always contains log entries from the last installer run.
