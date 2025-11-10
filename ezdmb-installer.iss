@@ -28,9 +28,9 @@ Source: artifacts\icon.ico; DestDir: {commonpf}\ezdmb; Flags: ignoreversion unin
 Name: {commonappdata}\ezdmb; Flags: uninsneveruninstall
 
 [Icons]
-Name: "{commondesktop}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico
-Name: "{group}\Run ezdmb"; Filename: "{cmd}"; Parameters: "/C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico
-Name: "{commonstartup}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico; Tasks: autostart
+Name: "{commondesktop}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico AfterInstall: SetElevationBit('{commondesktop}\Run ezdmb.lnk')
+Name: "{group}\Run ezdmb"; Filename: "{cmd}"; Parameters: "/C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico AfterInstall: SetElevationBit('{group}\Run ezdmb.lnk')
+Name: "{commonstartup}\Run ezdmb"; Filename: "{cmd}"; Parameters: " /C ""py -m ezdmb"""; WorkingDir: "{app}\"; IconFilename: {app}\icon.ico; Tasks: autostart AfterInstall: SetElevationBit('{commonstartup}\Run ezdmb.lnk')
 
 [Run]
 ; Copy log, so %TEMP%/ezdmb_setup.log always contains log entries from the last installer run.
@@ -68,4 +68,25 @@ end;
 function DeleteAutostartNecessary(): boolean;
 begin
   Result := (not WizardIsTaskSelected('autostart')) and (FileExists(ExpandConstant('{commonstartup}\Run ezdmb.lnk')));
+end;
+
+procedure SetElevationBit(Filename: string);
+var
+  Buffer: string;
+  Stream: TStream;
+begin
+  Filename := ExpandConstant(Filename);
+  Log('Setting elevation bit for ' + Filename);
+
+  Stream := TFileStream.Create(FileName, fmOpenReadWrite);
+  try
+    Stream.Seek(21, soFromBeginning);
+    SetLength(Buffer, 1);
+    Stream.ReadBuffer(Buffer, 1);
+    Buffer[1] := Chr(Ord(Buffer[1]) or $20);
+    Stream.Seek(-1, soFromCurrent);
+    Stream.WriteBuffer(Buffer, 1);
+  finally
+    Stream.Free;
+  end;
 end;
