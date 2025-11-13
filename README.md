@@ -13,10 +13,17 @@ A dead-simple digital menu board display and configuration, written in Python.  
 3. Double click install.bat.
 4. Once the installer completes, you can launch the app using the Start Menu (Start > Run ezdmb)
 
-## How to run through python3 (developer setup)
+## How to run through python3 (local dev env setup)
+
+### Ubuntu Linux
 
 1. Run the environment install script in a bash terminal: `chmod +x ./setup-dev-environment.sh && ./setup-dev-environment.sh`
 2. Run the app: `python3 -m ezdmb`
+
+### Windows
+
+1. Clone the repo using `git clone https://github.com/justinmichaelvieira/ezdmb.git`, or the big green "<> Code" button on https://github.com/justinmichaelvieira/ezdmb
+2. Run `setup-dev-environment.ps1` in the root folder of the repo.
 
 ## Basic Operation
 
