@@ -13,18 +13,6 @@ A dead-simple digital menu board display and configuration, written in Python.  
 3. Double click install.bat.
 4. Once the installer completes, you can launch the app using the Start Menu (Start > Run ezdmb)
 
-## How to run through python3 (local dev env setup)
-
-### Ubuntu Linux
-
-1. Run the environment install script in a bash terminal: `chmod +x ./setup-dev-environment.sh && ./setup-dev-environment.sh`
-2. Run the app: `python3 -m ezdmb`
-
-### Windows
-
-1. Clone the repo using `git clone https://github.com/justinmichaelvieira/ezdmb.git`, or the big green "<> Code" button on https://github.com/justinmichaelvieira/ezdmb
-2. Run `setup-dev-environment.ps1` in the root folder of the repo.
-
 ## Basic Operation
 
 - On app start, both the Main (fullscreen) and Preview/Configuration windows are shown on the desktop.
@@ -41,20 +29,3 @@ A dead-simple digital menu board display and configuration, written in Python.  
 ![Display settings](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/sample2.png "Display settings")
 
 ![Settings window up close](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/sample3.png "Configuration window up close")
-
-### Advanced install instructions / troubleshooting install
-
-If the developer install script/procedure does not work for you, try installing manually as follows:
-
-1. Install python libraries: `pip install -r requirements.txt`
-2. Install pyqt dev tools: `sudo apt install pyqt5-dev-tools`
-3. Install the qt framework loader: `pip install -U pip && pip install aqtinstall`
-4. Use the qt framework loader to install v5.15.2: `aqt install-qt linux desktop 5.9.0`
-5. Add qt build tools to your path (replace `<username>` in the command with the username on the system): `export PATH="/home/<username>/ezdmb/5.15.2/gcc_64/bin":$PATH`
-
-On Windows and Mac, use the Qt Framework install packages provided at https://www.qt.io/
-
-## Roadmap
-
-- Load on startup option in win + linux installers
-- Import and render menu data from json, yml file
