@@ -29,3 +29,7 @@ A dead-simple digital menu board display and configuration, written in Python.  
 ![Display settings](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/sample2.png "Display settings")
 
 ![Settings window up close](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/sample3.png "Configuration window up close")
+
+## Developer environment setups
+
+[Windows and Ubuntu developer install scripts are available (useful if you want to do code updates)](https://github.com/justinmichaelvieira/ezdmb/raw/master//DEVELOPERS.md)

@@ -11,7 +11,7 @@
 2. Clone the ezdmb repo using `git clone https://github.com/justinmichaelvieira/ezdmb.git`, or the big green "<> Code" button on https://github.com/justinmichaelvieira/ezdmb
 3. Run `setup-dev-environment.ps1` in the root folder of the repo.
 
-You should be able to open
+`py __main__.py` should allow you to run that app. Debug messages will be logged every time the display content updates. The content update interval can be changed using `File > Settings` .
 
 ## Advanced install instructions / troubleshooting install
 
