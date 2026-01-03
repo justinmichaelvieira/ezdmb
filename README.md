@@ -2,7 +2,7 @@
 
 ![ezdmb logo](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/logo_crop.png "ezdmb logo")
 
-A dead-simple digital menu board display and configuration, written in Python.  Engineered to be the simplest, cheapest, fastest way to get your menu to display on **any** tablet or computer. Engineered for user-friendliness, with a simple, basic, configuration interface that easily allows rotation of images and quick configuration.
+A dead-simple digital menu board display and configuration.  Engineered to be the simplest, cheapest, fastest way to get your menu to display on **any** tablet or computer. Engineered for user-friendliness, with a simple, basic, configuration interface that easily allows rotation of images and quick configuration.
 
 ![ezdmb UI](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/sample1.png "ezdmb UI")
 

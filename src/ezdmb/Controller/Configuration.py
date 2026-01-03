@@ -1,18 +1,18 @@
-# import logging
 import os
 import errno
 import json
 from pathlib import Path
 from PyQt5.QtCore import pyqtSignal, QObject
 
-
-# Encapsulates configuration file serialization and deserialization
+"""
+Encapsulates configuration file serialization and deserialization
+"""
+# pylint: disable=too-many-instance-attributes, missing-function-docstring, missing-class-docstring
 class Configuration(QObject):
     # signals
     configUpdated = pyqtSignal(dict)
 
     # properties
-
     def set_data(self, value):
         self._data = value
 
@@ -71,6 +71,7 @@ class Configuration(QObject):
     # Functions
 
     # Initializes the object when Configuration is first instanced
+
     def __init__(self):
         super(self.__class__, self).__init__()
         # self._logger = logger
@@ -88,11 +89,11 @@ class Configuration(QObject):
         # Create appdata directory if it does not already exist
         os.makedirs(appdata_path, exist_ok=True)
 
-        self._configPath = os.path.join(appdata_path, "dmb_config.json")
+        self.config_path = os.path.join(appdata_path, "dmb_config.json")
         # Create config file if it does not already exist
-        if not os.path.exists(self._configPath):
+        if not os.path.exists(self.config_path):
             try:
-                os.open(self._configPath, flags)
+                os.open(self.config_path, flags)
             except OSError as e:
                 if e.errno == errno.EEXIST:  # Failed as the file already exists.
                     pass
@@ -102,7 +103,7 @@ class Configuration(QObject):
                 # Settings defaults here, for first runs
                 self.SaveConfig(True, "15", [])
 
-        with open(self._configPath, "r+") as json_data_file:
+        with open(self.config_path, "r+") as json_data_file:
             self._data = json.load(json_data_file)
 
         # Set variables for the app to use
@@ -120,7 +121,7 @@ class Configuration(QObject):
         self._data["rotate_content"] = RotateContent
         self._data["rotate_content_time"] = int(RotateContentTime)
         self._data["imported_content"] = ContentArray
-        with open(self._configPath, "w+") as outfile:
+        with open(self.config_path, "w+") as outfile:
             json.dump(self.get_data(), outfile)
 
         self.configUpdated.emit(self._data)

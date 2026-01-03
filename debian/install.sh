@@ -9,4 +9,4 @@ pip install aqtinstall
 aqt install-qt linux desktop 5.15.12
 
 # Run debian package installer for the app
-sudo dpkg -i ezdmb_0.9.40_all.deb
+sudo dpkg -i ezdmb_0.9.41_all.deb

@@ -1,8 +1,10 @@
-# main.py
-# DMB startup script
-# Justin Vieira [justin@rancorsoft.com] / Richard Haynes / Adam Brody
-# Rancorsoft, LLC
-
+"""
+main.py
+DMB startup script
+Justin Vieira [justin@rancorsoft.com] / Richard Haynes / Adam Brody
+Rancorsoft, LLC
+"""
+# pylint: disable=no-name-in-module, c-extension-no-member, missing-function-docstring, missing-class-docstring, unused-variable
 import logging
 import sys
 
@@ -13,7 +15,7 @@ from ezdmb.Controller import Configuration
 from ezdmb.Controller.LoggingUtility import setupLogging
 from ezdmb.View import AboutDialog, FullScreenWindow, ConfigDialog, PreviewWindow
 
-_styleSheet = """
+STYLESHEET = """
 * {
     border-color: #2b2b2b;
     font-size: 13px;
@@ -83,16 +85,18 @@ QGraphicsView {
 """
 _logger = logging.getLogger()
 
+"""
+Starting point of the app runtime
+"""
 
-# starting point of the app runtime
 def main():
-    app, fullScreenMenu, _advancedConfig, _mainwin = populateInstance()
+    app, full_screen_menu, advanced_config, mainwin = populateInstance()
     setupLogging()
     # store screen geometry
-    screenWidth = fullScreenMenu.frameGeometry().width()
-    screenHeight = fullScreenMenu.frameGeometry().height()
+    screenWidth = full_screen_menu.frameGeometry().width()
+    screenHeight = full_screen_menu.frameGeometry().height()
     # size and show menu
-    fullScreenMenu.contentLbl.resize(screenWidth, screenHeight)
+    full_screen_menu.contentLbl.resize(screenWidth, screenHeight)
     # without this, the script exits immediately.
     _logger.info("DMB Application started.")
     sys.exit(app.exec_())
@@ -104,37 +108,37 @@ def populateInstance():
     app.setOrganizationDomain("Rancorsoft.com")
     app.setApplicationName("Digital Menu Board")
 
-    app.setStyleSheet(_styleSheet)
+    app.setStyleSheet(STYLESHEET)
 
-    _aboutWin = AboutDialog.AboutDialog()
+    about_win = AboutDialog.AboutDialog()
 
-    _config = Configuration.Configuration()
-    _configWin = ConfigDialog.ConfigDialog(_config)
+    config = Configuration.Configuration()
+    config_win = ConfigDialog.ConfigDialog(config)
 
-    def showConfig():
-        _configWin.show()
+    def show_config():
+        config_win.show()
 
-    def showAboutWindow():
-        _aboutWin.show()
+    def show_about_window():
+        about_win.show()
 
-    _previewWin = PreviewWindow.PreviewWindow(_config, showConfig, showAboutWindow)
-    _previewWin.setWindowIcon(QtGui.QIcon(":/logo_256x256.jpg"))
+    preview_win = PreviewWindow.PreviewWindow(config, show_config, show_about_window)
+    preview_win.setWindowIcon(QtGui.QIcon(":/logo_256x256.jpg"))
 
-    def openPreviewWindow():
-        showAndBringToFront(_previewWin)
+    def open_preview_window():
+        show_and_bring_to_front(preview_win)
 
-    _fullScreenWin = FullScreenWindow.FullScreenWindow(_config, openPreviewWindow)
+    full_screen_win = FullScreenWindow.FullScreenWindow(config, open_preview_window)
 
-    _fullScreenWin.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-    _fullScreenWin.showFullScreen()
+    full_screen_win.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+    full_screen_win.showFullScreen()
 
-    openPreviewWindow()
-    _previewWin.raise_()
-    _previewWin.activateWindow()
-    return app, _fullScreenWin, _configWin, _previewWin
+    open_preview_window()
+    preview_win.raise_()
+    preview_win.activateWindow()
+    return app, full_screen_win, config_win, preview_win
 
 
-def showAndBringToFront(window):
+def show_and_bring_to_front(window):
     window.show()
     window.raise_()
     window.activateWindow()

@@ -1,3 +1,4 @@
+# pylint: disable=no-name-in-module
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QShortcut
 from PyQt5.QtGui import QKeySequence

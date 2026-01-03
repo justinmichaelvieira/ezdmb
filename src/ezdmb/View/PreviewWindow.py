@@ -1,3 +1,4 @@
+# pylint: disable=no-name-in-module
 import sys
 from PyQt5.QtCore import QSize, Qt, QRect, pyqtSlot
 from PyQt5.QtGui import QFont, QPixmap

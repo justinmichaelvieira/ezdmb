@@ -1,3 +1,4 @@
+# pylint: disable=no-name-in-module
 import os.path
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, QThread
 from PyQt5.QtGui import QPixmap
