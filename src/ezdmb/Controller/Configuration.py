@@ -7,6 +7,8 @@ from PyQt5.QtCore import pyqtSignal, QObject
 """
 Encapsulates configuration file serialization and deserialization
 """
+
+
 # pylint: disable=too-many-instance-attributes, missing-function-docstring, missing-class-docstring
 class Configuration(QObject):
     # signals

@@ -89,6 +89,7 @@ _logger = logging.getLogger()
 Starting point of the app runtime
 """
 
+
 def main():
     app, full_screen_menu, advanced_config, mainwin = populateInstance()
     setupLogging()

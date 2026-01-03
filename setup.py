@@ -20,7 +20,7 @@ setup(
     classifiers=[
         "Programming Language :: Python :: 3"
     ],
-    package_dir={'':"src"},
+    package_dir={'': "src"},
     packages=find_packages("src"),
     license='LGPL-3.0-only',
     author='Justin Vieira',
