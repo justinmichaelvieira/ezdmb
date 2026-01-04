@@ -231,13 +231,3 @@ When adding new test files:
 4. Organize tests into classes by functionality
 5. Use clear, descriptive test names starting with `test_`
 6. Add docstrings explaining what is being tested
-
-## Continuous Integration
-
-Tests can be run in CI/CD pipelines:
-
-```powershell
-python -m pytest --tb=short --exit-first
-```
-
-Use `--exit-first` to stop on first failure for faster feedback.
