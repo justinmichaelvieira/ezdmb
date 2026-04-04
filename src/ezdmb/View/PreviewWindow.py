@@ -1,8 +1,8 @@
 # pylint: disable=no-name-in-module
 import sys
-from PyQt5.QtCore import QSize, Qt, QRect, pyqtSlot
-from PyQt5.QtGui import QFont, QPixmap
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import QSize, Qt, QRect, Slot
+from PySide6.QtGui import QFont, QPixmap, QAction
+from PySide6.QtWidgets import (
     QMainWindow,
     QWidget,
     QSizePolicy,
@@ -13,7 +13,6 @@ from PyQt5.QtWidgets import (
     QLayout,
     QMenuBar,
     QMenu,
-    QAction,
     QHBoxLayout,
 )
 
@@ -33,11 +32,11 @@ class PreviewWindow(QMainWindow):
         )
         setCloseOnEscKey(self)
 
-    @pyqtSlot(QPixmap)
+    @Slot(QPixmap)
     def onRefresh(self, value):
         self.headerLabel.setPixmap(value)
 
-    @pyqtSlot(dict)
+    @Slot(dict)
     def onConfigUpdated(self, data):
         self.contentViewUtil.contentArray = data["imported_content"]
         self.contentViewUtil.rotateContent = data["rotate_content"]
@@ -87,7 +86,7 @@ class PreviewWindow(QMainWindow):
         font.setPointSize(24)
         font.setBold(True)
         font.setUnderline(False)
-        font.setWeight(75)
+        font.setLegacyWeight(75)
         self.headerLabel.setFont(font)
         self.headerLabel.setFrameShape(QFrame.NoFrame)
         self.headerLabel.setAlignment(Qt.AlignCenter)
@@ -124,7 +123,7 @@ class PreviewWindow(QMainWindow):
         font.setPointSize(64)
         font.setBold(True)
         font.setItalic(False)
-        font.setWeight(50)
+        font.setLegacyWeight(50)
         self.currentMenuLabel.setFont(font)
         self.currentMenuLabel.setStyleSheet("font-size: 96px;text-align: center;")
         self.currentMenuLabel.setFrameShape(QFrame.NoFrame)

@@ -1,7 +1,7 @@
 # pylint: disable=no-name-in-module
-from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import QSize, Qt
+from PySide6.QtGui import QFont
+from PySide6.QtWidgets import (
     QCheckBox,
     QDialog,
     QDoubleSpinBox,
@@ -55,15 +55,15 @@ class ConfigDialog(QDialog):
         twelvePtFont = QFont()
         twelvePtFont.setPointSize(12)
         twelvePtFont.setBold(False)
-        twelvePtFont.setWeight(50)
+        twelvePtFont.setLegacyWeight(50)
         fourteenPtFont = QFont()
         fourteenPtFont.setPointSize(14)
         fourteenPtFont.setBold(False)
-        fourteenPtFont.setWeight(50)
+        fourteenPtFont.setLegacyWeight(50)
         sixteenPtFont = QFont()
         sixteenPtFont.setPointSize(16)
         sixteenPtFont.setBold(False)
-        sixteenPtFont.setWeight(50)
+        sixteenPtFont.setLegacyWeight(50)
         twentyPointFont = QFont()
         twentyPointFont.setPointSize(20)
 

@@ -2,7 +2,7 @@ import os
 import errno
 import json
 from pathlib import Path
-from PyQt5.QtCore import pyqtSignal, QObject
+from PySide6.QtCore import Signal, QObject
 
 """
 Encapsulates configuration file serialization and deserialization
@@ -12,7 +12,7 @@ Encapsulates configuration file serialization and deserialization
 # pylint: disable=too-many-instance-attributes, missing-function-docstring, missing-class-docstring
 class Configuration(QObject):
     # signals
-    configUpdated = pyqtSignal(dict)
+    configUpdated = Signal(dict)
 
     # properties
     def set_data(self, value):

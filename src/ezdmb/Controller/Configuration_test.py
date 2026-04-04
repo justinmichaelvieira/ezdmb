@@ -8,7 +8,7 @@ import tempfile
 import pytest
 from pathlib import Path
 from unittest.mock import patch, MagicMock
-from PyQt5.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication
 from ezdmb.Controller.Configuration import Configuration
 
 

@@ -116,10 +116,8 @@ if ($cmdOutput -Match "$pyVersion") {
     # Install pip
     Start-Process "py" -Wait -NoNewWindow -ArgumentList "-m ensurepip --upgrade"
 
-    # Install qt platform + PyQt5
-    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install aqtinstall==3.2.1"
-    Start-Process "aqt" -Wait -NoNewWindow -ArgumentList "aqt install windows 5.15.2"
-    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install PyQt5"
+    # Install Qt platform + PySide6
+    Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install PySide6"
     Start-Process "py" -Wait -NoNewWindow -ArgumentList " -m pip install ezdmb --force-reinstall"
 
     Start-Process $appInstallerExe -Wait -NoNewWindow

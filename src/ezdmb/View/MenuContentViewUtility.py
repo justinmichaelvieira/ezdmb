@@ -1,12 +1,12 @@
 # pylint: disable=no-name-in-module
 import os.path
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, QThread
-from PyQt5.QtGui import QPixmap
+from PySide6.QtCore import Signal, Slot, QThread
+from PySide6.QtGui import QPixmap
 from ezdmb.Controller.Configuration import Configuration
 
 
 class MenuContentViewUtility(QThread):
-    contentUpdated = pyqtSignal(QPixmap)
+    contentUpdated = Signal(QPixmap)
 
     def __init__(
         self, config: Configuration, pixmap, windowName, onRefresh
@@ -25,7 +25,7 @@ class MenuContentViewUtility(QThread):
         self._config.configUpdated.connect(self.onConfigUpdated)
         self.start()
 
-    @pyqtSlot(dict)
+    @Slot(dict)
     def onConfigUpdated(self, data):
         self.contentArray = data["imported_content"]
         self.rotateContent = data["rotate_content"]

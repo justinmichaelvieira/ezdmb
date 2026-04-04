@@ -18,9 +18,9 @@
 If the developer install script/procedure does not work for you, try installing manually as follows:
 
 1. Install python libraries: `pip install -r requirements.txt`
-2. Install pyqt dev tools: `sudo apt install pyqt5-dev-tools`
+2. Install PySide6 dev tools: `sudo apt install python3-pyside6.qttools`
 3. Install the qt framework loader: `pip install -U pip && pip install aqtinstall`
-4. Use the qt framework loader to install v5.15.2: `aqt install-qt linux desktop 5.9.0`
+4. Use the qt framework loader to install Qt 6 if needed; otherwise PySide6 is installed via pip.
 5. Add qt build tools to your path (replace `<username>` in the command with the username on the system): `export PATH="/home/<username>/ezdmb/5.15.2/gcc_64/bin":$PATH`
 
 On Windows and Mac, use the Qt Framework install packages provided at <https://www.qt.io/>

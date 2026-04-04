@@ -12,6 +12,7 @@ build/
 __pycache__/*
 View/__pycache__/*
 .vscode/
+.github/
 Lib/
 Scripts/
 5.15.2/

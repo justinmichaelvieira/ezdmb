@@ -7,7 +7,7 @@ pathadd() {
 }
 
 sudo apt-get update
-sudo apt-get -y install git software-properties-common python3-pip pyqt5-dev-tools fakeroot
+sudo apt-get -y install git software-properties-common python3-pip python3-pyside6.qttools fakeroot
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
 sudo apt-get install python3.9

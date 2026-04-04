@@ -69,7 +69,7 @@ python -m pytest -k "SaveConfig" -v
 
 All test modules use pytest fixtures defined with `@pytest.fixture`:
 
-- **`qapp`**: Creates a QApplication instance needed for PyQt5 tests
+- **`qapp`**: Creates a QApplication instance needed for PySide6 tests
 - **`temp_config_dir`**: Creates a temporary directory for config file tests (auto-cleaned)
 - **`mock_config`**: Creates a mock Configuration object for testing views
 - **`mock_pixmap_label`**: Creates a mock QLabel for display tests
@@ -94,9 +94,9 @@ class TestMyComponent:
         assert result == expected
 ```
 
-### Mocking PyQt5 Objects
+### Mocking PySide6 Objects
 
-When testing code that uses PyQt5, use `unittest.mock.MagicMock` and `patch`:
+When testing code that uses PySide6, use `unittest.mock.MagicMock` and `patch`:
 
 ```python
 from unittest.mock import MagicMock, patch

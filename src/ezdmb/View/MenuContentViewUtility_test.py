@@ -6,9 +6,9 @@ import os
 import tempfile
 import pytest
 from unittest.mock import patch, MagicMock
-from PyQt5.QtWidgets import QApplication, QLabel
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import QThread
+from PySide6.QtWidgets import QApplication, QLabel
+from PySide6.QtGui import QPixmap
+from PySide6.QtCore import QThread
 from ezdmb.View.MenuContentViewUtility import MenuContentViewUtility
 from ezdmb.Controller.Configuration import Configuration
 

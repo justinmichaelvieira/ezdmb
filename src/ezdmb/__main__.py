@@ -8,8 +8,8 @@ Rancorsoft, LLC
 import logging
 import sys
 
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import QApplication
+from PySide6 import QtCore, QtGui
+from PySide6.QtWidgets import QApplication
 
 from ezdmb.Controller import Configuration
 from ezdmb.Controller.LoggingUtility import setupLogging

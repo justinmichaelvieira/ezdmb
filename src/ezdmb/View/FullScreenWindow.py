@@ -1,7 +1,7 @@
 # pylint: disable=no-name-in-module
-from PyQt5.QtCore import Qt, pyqtSlot, QSize
-from PyQt5.QtWidgets import QMainWindow, QSizePolicy, QWidget, QFrame, QLabel, QGridLayout
-from PyQt5.QtGui import QPixmap
+from PySide6.QtCore import Qt, Slot, QSize
+from PySide6.QtWidgets import QMainWindow, QSizePolicy, QWidget, QFrame, QLabel, QGridLayout
+from PySide6.QtGui import QPixmap
 
 from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey, setOpenOnOKey
 from ezdmb.View import MenuContentViewUtility
@@ -59,6 +59,6 @@ class FullScreenWindow(QMainWindow):
         setCloseOnEscKey(self)
         setOpenOnOKey(self, reopen_preview_window)
 
-    @pyqtSlot(QPixmap)
+    @Slot(QPixmap)
     def onRefresh(self, value):
         self.contentLbl.setPixmap(value)
