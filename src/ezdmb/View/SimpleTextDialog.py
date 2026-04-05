@@ -9,13 +9,15 @@ from PySide6.QtWidgets import (
 from ezdmb import __version__
 
 
-class AboutDialog(QDialog):
-    def __init__(self):
+class SimpleTextDialog(QDialog):
+    def __init__(self, titleText, messageText):
         super().__init__()
 
-        self.setWindowTitle("About ezdmb")
+        # self.setWindowTitle("About ezdmb")
+        self.setWindowTitle(titleText)
 
-        message = QLabel("ezdmb v" + __version__ + "\nGithub: https://github.com/justinmichaelvieira/ezdmb\n")
+        # message = QLabel("ezdmb v" + __version__ + "\nGithub: https://github.com/justinmichaelvieira/ezdmb\n")
+        message = QLabel(messageText)
 
         self.buttonBox = QDialogButtonBox(QDialogButtonBox.Close)
         self.buttonBox.accepted.connect(self.accept)

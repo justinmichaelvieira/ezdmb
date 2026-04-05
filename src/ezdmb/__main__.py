@@ -8,12 +8,12 @@ Rancorsoft, LLC
 import logging
 import sys
 
-from PySide6 import QtCore, QtGui
+from PySide6 import QtCore, QtGui, __version__
 from PySide6.QtWidgets import QApplication
 
 from ezdmb.Controller import Configuration
 from ezdmb.Controller.LoggingUtility import setupLogging
-from ezdmb.View import AboutDialog, FullScreenWindow, ConfigDialog, PreviewWindow
+from ezdmb.View import FullScreenWindow, ConfigDialog, PreviewWindow, SimpleTextDialog
 
 STYLESHEET = """
 * {
@@ -111,7 +111,14 @@ def populateInstance():
 
     app.setStyleSheet(STYLESHEET)
 
-    about_win = AboutDialog.AboutDialog()
+    about_win = SimpleTextDialog.SimpleTextDialog("About ezdmb", "ezdmb v" + __version__ + "\nGithub: https://github.com/justinmichaelvieira/ezdmb\n")
+
+    quickstart_win = SimpleTextDialog.SimpleTextDialog(
+        "Quickstart Guide",
+        """        On app start, both the Main (fullscreen) and Preview/Configuration windows are shown on the desktop.
+        The Settings window can be closed with the "X" icon at top right of the window if further settings changes are not currently needed.
+        The 'Esc' key is used to exit the application.
+        Clicking or tapping the Main window and then pressing the 'o' key will reopen the Preview/Configuration window.""")
 
     config = Configuration.Configuration()
     config_win = ConfigDialog.ConfigDialog(config)
@@ -122,7 +129,10 @@ def populateInstance():
     def show_about_window():
         about_win.show()
 
-    preview_win = PreviewWindow.PreviewWindow(config, show_config, show_about_window)
+    def show_quickstart_window():
+        quickstart_win.show()
+
+    preview_win = PreviewWindow.PreviewWindow(config, show_config, show_about_window, show_quickstart_window)
     preview_win.setWindowIcon(QtGui.QIcon(":/logo_256x256.jpg"))
 
     def open_preview_window():

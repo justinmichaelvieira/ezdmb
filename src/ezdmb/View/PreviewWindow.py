@@ -21,9 +21,9 @@ from ezdmb.View import MenuContentViewUtility
 
 
 class PreviewWindow(QMainWindow):
-    def __init__(self, config, showConfig, showAboutWindow):
+    def __init__(self, config, showConfig, showAboutWindow, showQuickstartWindow):
         super(self.__class__, self).__init__()
-        self.setupUi(showConfig, showAboutWindow)
+        self.setupUi(showConfig, showAboutWindow, showQuickstartWindow)
         self.contentUtil = MenuContentViewUtility.MenuContentViewUtility(
             config,
             self.headerLabel,
@@ -42,7 +42,7 @@ class PreviewWindow(QMainWindow):
         self.contentViewUtil.rotateContent = data["rotate_content"]
         self.contentViewUtil.rotateTimeout = data["rotate_content_time"]
 
-    def setupUi(self, showConfig, showAboutWindow):
+    def setupUi(self, showConfig, showAboutWindow, showQuickstartWindow):
         self.setObjectName("self")
         self.setIconSize(QSize(18, 18))
         self.setDocumentMode(False)
@@ -168,6 +168,13 @@ class PreviewWindow(QMainWindow):
         self.showAboutAction.setObjectName("aboutAction")
         self.showAboutAction.triggered.connect(showAboutWindow)
         self.menuHelp.addAction(self.showAboutAction)
+
+        self.showQuickstartAction = QAction(self)
+        self.showQuickstartAction.setText("Quickstart")
+        self.showQuickstartAction.setObjectName("quickstartAction")
+        self.showQuickstartAction.triggered.connect(showQuickstartWindow)
+        self.menuHelp.addAction(self.showQuickstartAction)
+
         self.menuBar.addAction(self.menuHelp.menuAction())
 
         self.setWindowTitle("Preview / Configuration")
