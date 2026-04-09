@@ -1,7 +1,7 @@
 # pylint: disable=no-name-in-module
 import os.path
-from PySide6.QtCore import Signal, Slot, QThread
-from PySide6.QtGui import QPixmap
+from PySide6.QtCore import QPoint, Signal, Slot, QThread
+from PySide6.QtGui import QFont, QPainter, QPixmap, Qt
 from ezdmb.Controller.Configuration import Configuration
 
 
@@ -36,6 +36,15 @@ class MenuContentViewUtility(QThread):
 
         if any(checkExt == fileExtension for checkExt in imgExtensions):
             return QPixmap(fileName)
+        elif fileExtension == ".txt":
+            with open(fileName, "r") as f:
+                txt_content = f.read()
+                pix = QPixmap(400, 300)
+                pix.fill(Qt.white)
+                painter = QPainter(pix)
+                painter.setFont(QFont("Arial"))
+                painter.drawText(QPoint(100, 100), txt_content)
+                return pix
         else:
             return None
 
