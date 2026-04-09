@@ -8,9 +8,7 @@ from ezdmb.Controller.Configuration import Configuration
 class MenuContentViewUtility(QThread):
     contentUpdated = Signal(QPixmap)
 
-    def __init__(
-        self, config: Configuration, pixmap, windowName, onRefresh
-    ):
+    def __init__(self, config: Configuration, pixmap, windowName, onRefresh):
         QThread.__init__(self)
         self._config = config
 
@@ -43,7 +41,7 @@ class MenuContentViewUtility(QThread):
 
     def run(self):
         i = 0
-        while (True):
+        while True:
             if len(self.contentArray) > 0:
                 index = i % len(self.contentArray)
                 pixels = self.contentArray[index]

@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (
     QSizePolicy,
     QTabWidget,
     QVBoxLayout,
-    QWidget
+    QWidget,
 )
 
 from ezdmb.Controller.Configuration import Configuration
@@ -32,7 +32,9 @@ class ConfigDialog(QDialog):
         self.setWindowModality(Qt.ApplicationModal)
         self.resize(401, 331)
 
-        preferredSizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
+        preferredSizePolicy = QSizePolicy(
+            QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding
+        )
         preferredSizePolicy.setHorizontalStretch(0)
         preferredSizePolicy.setVerticalStretch(0)
         preferredSizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
@@ -44,7 +46,9 @@ class ConfigDialog(QDialog):
         self.vLayout6.setObjectName("vLayout6")
 
         minMinSizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        minExpMinExpSizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
+        minExpMinExpSizePolicy = QSizePolicy(
+            QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding
+        )
         fixedFixedSizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
         self.settingsTabs = QTabWidget(self)
@@ -82,7 +86,9 @@ class ConfigDialog(QDialog):
         preferredSizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         preferredSizePolicy.setHorizontalStretch(0)
         preferredSizePolicy.setVerticalStretch(0)
-        preferredSizePolicy.setHeightForWidth(self.rotationSettingsGrpBox.sizePolicy().hasHeightForWidth())
+        preferredSizePolicy.setHeightForWidth(
+            self.rotationSettingsGrpBox.sizePolicy().hasHeightForWidth()
+        )
         self.rotationSettingsGrpBox.setSizePolicy(preferredSizePolicy)
         self.rotationSettingsGrpBox.setMinimumSize(QSize(180, 80))
         self.rotationSettingsGrpBox.setFont(sixteenPtFont)
@@ -175,7 +181,9 @@ class ConfigDialog(QDialog):
         self.addRemoveGrpBox.setTitle("Add/Remove content")
         self.addContentButton.setText("Add Content")
         self.deleteSelectionButton.setText("Delete Selection")
-        self.settingsTabs.setTabText(self.settingsTabs.indexOf(self.contentTab), "Content")
+        self.settingsTabs.setTabText(
+            self.settingsTabs.indexOf(self.contentTab), "Content"
+        )
 
         self.settingsTabs.setCurrentIndex(0)
         self.setUiFromConfig()

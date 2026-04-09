@@ -2,6 +2,7 @@
 MenuContentViewUtility_test.py
 Tests for the MenuContentViewUtility module
 """
+
 import os
 import tempfile
 import pytest
@@ -47,12 +48,9 @@ class TestMenuContentViewUtilityInit:
         """Test MenuContentViewUtility can be initialized"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             assert util is not None
@@ -67,28 +65,24 @@ class TestMenuContentViewUtilityInit:
         mock_config.RotateContentTime = 10
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             assert util.contentArray == ["image1.jpg", "image2.png"]
             assert util.rotateContent is True
             assert util.rotateTimeout == 10
 
-    def test_initialization_connects_signals(self, qapp, mock_config, mock_pixmap_label):
+    def test_initialization_connects_signals(
+        self, qapp, mock_config, mock_pixmap_label
+    ):
         """Test that initialization connects signals"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             # Verify contentUpdated signal was connected
@@ -102,21 +96,20 @@ class TestGetViewableFileContent:
         """Test that jpg files are recognized as viewable"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             with tempfile.TemporaryDirectory() as tmpdir:
                 # Create a dummy jpg file
                 test_file = os.path.join(tmpdir, "test.jpg")
-                open(test_file, 'a').close()
+                open(test_file, "a").close()
 
                 # Mock QPixmap to avoid actual image loading
-                with patch('ezdmb.View.MenuContentViewUtility.QPixmap') as mock_pixmap_class:
+                with patch(
+                    "ezdmb.View.MenuContentViewUtility.QPixmap"
+                ) as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
 
@@ -127,19 +120,18 @@ class TestGetViewableFileContent:
         """Test that png files are recognized as viewable"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             with tempfile.TemporaryDirectory() as tmpdir:
                 test_file = os.path.join(tmpdir, "test.png")
-                open(test_file, 'a').close()
+                open(test_file, "a").close()
 
-                with patch('ezdmb.View.MenuContentViewUtility.QPixmap') as mock_pixmap_class:
+                with patch(
+                    "ezdmb.View.MenuContentViewUtility.QPixmap"
+                ) as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
 
@@ -149,19 +141,18 @@ class TestGetViewableFileContent:
         """Test that gif files are recognized as viewable"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             with tempfile.TemporaryDirectory() as tmpdir:
                 test_file = os.path.join(tmpdir, "test.gif")
-                open(test_file, 'a').close()
+                open(test_file, "a").close()
 
-                with patch('ezdmb.View.MenuContentViewUtility.QPixmap') as mock_pixmap_class:
+                with patch(
+                    "ezdmb.View.MenuContentViewUtility.QPixmap"
+                ) as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
 
@@ -171,19 +162,18 @@ class TestGetViewableFileContent:
         """Test that bmp files are recognized as viewable"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             with tempfile.TemporaryDirectory() as tmpdir:
                 test_file = os.path.join(tmpdir, "test.bmp")
-                open(test_file, 'a').close()
+                open(test_file, "a").close()
 
-                with patch('ezdmb.View.MenuContentViewUtility.QPixmap') as mock_pixmap_class:
+                with patch(
+                    "ezdmb.View.MenuContentViewUtility.QPixmap"
+                ) as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
 
@@ -193,19 +183,18 @@ class TestGetViewableFileContent:
         """Test that ico files are recognized as viewable"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             with tempfile.TemporaryDirectory() as tmpdir:
                 test_file = os.path.join(tmpdir, "test.ico")
-                open(test_file, 'a').close()
+                open(test_file, "a").close()
 
-                with patch('ezdmb.View.MenuContentViewUtility.QPixmap') as mock_pixmap_class:
+                with patch(
+                    "ezdmb.View.MenuContentViewUtility.QPixmap"
+                ) as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
 
@@ -215,12 +204,9 @@ class TestGetViewableFileContent:
         """Test that unsupported file types return None"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             result = util.getViewableFilecontent("document.txt")
@@ -230,20 +216,19 @@ class TestGetViewableFileContent:
         """Test that file extension check is case-insensitive"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             with tempfile.TemporaryDirectory() as tmpdir:
                 # Test uppercase extension
                 test_file = os.path.join(tmpdir, "test.JPG")
-                open(test_file, 'a').close()
+                open(test_file, "a").close()
 
-                with patch('ezdmb.View.MenuContentViewUtility.QPixmap') as mock_pixmap_class:
+                with patch(
+                    "ezdmb.View.MenuContentViewUtility.QPixmap"
+                ) as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
 
@@ -257,18 +242,15 @@ class TestOnConfigUpdated:
         """Test that onConfigUpdated updates contentArray"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             new_data = {
                 "imported_content": ["new_image1.jpg", "new_image2.png"],
                 "rotate_content": True,
-                "rotate_content_time": 20
+                "rotate_content_time": 20,
             }
 
             util.onConfigUpdated(new_data)
@@ -279,18 +261,15 @@ class TestOnConfigUpdated:
         """Test that onConfigUpdated updates rotateContent"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             new_data = {
                 "imported_content": [],
                 "rotate_content": False,
-                "rotate_content_time": 15
+                "rotate_content_time": 15,
             }
 
             util.onConfigUpdated(new_data)
@@ -301,18 +280,15 @@ class TestOnConfigUpdated:
         """Test that onConfigUpdated updates rotateTimeout"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             new_data = {
                 "imported_content": [],
                 "rotate_content": True,
-                "rotate_content_time": 60
+                "rotate_content_time": 60,
             }
 
             util.onConfigUpdated(new_data)
@@ -327,12 +303,9 @@ class TestMenuContentViewUtilityProperties:
         """Test that window name is properly stored"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "FullScreenWindow",
-                callback
+                mock_config, mock_pixmap_label, "FullScreenWindow", callback
             )
 
             assert util.windowName == "FullScreenWindow"
@@ -341,12 +314,9 @@ class TestMenuContentViewUtilityProperties:
         """Test that debug mode is enabled by default"""
         callback = MagicMock()
 
-        with patch.object(QThread, 'start'):
+        with patch.object(QThread, "start"):
             util = MenuContentViewUtility(
-                mock_config,
-                mock_pixmap_label,
-                "TestWindow",
-                callback
+                mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
             assert util.debug is True

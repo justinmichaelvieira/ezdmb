@@ -2,6 +2,7 @@
 Configuration_test.py
 Tests for the Configuration module
 """
+
 import os
 import json
 import tempfile
@@ -33,19 +34,23 @@ class TestConfigurationInit:
 
     def test_configuration_creates_instance(self, qapp):
         """Test that Configuration can be instantiated"""
-        with patch('os.getenv', return_value=None):
-            with patch('os.name', 'posix'):
-                with patch.object(Path, 'home', return_value=Path(tempfile.gettempdir())):
+        with patch("os.getenv", return_value=None):
+            with patch("os.name", "posix"):
+                with patch.object(
+                    Path, "home", return_value=Path(tempfile.gettempdir())
+                ):
                     config = Configuration()
                     assert config is not None
                     assert isinstance(config.Data, dict)
 
-    def test_configuration_creates_appdata_directory_windows(self, qapp, temp_config_dir):
+    def test_configuration_creates_appdata_directory_windows(
+        self, qapp, temp_config_dir
+    ):
         """Test that Configuration creates appdata directory on Windows"""
-        config_path = os.path.join(temp_config_dir, 'ezdmb')
-        with patch('os.name', 'nt'):
-            with patch('os.getenv', return_value=temp_config_dir):
-                with patch.object(Configuration, '__init__', lambda x: None):
+        config_path = os.path.join(temp_config_dir, "ezdmb")
+        with patch("os.name", "nt"):
+            with patch("os.getenv", return_value=temp_config_dir):
+                with patch.object(Configuration, "__init__", lambda x: None):
                     Configuration()  # noqq: F841
                     # Manually call the init logic
                     os.makedirs(config_path, exist_ok=True)
@@ -53,27 +58,27 @@ class TestConfigurationInit:
 
     def test_configuration_creates_appdata_directory_linux(self, qapp, temp_config_dir):
         """Test that Configuration creates appdata directory on Linux"""
-        with patch('os.name', 'posix'):
-            with patch.object(Path, 'home', return_value=Path(temp_config_dir)):
-                config_path = os.path.join(temp_config_dir, '.ezdmb')
+        with patch("os.name", "posix"):
+            with patch.object(Path, "home", return_value=Path(temp_config_dir)):
+                config_path = os.path.join(temp_config_dir, ".ezdmb")
                 os.makedirs(config_path, exist_ok=True)
                 assert os.path.exists(config_path)
 
     def test_configuration_creates_default_config_file(self, qapp, temp_config_dir):
         """Test that Configuration creates default config file on first run"""
-        config_path = os.path.join(temp_config_dir, 'dmb_config.json')
+        config_path = os.path.join(temp_config_dir, "dmb_config.json")
 
         # Create default config
         default_config = {
             "rotate_content": True,
             "rotate_content_time": 15,
-            "imported_content": []
+            "imported_content": [],
         }
 
-        with open(config_path, 'w') as f:
+        with open(config_path, "w") as f:
             json.dump(default_config, f)
 
-        with open(config_path, 'r') as f:
+        with open(config_path, "r") as f:
             loaded_config = json.load(f)
 
         assert loaded_config["rotate_content"] is True
@@ -86,9 +91,9 @@ class TestConfigurationProperties:
 
     def test_rotate_content_property(self, qapp, temp_config_dir):
         """Test RotateContent property getter and setter"""
-        with patch('os.getenv', return_value=temp_config_dir):
-            with patch('os.name', 'nt'):
-                with patch.object(Configuration, '__init__', lambda x: None):
+        with patch("os.getenv", return_value=temp_config_dir):
+            with patch("os.name", "nt"):
+                with patch.object(Configuration, "__init__", lambda x: None):
                     config = Configuration()
                     config.set_rotate_content(True)
                     assert config.get_rotate_content() is True
@@ -97,7 +102,7 @@ class TestConfigurationProperties:
 
     def test_rotate_content_time_property(self, qapp, temp_config_dir):
         """Test RotateContentTime property getter and setter"""
-        with patch.object(Configuration, '__init__', lambda x: None):
+        with patch.object(Configuration, "__init__", lambda x: None):
             config = Configuration()
             config.set_rotate_content_time(30)
             assert config.get_rotate_content_time() == 30
@@ -106,7 +111,7 @@ class TestConfigurationProperties:
 
     def test_content_array_property(self, qapp, temp_config_dir):
         """Test ContentArray property getter and setter"""
-        with patch.object(Configuration, '__init__', lambda x: None):
+        with patch.object(Configuration, "__init__", lambda x: None):
             config = Configuration()
             test_array = ["/path/to/image1.jpg", "/path/to/image2.png"]
             config.set_content_array(test_array)
@@ -114,12 +119,12 @@ class TestConfigurationProperties:
 
     def test_data_property(self, qapp, temp_config_dir):
         """Test Data property getter and setter"""
-        with patch.object(Configuration, '__init__', lambda x: None):
+        with patch.object(Configuration, "__init__", lambda x: None):
             config = Configuration()
             test_data = {
                 "rotate_content": True,
                 "rotate_content_time": 20,
-                "imported_content": []
+                "imported_content": [],
             }
             config.set_data(test_data)
             assert config.get_data() == test_data
@@ -130,7 +135,7 @@ class TestConfigurationSaveConfig:
 
     def test_save_config_creates_json(self, qapp, temp_config_dir):
         """Test that SaveConfig writes JSON to file"""
-        config_file = os.path.join(temp_config_dir, 'dmb_config.json')
+        config_file = os.path.join(temp_config_dir, "dmb_config.json")
 
         config = MagicMock(spec=Configuration)
         config.config_path = config_file
@@ -143,7 +148,7 @@ class TestConfigurationSaveConfig:
 
         # Verify file was created and contains correct data
         assert os.path.exists(config_file)
-        with open(config_file, 'r') as f:
+        with open(config_file, "r") as f:
             saved_data = json.load(f)
 
         assert saved_data["rotate_content"] is True
@@ -152,12 +157,8 @@ class TestConfigurationSaveConfig:
 
     def test_save_config_with_multiple_images(self, qapp, temp_config_dir):
         """Test SaveConfig with multiple image paths"""
-        config_file = os.path.join(temp_config_dir, 'dmb_config.json')
-        images = [
-            "/path/to/menu1.jpg",
-            "/path/to/menu2.png",
-            "/path/to/menu3.gif"
-        ]
+        config_file = os.path.join(temp_config_dir, "dmb_config.json")
+        images = ["/path/to/menu1.jpg", "/path/to/menu2.png", "/path/to/menu3.gif"]
 
         config = MagicMock(spec=Configuration)
         config.config_path = config_file
@@ -167,7 +168,7 @@ class TestConfigurationSaveConfig:
 
         Configuration.SaveConfig(config, True, "30", images)
 
-        with open(config_file, 'r') as f:
+        with open(config_file, "r") as f:
             saved_data = json.load(f)
 
         assert saved_data["imported_content"] == images
@@ -175,7 +176,7 @@ class TestConfigurationSaveConfig:
 
     def test_save_config_converts_time_to_int(self, qapp, temp_config_dir):
         """Test that SaveConfig converts rotate_content_time to int"""
-        config_file = os.path.join(temp_config_dir, 'dmb_config.json')
+        config_file = os.path.join(temp_config_dir, "dmb_config.json")
 
         config = MagicMock(spec=Configuration)
         config.config_path = config_file
@@ -186,7 +187,7 @@ class TestConfigurationSaveConfig:
         # Pass time as string
         Configuration.SaveConfig(config, True, "45", [])
 
-        with open(config_file, 'r') as f:
+        with open(config_file, "r") as f:
             saved_data = json.load(f)
 
         assert isinstance(saved_data["rotate_content_time"], int)
@@ -194,7 +195,7 @@ class TestConfigurationSaveConfig:
 
     def test_save_config_emits_signal(self, qapp, temp_config_dir):
         """Test that SaveConfig emits configUpdated signal"""
-        config_file = os.path.join(temp_config_dir, 'dmb_config.json')
+        config_file = os.path.join(temp_config_dir, "dmb_config.json")
 
         config = MagicMock(spec=Configuration)
         config.config_path = config_file
@@ -214,20 +215,20 @@ class TestConfigurationIntegration:
 
     def test_full_configuration_workflow(self, qapp, temp_config_dir):
         """Test complete workflow: create, save, and load config"""
-        config_file = os.path.join(temp_config_dir, 'dmb_config.json')
+        config_file = os.path.join(temp_config_dir, "dmb_config.json")
 
         # Create initial config
         initial_config = {
             "rotate_content": True,
             "rotate_content_time": 15,
-            "imported_content": []
+            "imported_content": [],
         }
 
-        with open(config_file, 'w') as f:
+        with open(config_file, "w") as f:
             json.dump(initial_config, f)
 
         # Load and verify
-        with open(config_file, 'r') as f:
+        with open(config_file, "r") as f:
             loaded = json.load(f)
 
         assert loaded["rotate_content"] is True
@@ -237,11 +238,11 @@ class TestConfigurationIntegration:
         loaded["rotate_content_time"] = 30
         loaded["imported_content"] = ["image.jpg"]
 
-        with open(config_file, 'w') as f:
+        with open(config_file, "w") as f:
             json.dump(loaded, f)
 
         # Reload and verify changes
-        with open(config_file, 'r') as f:
+        with open(config_file, "r") as f:
             final = json.load(f)
 
         assert final["rotate_content_time"] == 30

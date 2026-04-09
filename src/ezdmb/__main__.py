@@ -4,6 +4,7 @@ DMB startup script
 Justin Vieira [justin@rancorsoft.com] / Richard Haynes / Adam Brody
 Rancorsoft, LLC
 """
+
 # pylint: disable=no-name-in-module, c-extension-no-member, missing-function-docstring, missing-class-docstring, unused-variable
 import logging
 import sys
@@ -11,79 +12,11 @@ import sys
 from PySide6 import QtCore, QtGui
 from PySide6.QtWidgets import QApplication
 
-from ezdmb import __version__
+from ezdmb import __version__, STYLESHEET
 from ezdmb.Controller import Configuration
 from ezdmb.Controller.LoggingUtility import setupLogging
 from ezdmb.View import FullScreenWindow, ConfigDialog, PreviewWindow, SimpleTextDialog
 
-STYLESHEET = """
-* {
-    border-color: #2b2b2b;
-    font-size: 13px;
-    alternate-background-color: #3c3f41;
-}
-
-QPushButton::pressed {
-    background: #303F9F;
-    color: #448AFF;
-}
-
-QToolButton {
-    color: #FFFFFF;
-}
-
-QLineEdit[accessibleName="selectedFileEdit"] {
-    color: #757575;
-}
-
-QScrollArea {
-    background: #ffffff;
-}
-
-QToolButton {
-    background: #303F9F;
-    border: 0;
-}
-
-QFrame[accessibleName="navHeaderFrame"] {
-    background: #303F9F;
-}
-
-QLabel[accessibleName="titleBar"] {
-    background: #3F51B5;
-    color: #FFFFFF;
-}
-
-QFrame {
-    border: none;
-}
-
-QScrollArea {
-    color: #bbbbbb;
-    background-color: #3c3f41;
-    border: none;
-    border-top: 1px solid #2b2b2b;
-    selection-background-color: #2f65ca;
-    selection-color: #bbbbbb;
-}
-QDialog QScrollArea {
-    border-top: none;
-    border: none;
-}
-
-QPlainTextEdit {
-    background-color: #2b2b2b;
-    border: none;
-    color: #bbbbbb;
-    selection-background-color: #2f65ca;
-}
-
-QGraphicsView {
-    background-color: #3c3f41;
-    border-color: #2b2b2b;
-    color: #bbbbbb;
-}
-"""
 _logger = logging.getLogger()
 
 """
@@ -92,19 +25,19 @@ Starting point of the app runtime
 
 
 def main():
-    app, full_screen_menu, advanced_config, mainwin = populateInstance()
+    app, full_screen_menu, advanced_config, mainwin = populate_instance()
     setupLogging()
     # store screen geometry
-    screenWidth = full_screen_menu.frameGeometry().width()
-    screenHeight = full_screen_menu.frameGeometry().height()
+    screen_width = full_screen_menu.frameGeometry().width()
+    screen_height = full_screen_menu.frameGeometry().height()
     # size and show menu
-    full_screen_menu.contentLbl.resize(screenWidth, screenHeight)
+    full_screen_menu.contentLbl.resize(screen_width, screen_height)
     # without this, the script exits immediately.
     _logger.info("DMB Application started.")
     sys.exit(app.exec_())
 
 
-def populateInstance():
+def populate_instance():
     app = QApplication(sys.argv)
     app.setOrganizationName("Rancorsoft")
     app.setOrganizationDomain("Rancorsoft.com")
@@ -114,14 +47,19 @@ def populateInstance():
 
     about_win = SimpleTextDialog.SimpleTextDialog(
         "About ezdmb",
-        "ezdmb v" + __version__ + "\nGithub: https://github.com/justinmichaelvieira/ezdmb\n")
+        "ezdmb v"
+        + __version__
+        + "\nGithub: https://github.com/justinmichaelvieira/ezdmb\n",
+    )
 
     quickstart_win = SimpleTextDialog.SimpleTextDialog(
         "Quickstart Guide",
-        """        On app start, both the Main (fullscreen) and Preview/Configuration windows are shown on the desktop.
-        The Settings window can be closed with the "X" icon at top right of the window.
-        The 'Esc' key is used to exit the application.
-        Clicking or tapping the Main window and then pressing the 'o' key will reopen the Preview/Configuration window.""")
+        """        On app start, both the Main (fullscreen) and Preview/Configuration
+        windows are shown on the desktop. The Settings window can be closed with the
+        "X" icon at top right of the window. The 'Esc' key is used to exit the application.
+        Clicking or tapping the Main window and then pressing the 'o' key will reopen the
+        Preview/Configuration window.""",
+    )
 
     config = Configuration.Configuration()
     config_win = ConfigDialog.ConfigDialog(config)
@@ -135,7 +73,9 @@ def populateInstance():
     def show_quickstart_window():
         quickstart_win.show()
 
-    preview_win = PreviewWindow.PreviewWindow(config, show_config, show_about_window, show_quickstart_window)
+    preview_win = PreviewWindow.PreviewWindow(
+        config, show_config, show_about_window, show_quickstart_window
+    )
     preview_win.setWindowIcon(QtGui.QIcon(":/logo_256x256.jpg"))
 
     def open_preview_window():

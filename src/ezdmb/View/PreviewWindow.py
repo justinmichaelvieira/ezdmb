@@ -75,9 +75,7 @@ class PreviewWindow(QMainWindow):
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.headerLabel.sizePolicy().hasHeightForWidth()
-        )
+        sizePolicy.setHeightForWidth(self.headerLabel.sizePolicy().hasHeightForWidth())
         self.headerLabel.setSizePolicy(sizePolicy)
         self.headerLabel.setMinimumSize(QSize(400, 200))
 
@@ -114,7 +112,9 @@ class PreviewWindow(QMainWindow):
 
         self.currentMenuLabel = QLabel(self.currentMenuGroupBox)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy.setHeightForWidth(self.currentMenuLabel.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.currentMenuLabel.sizePolicy().hasHeightForWidth()
+        )
         self.currentMenuLabel.setSizePolicy(sizePolicy)
         self.currentMenuLabel.setMinimumSize(QSize(200, 200))
         self.currentMenuLabel.setText("Current Content")

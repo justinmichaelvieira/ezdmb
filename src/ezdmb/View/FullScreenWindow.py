@@ -1,6 +1,13 @@
 # pylint: disable=no-name-in-module
 from PySide6.QtCore import Qt, Slot, QSize
-from PySide6.QtWidgets import QMainWindow, QSizePolicy, QWidget, QFrame, QLabel, QGridLayout
+from PySide6.QtWidgets import (
+    QMainWindow,
+    QSizePolicy,
+    QWidget,
+    QFrame,
+    QLabel,
+    QGridLayout,
+)
 from PySide6.QtGui import QPixmap
 
 from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey, setOpenOnOKey

@@ -1,12 +1,13 @@
+"""
+Configuration.py
+Encapsulates configuration file serialization and deserialization
+"""
+
 import os
 import errno
 import json
 from pathlib import Path
 from PySide6.QtCore import Signal, QObject
-
-"""
-Encapsulates configuration file serialization and deserialization
-"""
 
 
 # pylint: disable=too-many-instance-attributes, missing-function-docstring, missing-class-docstring
@@ -44,6 +45,7 @@ class Configuration(QObject):
 
     def get_use_imported(self):
         return self._use_imported
+
     UseImported = property(get_use_imported, set_use_imported)
 
     def set_rotate_content(self, value):
@@ -81,10 +83,10 @@ class Configuration(QObject):
         flags = os.O_CREAT | os.O_RDWR
         self._data = dict()
 
-        if os.name == 'nt':
-            appdata_path = os.path.join(os.getenv('APPDATA'), 'ezdmb')
+        if os.name == "nt":
+            appdata_path = os.path.join(os.getenv("APPDATA"), "ezdmb")
         else:
-            appdata_path = os.path.join(str(Path.home()), '.ezdmb')
+            appdata_path = os.path.join(str(Path.home()), ".ezdmb")
 
         # self._logger.info(f"Configuration path: {appdata_path}")
 
