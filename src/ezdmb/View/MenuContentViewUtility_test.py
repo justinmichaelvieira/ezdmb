@@ -209,7 +209,7 @@ class TestGetViewableFileContent:
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
-            result = util.getViewableFilecontent("document.txt")
+            result = util.getViewableFilecontent("document.psf")
             assert result is None
 
     def test_extension_case_insensitive(self, qapp, mock_config, mock_pixmap_label):

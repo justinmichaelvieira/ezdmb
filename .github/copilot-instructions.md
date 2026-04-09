@@ -1,7 +1,7 @@
 # ezdmb AI Coding Agent Instructions
 
 ## Project Overview
-ezdmb is a PyQt5-based digital menu board application for displaying rotating images/content on tablets or computers. The architecture follows an MVC pattern with clear separation between UI (View), business logic (Controller), and utilities.
+ezdmb is a PySide6-based digital menu board application for displaying rotating images/content on tablets or computers. The architecture follows an MVC pattern with clear separation between UI (View), business logic (Controller), and utilities.
 
 ## Architecture & Key Components
 
@@ -35,7 +35,7 @@ src/ezdmb/
 ### Signal/Slot Pattern
 - **Configuration signals**: `configUpdated(dict)` - emitted when config saved
 - **MenuContentViewUtility signals**: `contentUpdated(QPixmap)` - emitted when new image ready
-- Connections use `@pyqtSlot` decorators for explicit type safety
+- Connections use `@Slot` decorators for explicit type safety
 
 ## Development Workflow
 
@@ -102,7 +102,7 @@ Pytest required but no tests currently in test suite - tests should follow exist
 - Executable paths in build scripts differ (see `windows/build-app.bat` vs `linux/debian/build-linux-executable.sh`)
 
 ## Dependencies & Versions
-- **PyQt5** >= 5.15.2 (core UI framework)
+- **PySide6** >= 6.0.0 (core UI framework)
 - **PyInstaller** (executable packaging)
 - **black** (code formatting)
 - **aqtinstall** (Qt framework management)
