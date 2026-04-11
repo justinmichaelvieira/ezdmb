@@ -2,7 +2,6 @@
 import os.path
 from PySide6.QtCore import QPoint, Signal, Slot, QThread
 from PySide6.QtGui import QFont, QPainter, QPixmap, Qt
-from PySide6.QtWidgets import QLabel
 from ezdmb.Controller.Configuration import Configuration
 
 
@@ -48,8 +47,8 @@ class MenuContentViewUtility(QThread):
                 row_spacing = 20
                 i = 1
                 for line in txt_content.splitlines():
-                     painter.drawText(QPoint(12, i * row_spacing), line)
-                     i += 1
+                    painter.drawText(QPoint(12, i * row_spacing), line)
+                    i += 1
 
                 return pix
         else:
