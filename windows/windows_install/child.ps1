@@ -81,6 +81,9 @@ function AttemptDownload {
 $pyVersion = "3.13.3"
 $pyExe = "python-$pyVersion.exe"
 
+# Allow any Python 3.10 or higher to passthrough without reinstall
+$pyMatchVersion = "Python 3.[1-9][0-9]*"
+
 if ([Environment]::Is64BitOperatingSystem) {
     $pyExeSource = "https://www.python.org/ftp/python/$pyVersion/python-$pyVersion-amd64.exe"
 }
@@ -94,25 +97,30 @@ $appInstallerExe = "$PSScriptRoot\\ezdmb_setup.exe"
 # Set up download client object
 $client = New-Object System.Net.WebClient
 
-# If python3 not previously copied or downloaded directly into tmp folder
-# download it directly to tmp folder.
-if (-not(Test-Path -Path  $pyExeDestination -PathType Leaf)) {
-    AttemptDownload -client $client -fileSource $pyExeSource -fileDestination $pyExeDestination
-}
-else {
-    Write-ColorOutput blue ("$pyExe found; Skipping download.")
-}
+# Download (if necessary) and Install python3
+Write-ColorOutput yellow ("Checking for installed Python; NOTE: ERROR MESSAGE: py : The term 'py' is not recognized... AFTER THIS LINE IS NORMAL...")
+py -V | Tee-Object -Variable cmdOutput1
+if (-not($cmdOutput1 -like $pyMatchVersion)) {
+    # If python3 not previously copied or downloaded directly into tmp folder
+    # download it directly to tmp folder.
+    if (-not(Test-Path -Path  $pyExeDestination -PathType Leaf)) {
+        AttemptDownload -client $client -fileSource $pyExeSource -fileDestination $pyExeDestination
+    }
+    else {
+        Write-ColorOutput blue ("$pyExe found; Skipping download.")
+    }
 
-# Start python intaller
-Start-Process $pyExeDestination -Wait -NoNewWindow -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1 Include_test=0 Include_pip=1"
+    # Start python installer
+    Start-Process $pyExeDestination -Wait -NoNewWindow -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1 Include_test=0 Include_pip=1"
 
-# Reload env vars, so we can use python and pip correctly
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+    # Reload env vars, so we can use python and pip correctly
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+}
 
 # Upgrade pip and install wheel library if python installed successfully.
 # If python not installed successfully, exit with error.
-py -V | Tee-Object -Variable cmdOutput
-if ($cmdOutput -Match "$pyVersion") {
+py -V | Tee-Object -Variable cmdOutput2
+if ($cmdOutput2 -like $pyMatchVersion) {
     # Install pip
     Start-Process "py" -Wait -NoNewWindow -ArgumentList "-m ensurepip --upgrade"
 
