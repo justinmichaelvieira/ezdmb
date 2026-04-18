@@ -34,7 +34,7 @@ def main():
     full_screen_menu.contentLbl.resize(screen_width, screen_height)
     # without this, the script exits immediately.
     _logger.info("DMB Application started.")
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 def populate_instance():
@@ -47,18 +47,18 @@ def populate_instance():
 
     about_win = SimpleTextDialog.SimpleTextDialog(
         "About ezdmb",
-        "ezdmb v"
+        "<b>ezdmb v"
         + __version__
-        + "\nGithub: https://github.com/justinmichaelvieira/ezdmb\n",
+        + "</b><br />Github: <a href='https://github.com/justinmichaelvieira/ezdmb'>https://github.com/justinmichaelvieira/ezdmb</a><br />",
     )
 
     quickstart_win = SimpleTextDialog.SimpleTextDialog(
         "Quickstart Guide",
-        """        On app start, both the Main (fullscreen) and Preview/Configuration
-        windows are shown on the desktop. The Settings window can be closed with the
-        "X" icon at top right of the window. The 'Esc' key is used to exit the application.
-        Clicking or tapping the Main window and then pressing the 'o' key will reopen the
-        Preview/Configuration window.""",
+        """        On app start, both the Main (fullscreen) and Preview/Configuration<br />
+        windows are shown on the desktop. The Settings window can be closed with the<br />
+        "X" icon at top right of the window. The 'Esc' key is used to exit the application.<br />
+        Clicking or tapping the Main window and then pressing the 'o' key will reopen the<br />
+        Preview/Configuration window.<br />""",
     )
 
     config = Configuration.Configuration()

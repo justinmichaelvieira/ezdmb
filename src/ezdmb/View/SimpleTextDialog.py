@@ -1,10 +1,10 @@
-# pylint: disable=no-name-in-module
 from PySide6.QtWidgets import (
     QDialog,
     QDialogButtonBox,
     QLabel,
     QVBoxLayout,
 )
+from PySide6.QtCore import Qt
 
 
 class SimpleTextDialog(QDialog):
@@ -14,6 +14,9 @@ class SimpleTextDialog(QDialog):
         self.setWindowTitle(titleText)
 
         message = QLabel(messageText)
+        message.setTextFormat(Qt.RichText)
+        message.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        message.setOpenExternalLinks(True)
 
         self.buttonBox = QDialogButtonBox(QDialogButtonBox.Close)
         self.buttonBox.accepted.connect(self.accept)
