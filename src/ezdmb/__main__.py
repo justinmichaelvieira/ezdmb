@@ -47,9 +47,9 @@ def populate_instance():
 
     about_win = SimpleTextDialog.SimpleTextDialog(
         "About ezdmb",
-        "<b>ezdmb v"
-        + __version__
-        + "</b><br />Github: <a href='https://github.com/justinmichaelvieira/ezdmb'>https://github.com/justinmichaelvieira/ezdmb</a><br />",
+        f"""<b>ezdmb v{__version__}
+        </b><br />Github: <a href='https://github.com/justinmichaelvieira/ezdmb'>
+        https://github.com/justinmichaelvieira/ezdmb</a><br />""",
     )
 
     quickstart_win = SimpleTextDialog.SimpleTextDialog(
