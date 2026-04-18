@@ -14,7 +14,7 @@ $pcRepo = "ezdmb"
 $pcRepoToken = "<your-token-here>"
 $depsRepo = "ezdmbwindeps"
 $depsRepoToken = "<your-token-here>"
-$appWheelFile = "ezdmb-1.0.2-py3-none-any.whl"
+$appWheelFile = "ezdmb-1.0.5-py3-none-any.whl"
 $depsWheelFile = "ezdmbwindeps-1.0.0-py3-none-any.whl"
 
 # Destination paths of each file we download
