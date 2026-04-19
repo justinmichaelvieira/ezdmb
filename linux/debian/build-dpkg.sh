@@ -18,10 +18,10 @@ cp -v ./*.png "$IMAGE_RESOURCES_DIR"
 cd - || exit
 
 # Copy overlay to temp dir
-cp -r "./overlay/"* "$TMP_DIR"
+cp -R "./overlay/"* "$TMP_DIR"
 
 # Copy deb package descriptors and scripts in the DEBIAN folder
-cp -r "./DEBIAN" "$TMP_DIR"
+cp -R "./DEBIAN" "$TMP_DIR"
 
 RESOURCE_FOLDER_PATH="../python_package/ezdmb/resources"
 mkdir -p "$RESOURCE_FOLDER_PATH"
