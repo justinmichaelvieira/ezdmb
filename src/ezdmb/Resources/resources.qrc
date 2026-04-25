@@ -1,15 +1,16 @@
 <RCC>
     <qresource prefix="/">
         <file alias="354580462_orig.jpg">354580462_orig.jpg</file>
+        <file alias="about.png">about.png</file>
         <file alias="check.png">check.png</file>
-        <file alias="results.png">354580462_orig.jpg</file>
-        <file alias="settings.png">check.png</file>
         <file alias="ezdmb1.png">ezdmb1.PNG</file>
         <file alias="ezdmb2.png">ezdmb2.PNG</file>
         <file alias="ezdmb3.png">ezdmb3.PNG</file>
-        <file alias="logo_256x256.png">logo_256x256.jpg</file>
-        <file alias="logo_fullsize.png">logo_fullsize.jpg</file>
+        <file alias="logo_48x48.jpg">logo_48x48.jpg</file>
+        <file alias="logo_192x192.png">logo_192x192.png</file>
+        <file alias="logo_fullsize.jpg">logo_fullsize.jpg</file>
         <file alias="new-menu.png">new-menu.png</file>
         <file alias="settings.png">settings.png</file>
+        <file alias="results.png">results.png</file>
     </qresource>
 </RCC>
