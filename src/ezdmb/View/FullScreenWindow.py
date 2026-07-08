@@ -8,8 +8,9 @@ from PySide6.QtWidgets import (
     QLabel,
     QGridLayout,
 )
-from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtGui import QPixmap
 
+from ezdmb.View.IconUtility import getWindowIcon
 from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey, setOpenOnOKey
 from ezdmb.View import MenuContentViewUtility
 from ezdmb.Controller.Configuration import Configuration
@@ -24,9 +25,7 @@ class FullScreenWindow(QMainWindow):
         self.setWindowModality(Qt.WindowModal)
         self.setEnabled(True)
 
-        logo_pixmap = QPixmap(":/Resources/logo_48x48.png")
-        logo_icon = QIcon(logo_pixmap)
-        self.setWindowIcon(logo_icon)
+        self.setWindowIcon(getWindowIcon())
 
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)

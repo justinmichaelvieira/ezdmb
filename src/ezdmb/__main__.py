@@ -9,12 +9,13 @@ Rancorsoft, LLC
 import logging
 import sys
 
-from PySide6 import QtCore, QtGui
+from PySide6 import QtCore
 from PySide6.QtWidgets import QApplication
 
 from ezdmb import __version__, STYLESHEET
 from ezdmb.Controller import Configuration
 from ezdmb.Controller.LoggingUtility import setupLogging
+from ezdmb.View.IconUtility import getWindowIcon
 from ezdmb.View import FullScreenWindow, ConfigDialog, PreviewWindow, SimpleTextDialog
 
 _logger = logging.getLogger()
@@ -76,7 +77,7 @@ def populate_instance():
     preview_win = PreviewWindow.PreviewWindow(
         config, show_config, show_about_window, show_quickstart_window
     )
-    preview_win.setWindowIcon(QtGui.QIcon(":/logo_256x256.jpg"))
+    preview_win.setWindowIcon(getWindowIcon())
 
     def open_preview_window():
         show_and_bring_to_front(preview_win)

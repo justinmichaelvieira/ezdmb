@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
 )
 
+from ezdmb.View.IconUtility import getWindowIcon
 from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey
 from ezdmb.View import MenuContentViewUtility
 
@@ -44,7 +45,7 @@ class PreviewWindow(QMainWindow):
 
     def setupUi(self, showConfig, showAboutWindow, showQuickstartWindow):
         self.setObjectName("self")
-        self.setIconSize(QSize(18, 18))
+        self.setWindowIcon(getWindowIcon())
         self.setDocumentMode(False)
 
         self.centralWidget = QWidget(self)

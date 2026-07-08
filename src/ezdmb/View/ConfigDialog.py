@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (
 )
 
 from ezdmb.Controller.Configuration import Configuration
+from ezdmb.View.IconUtility import getWindowIcon
 
 
 class ConfigDialog(QDialog):
@@ -31,6 +32,8 @@ class ConfigDialog(QDialog):
         self.setObjectName("ConfigDialog")
         self.setWindowModality(Qt.ApplicationModal)
         self.resize(401, 331)
+
+        self.setWindowIcon(getWindowIcon())
 
         preferredSizePolicy = QSizePolicy(
             QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding
