@@ -6,7 +6,7 @@ pip install -U pip
 pip install aqtinstall
 
 # install qt
-aqt install-qt linux desktop 5.15.12
+aqt install-qt linux desktop 6.9.0
 
 # Run debian package installer for the app
 sudo dpkg -i ezdmb_1.0.5_all.deb

@@ -12,7 +12,7 @@ case "$1" in
         sudo pip3 install aqtinstall
 
         # install qt
-        sudo aqt install-qt linux desktop 5.15.12
+        sudo aqt install-qt linux desktop 6.9.0
         # Add a script that starts ezdmb to the current users Desktop folder
         DESKTOP_RUN_SCRIPT=$(cat << EOF
 #!/bin/bash

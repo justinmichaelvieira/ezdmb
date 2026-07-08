@@ -21,6 +21,6 @@ If the developer install script/procedure does not work for you, try installing 
 2. Install PySide6 dev tools: `sudo apt install python3-pyside6.qttools`
 3. Install the qt framework loader: `pip install -U pip && pip install aqtinstall`
 4. Use the qt framework loader to install Qt 6 if needed; otherwise PySide6 is installed via pip.
-5. Add qt build tools to your path (replace `<username>` in the command with the username on the system): `export PATH="/home/<username>/ezdmb/5.15.2/gcc_64/bin":$PATH`
+5. Add qt build tools to your path (replace `<username>` in the command with the username on the system): `export PATH="/home/<username>/ezdmb/6.9.0/gcc_64/bin":$PATH`
 
 On Windows and Mac, use the Qt Framework install packages provided at <https://www.qt.io/>

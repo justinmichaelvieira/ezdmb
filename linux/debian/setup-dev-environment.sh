@@ -13,5 +13,5 @@ sudo apt-get update
 sudo apt-get install python3.9
 git clone https://github.com/justinmichaelvieira/ezdmb
 pip3 install -r ../requirements.txt
-sudo aqt install-qt linux desktop 5.15.2
-pathadd "/home/${SUDO_USER}/ezdmb/5.15.2/gcc_64/bin"
+sudo aqt install-qt linux desktop 6.9.0
+pathadd "/home/${SUDO_USER}/ezdmb/6.9.0/gcc_64/bin"

@@ -15,7 +15,7 @@ View/__pycache__/*
 .github/
 Lib/
 Scripts/
-5.15.2/
+6.9.0/
 aqtinstall.log
 output/
 debian/overlay
