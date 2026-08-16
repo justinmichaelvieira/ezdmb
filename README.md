@@ -26,7 +26,7 @@ A dead-simple digital menu board display and configuration.  Engineered to be th
 
 - Add and remove content to display
 - Rotation settings, to allow content to be changed in the Menu Board Display
-![Display settings](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/sample2.png "Display settings")
+![Settings](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/sample2.png "Settings")
 
 ![Settings window up close](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/sample3.png "Configuration window up close")
 

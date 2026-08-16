@@ -1,6 +1,6 @@
 # pylint: disable=no-name-in-module
 from PySide6.QtCore import QSize, Qt
-from PySide6.QtGui import QFont
+from PySide6.QtGui import QFont, QIcon, QPixmap
 from PySide6.QtWidgets import (
     QCheckBox,
     QDialog,
@@ -156,7 +156,12 @@ class ConfigDialog(QDialog):
         self.horizontalLayout.setSpacing(12)
         self.horizontalLayout.setObjectName("horizontalLayout")
 
+        addPixmap = QPixmap("add.svg")
+        addButtonIcon = QIcon(addPixmap)
+
         self.addContentButton = QPushButton(self.frame)
+        self.addContentButton.setIcon(addButtonIcon)
+        self.addContentButton.setIconSize(addPixmap.rect().size())
         self.addContentButton.setMinimumSize(QSize(120, 36))
         self.addContentButton.setFont(twelvePtFont)
         self.addContentButton.setObjectName("addContentButton")

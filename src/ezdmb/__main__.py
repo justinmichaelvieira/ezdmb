@@ -55,11 +55,10 @@ def populate_instance():
 
     quickstart_win = SimpleTextDialog.SimpleTextDialog(
         "Quickstart Guide",
-        """        On app start, both the Main (fullscreen) and Preview/Configuration<br />
-        windows are shown on the desktop. The Settings window can be closed with the<br />
-        "X" icon at top right of the window. The 'Esc' key is used to exit the application.<br />
-        Clicking or tapping the Main window and then pressing the 'o' key will reopen the<br />
-        Preview/Configuration window.<br />""",
+        """<b>File > Settings</b> to change content and cycle time.<br />
+        <b>File > Exit</b> to exit the application.<br />
+        <b>Help > About</b> to display version and source information.<br />
+        <b>Help > Quickstart</b> to display this quickstart guide.<br />""",
     )
 
     config = Configuration.Configuration()

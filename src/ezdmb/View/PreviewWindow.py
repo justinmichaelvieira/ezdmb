@@ -164,17 +164,18 @@ class PreviewWindow(QMainWindow):
         self.menuHelp = QMenu(self.menuBar)
         self.menuHelp.setTitle("Help")
         self.menuHelp.setObjectName("menuHelp")
-        self.showAboutAction = QAction(self, icon=getIcon("about.svg"), shortcut=Qt.CTRL | Qt.Key_A)
-        self.showAboutAction.setText("&About")
-        self.showAboutAction.setObjectName("aboutAction")
-        self.showAboutAction.triggered.connect(showAboutWindow)
-        self.menuHelp.addAction(self.showAboutAction)
 
         self.showQuickstartAction = QAction(self, icon=getIcon("library_add.svg"), shortcut=Qt.CTRL | Qt.Key_Q)
         self.showQuickstartAction.setText("&Quickstart")
         self.showQuickstartAction.setObjectName("quickstartAction")
         self.showQuickstartAction.triggered.connect(showQuickstartWindow)
         self.menuHelp.addAction(self.showQuickstartAction)
+
+        self.showAboutAction = QAction(self, icon=getIcon("about.svg"), shortcut=Qt.CTRL | Qt.Key_A)
+        self.showAboutAction.setText("&About")
+        self.showAboutAction.setObjectName("aboutAction")
+        self.showAboutAction.triggered.connect(showAboutWindow)
+        self.menuHelp.addAction(self.showAboutAction)
 
         self.menuBar.addAction(self.menuHelp.menuAction())
 
