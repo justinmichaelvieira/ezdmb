@@ -4,6 +4,7 @@ from PySide6.QtCore import QSize, Qt, QRect, Slot
 from PySide6.QtGui import QFont, QIcon, QPixmap, QAction
 from PySide6.QtWidgets import (
     QMainWindow,
+    QSpacerItem,
     QWidget,
     QSizePolicy,
     QGridLayout,
@@ -107,18 +108,19 @@ class PreviewWindow(QMainWindow):
         self.currentMenuGroupBox.setObjectName("currentMenuGroupBox")
 
         self.horizontalLayout = QHBoxLayout(self.currentMenuGroupBox)
-        self.horizontalLayout.setContentsMargins(4, 0, 0, 0)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 8)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
 
         self.currentMenuLabel = QLabel(self.currentMenuGroupBox)
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHeightForWidth(
             self.currentMenuLabel.sizePolicy().hasHeightForWidth()
         )
         self.currentMenuLabel.setSizePolicy(sizePolicy)
         self.currentMenuLabel.setMinimumSize(QSize(60, 40))
         self.currentMenuLabel.setText("Current content:")
+        self.currentMenuLabel.setAlignment(Qt.AlignLeft)
         font = QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(32)
@@ -126,16 +128,23 @@ class PreviewWindow(QMainWindow):
         font.setItalic(False)
         font.setLegacyWeight(50)
         self.currentMenuLabel.setFont(font)
-        self.currentMenuLabel.setStyleSheet("font-size: 32px; text-align: left;")
+        self.currentMenuLabel.setStyleSheet("font-size: 32px; text-align: left; font-weight: bold; vertical-align: text-top;")
         self.currentMenuLabel.setFrameShape(QFrame.NoFrame)
         self.currentMenuLabel.setFrameShadow(QFrame.Plain)
         self.currentMenuLabel.setLineWidth(0)
-        self.currentMenuLabel.setScaledContents(False)
+        self.currentMenuLabel.setScaledContents(True)
         self.currentMenuLabel.setAlignment(Qt.AlignLeft)
         self.currentMenuLabel.setObjectName("currentMenuLabel")
+        self.currentMenuLabel.setContentsMargins(0, 0, 0, 20)
+        self.horizontalLayout.addWidget(self.currentMenuLabel, alignment=Qt.AlignTop)
+        self.horizontalLayout.setStretch(0, 1)
 
-        self.horizontalLayout.addWidget(self.currentMenuLabel)
-        self.gridLayout_2.addWidget(self.currentMenuGroupBox, 0, 0, 1, 1)
+        self.bottomSpacer = QWidget(self.currentMenuGroupBox)
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.bottomSpacer.setSizePolicy(sizePolicy)
+        self.horizontalLayout.addWidget(self.bottomSpacer)
+        self.gridLayout_2.addWidget(self.currentMenuGroupBox, 0, 0, 1, 1, Qt.AlignTop)
+
         self.setCentralWidget(self.centralWidget)
 
         self.menuBar = QMenuBar(self)
