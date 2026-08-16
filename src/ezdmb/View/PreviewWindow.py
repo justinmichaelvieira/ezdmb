@@ -1,7 +1,7 @@
 # pylint: disable=no-name-in-module
 import sys
 from PySide6.QtCore import QSize, Qt, QRect, Slot
-from PySide6.QtGui import QFont, QPixmap, QAction
+from PySide6.QtGui import QFont, QIcon, QPixmap, QAction
 from PySide6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
 )
 
-from ezdmb.View.IconUtility import getWindowIcon
+from ezdmb.View.IconUtility import getIcon, getIcon, getWindowIcon
 from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey
 from ezdmb.View import MenuContentViewUtility
 
@@ -147,13 +147,13 @@ class PreviewWindow(QMainWindow):
         self.menuFile.setTitle("File")
         self.menuFile.setObjectName("menuFile")
 
-        self.editDisplaySettingsAction = QAction(self, shortcut=Qt.CTRL | Qt.Key_E)
-        self.editDisplaySettingsAction.setText("&Edit Display Settings")
-        self.editDisplaySettingsAction.setObjectName("editDisplaySettingsAction")
-        self.editDisplaySettingsAction.triggered.connect(showConfig)
-        self.menuFile.addAction(self.editDisplaySettingsAction)
+        self.displaySettingsAction = QAction(self, icon=getIcon("settings.svg"), shortcut=Qt.CTRL | Qt.Key_E)
+        self.displaySettingsAction.setText("&Display Settings")
+        self.displaySettingsAction.setObjectName("displaySettingsAction")
+        self.displaySettingsAction.triggered.connect(showConfig)
+        self.menuFile.addAction(self.displaySettingsAction)
 
-        self.exitAction = QAction(self, shortcut=Qt.CTRL | Qt.Key_X)
+        self.exitAction = QAction(self, icon=getIcon("close.svg"), shortcut=Qt.CTRL | Qt.Key_X)
         self.exitAction.setText("E&xit")
         self.exitAction.setObjectName("exitAction")
         self.exitAction.triggered.connect(lambda: sys.exit())
@@ -164,13 +164,13 @@ class PreviewWindow(QMainWindow):
         self.menuHelp = QMenu(self.menuBar)
         self.menuHelp.setTitle("Help")
         self.menuHelp.setObjectName("menuHelp")
-        self.showAboutAction = QAction(self, shortcut=Qt.CTRL | Qt.Key_A)
+        self.showAboutAction = QAction(self, icon=getIcon("about.svg"), shortcut=Qt.CTRL | Qt.Key_A)
         self.showAboutAction.setText("&About")
         self.showAboutAction.setObjectName("aboutAction")
         self.showAboutAction.triggered.connect(showAboutWindow)
         self.menuHelp.addAction(self.showAboutAction)
 
-        self.showQuickstartAction = QAction(self, shortcut=Qt.CTRL | Qt.Key_Q)
+        self.showQuickstartAction = QAction(self, icon=getIcon("library_add.svg"), shortcut=Qt.CTRL | Qt.Key_Q)
         self.showQuickstartAction.setText("&Quickstart")
         self.showQuickstartAction.setObjectName("quickstartAction")
         self.showQuickstartAction.triggered.connect(showQuickstartWindow)

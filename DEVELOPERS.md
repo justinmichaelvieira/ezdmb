@@ -24,3 +24,7 @@ If the developer install script/procedure does not work for you, try installing 
 5. Add qt build tools to your path (replace `<username>` in the command with the username on the system): `export PATH="/home/<username>/ezdmb/6.9.0/gcc_64/bin":$PATH`
 
 On Windows and Mac, use the Qt Framework install packages provided at <https://www.qt.io/>
+
+### Generating resource files
+
+`pyrcc5 -o resources.py resources.qrc` executed in the `/View` directory generates necessary image resources.

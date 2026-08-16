@@ -103,12 +103,10 @@ class ConfigDialog(QDialog):
         self.hLayout2.setObjectName("hLayout2")
 
         self.rotateImagesCheck = QCheckBox(self.rotationSettingsGrpBox)
-
         self.rotateImagesCheck.setSizePolicy(fixedFixedSizePolicy)
         self.rotateImagesCheck.setMinimumSize(QSize(180, 24))
         self.rotateImagesCheck.setFont(twelvePtFont)
         self.rotateImagesCheck.setObjectName("rotateImagesCheck")
-
         self.hLayout2.addWidget(self.rotateImagesCheck)
 
         self.rotateTimeBox = QDoubleSpinBox(self.rotationSettingsGrpBox)
@@ -119,7 +117,6 @@ class ConfigDialog(QDialog):
         self.rotateTimeBox.setMinimum(1)
         self.rotateTimeBox.setMaximum(1800)
         self.rotateTimeBox.setObjectName("rotateTimeBox")
-
         self.hLayout2.addWidget(self.rotateTimeBox)
 
         self.secondsLabel = QLabel(self.rotationSettingsGrpBox)
@@ -155,7 +152,7 @@ class ConfigDialog(QDialog):
         self.frame.setObjectName("frame")
 
         self.horizontalLayout = QHBoxLayout(self.frame)
-        self.horizontalLayout.setContentsMargins(6, 3, 6, 8)
+        self.horizontalLayout.setContentsMargins(8,12, 8, 12)
         self.horizontalLayout.setSpacing(12)
         self.horizontalLayout.setObjectName("horizontalLayout")
 
@@ -164,7 +161,6 @@ class ConfigDialog(QDialog):
         self.addContentButton.setFont(twelvePtFont)
         self.addContentButton.setObjectName("addContentButton")
         self.horizontalLayout.addWidget(self.addContentButton)
-
         self.deleteSelectionButton = QPushButton(self.frame)
         self.deleteSelectionButton.setMinimumSize(QSize(120, 36))
         self.deleteSelectionButton.setFont(twelvePtFont)

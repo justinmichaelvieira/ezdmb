@@ -22,7 +22,7 @@ A dead-simple digital menu board display and configuration.  Engineered to be th
 
 ## Configuration
 
- "Edit Display Settings" in the "File" dropdown menu of the Settings window allows access to a settings window, which is used to:
+ "Display Settings" in the "File" dropdown menu of the Settings window allows access to a settings window, which is used to:
 
 - Add and remove content to display
 - Rotation settings, to allow content to be changed in the Menu Board Display

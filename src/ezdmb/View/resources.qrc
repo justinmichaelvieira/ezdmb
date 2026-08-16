@@ -2,6 +2,7 @@
     <qresource prefix="images">
         <file alias="354580462_orig.jpg">354580462_orig.jpg</file>
         <file alias="about.png">about.png</file>
+        <file alias="about.svg">about.svg</file>
         <file alias="check.png">check.png</file>
         <file alias="ezdmb1.png">ezdmb1.PNG</file>
         <file alias="ezdmb2.png">ezdmb2.PNG</file>
@@ -12,5 +13,17 @@
         <file alias="new-menu.png">new-menu.png</file>
         <file alias="settings.png">settings.png</file>
         <file alias="results.png">results.png</file>
+        <file alias="attribution.svg">attribution.svg</file>
+        <file alias="add.svg">add.svg</file>
+        <file alias="close.svg">close.svg</file>
+        <file alias="clock_arrow_down.svg">clock_arrow_down.svg</file>
+        <file alias="delete.svg">delete.svg</file>
+        <file alias="event_repeat.svg">event_repeat.svg</file>
+        <file alias="error.svg">error.svg</file>
+        <file alias="edit_square.svg">edit_square.svg</file>
+        <file alias="delete.svg">delete.svg</file>
+        <file alias="library_add.svg">library_add.svg</file>
+        <file alias="settings.svg">settings.svg</file>
+        <file alias="settings_screen.svg">settings_screen.svg</file> 
     </qresource>
 </RCC>
