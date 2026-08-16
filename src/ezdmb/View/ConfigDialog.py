@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
     QListWidgetItem,
     QPushButton,
     QSizePolicy,
+    QStyle,
     QTabWidget,
     QVBoxLayout,
     QWidget,
@@ -42,7 +43,7 @@ class ConfigDialog(QDialog):
         preferredSizePolicy.setVerticalStretch(0)
         preferredSizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
         self.setSizePolicy(preferredSizePolicy)
-        self.setMinimumSize(QSize(400, 300))
+        self.setMinimumSize(QSize(640, 480))
         self.vLayout6 = QVBoxLayout(self)
         self.vLayout6.setContentsMargins(0, 0, 0, 0)
         self.vLayout6.setSpacing(0)
@@ -56,7 +57,7 @@ class ConfigDialog(QDialog):
 
         self.settingsTabs = QTabWidget(self)
         self.settingsTabs.setSizePolicy(minMinSizePolicy)
-        self.settingsTabs.setMinimumSize(QSize(200, 180))
+        self.settingsTabs.setMinimumSize(QSize(200, 240))
 
         # fonts
         twelvePtFont = QFont()
@@ -82,7 +83,7 @@ class ConfigDialog(QDialog):
         self.contentTab.setSizePolicy(minExpMinExpSizePolicy)
         self.contentTab.setMinimumSize(QSize(300, 100))
         self.contentTab.setObjectName("contentTab")
-
+        
         self.vLayout5 = QVBoxLayout(self.contentTab)
         self.vLayout5.setObjectName("vLayout5")
         self.rotationSettingsGrpBox = QGroupBox(self.contentTab)
@@ -186,7 +187,7 @@ class ConfigDialog(QDialog):
         self.addContentButton.setText("Add Content")
         self.deleteSelectionButton.setText("Delete Selection")
         self.settingsTabs.setTabText(
-            self.settingsTabs.indexOf(self.contentTab), "Content"
+            self.settingsTabs.indexOf(self.contentTab), ""
         )
 
         self.settingsTabs.setCurrentIndex(0)
