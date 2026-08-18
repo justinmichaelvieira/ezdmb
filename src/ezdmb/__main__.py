@@ -15,7 +15,7 @@ from PySide6.QtWidgets import QApplication
 from ezdmb import __version__, STYLESHEET
 from ezdmb.Controller import Configuration
 from ezdmb.Controller.LoggingUtility import setupLogging
-from ezdmb.View.IconUtility import getWindowIcon
+from ezdmb.Utility.IconUtility import getWindowIcon
 from ezdmb.View import FullScreenWindow, ConfigDialog, PreviewWindow, SimpleTextDialog
 
 _logger = logging.getLogger()

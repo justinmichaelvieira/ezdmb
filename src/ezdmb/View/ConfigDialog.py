@@ -14,14 +14,13 @@ from PySide6.QtWidgets import (
     QListWidgetItem,
     QPushButton,
     QSizePolicy,
-    QStyle,
     QTabWidget,
     QVBoxLayout,
     QWidget,
 )
 
 from ezdmb.Controller.Configuration import Configuration
-from ezdmb.View.IconUtility import getWindowIcon
+from ezdmb.Utility.IconUtility import getWindowIcon
 
 
 class ConfigDialog(QDialog):
@@ -83,7 +82,7 @@ class ConfigDialog(QDialog):
         self.contentTab.setSizePolicy(minExpMinExpSizePolicy)
         self.contentTab.setMinimumSize(QSize(300, 100))
         self.contentTab.setObjectName("contentTab")
-        
+
         self.vLayout5 = QVBoxLayout(self.contentTab)
         self.vLayout5.setObjectName("vLayout5")
         self.rotationSettingsGrpBox = QGroupBox(self.contentTab)
@@ -153,7 +152,7 @@ class ConfigDialog(QDialog):
         self.frame.setObjectName("frame")
 
         self.horizontalLayout = QHBoxLayout(self.frame)
-        self.horizontalLayout.setContentsMargins(8,12, 8, 12)
+        self.horizontalLayout.setContentsMargins(8, 12, 8, 12)
         self.horizontalLayout.setSpacing(12)
         self.horizontalLayout.setObjectName("horizontalLayout")
 

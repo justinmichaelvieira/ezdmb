@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QPixmap
 
-from ezdmb.View.IconUtility import getWindowIcon
+from ezdmb.Utility.IconUtility import getWindowIcon
 from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey, setOpenOnOKey
 from ezdmb.View import MenuContentViewUtility
 from ezdmb.Controller.Configuration import Configuration
