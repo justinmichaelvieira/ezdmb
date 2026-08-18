@@ -8,6 +8,7 @@ def getWindowIcon():
     icon.addFile(":/images/logo_48x48.png", QSize(48, 48))
     return icon
 
+
 def getIcon(icon_path):
     icon = QIcon()
     icon.addFile(f":/images/{icon_path}", QSize(48, 48))
