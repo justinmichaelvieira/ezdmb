@@ -121,11 +121,15 @@ class Configuration(QObject):
         RotateContent,
         RotateContentTime,
         ContentArray,
+        savePath=None,
     ):
         self._data["rotate_content"] = RotateContent
         self._data["rotate_content_time"] = int(RotateContentTime)
         self._data["imported_content"] = ContentArray
-        with open(self.config_path, "w+") as outfile:
+
+        if savePath is None: # Default to the config path if not doing a save as
+            savePath = self.config_path
+        with open(savePath, "w+") as outfile:
             json.dump(self.get_data(), outfile)
 
         self.configUpdated.emit(self._data)

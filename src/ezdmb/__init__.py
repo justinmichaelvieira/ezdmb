@@ -68,4 +68,13 @@ QGraphicsView {
     border-color: #2b2b2b;
     color: #bbbbbb;
 }
+
+QListWidget::item {
+    border: 1px solid #2b2b2b;
+}
+
+QListWidget::item:selected {
+    background: #324a8b;
+    color: #ffffff;
+}
 """
