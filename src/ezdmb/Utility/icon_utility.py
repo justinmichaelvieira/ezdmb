@@ -1,9 +1,7 @@
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon
 
-from ezdmb.View import (
-    resources,  # noqa: F401, this is needed to load the resources.qrc file
-)
+from ezdmb.View import resources  # noqa: F401, this is needed to load the resources.qrc file
 
 
 def getWindowIcon():
