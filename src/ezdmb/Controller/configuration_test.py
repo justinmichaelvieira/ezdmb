@@ -41,7 +41,7 @@ class test_configuration_init:
             patch("os.name", "posix"),
             patch.object(Path, "home", return_value=Path(tempfile.gettempdir())),
         ):
-            config = configuration()
+            config = configuration.configuration()
             assert config is not None
             assert isinstance(config.Data, dict)
 
@@ -102,7 +102,7 @@ class TestConfigurationProperties:
             patch("os.name", "nt"),
             patch.object(configuration, "__init__", lambda x: None),
         ):
-            config = configuration()
+            config = configuration.configuration()
             config.set_rotate_content(True)
             assert config.get_rotate_content() is True
             config.set_rotate_content(False)
@@ -111,7 +111,7 @@ class TestConfigurationProperties:
     def test_rotate_content_time_property(self, qapp, temp_config_dir):
         """Test RotateContentTime property getter and setter"""
         with patch.object(configuration, "__init__", lambda x: None):
-            config = configuration()
+            config = configuration.configuration()
             config.set_rotate_content_time(30)
             assert config.get_rotate_content_time() == 30
             config.set_rotate_content_time(60)
@@ -120,7 +120,7 @@ class TestConfigurationProperties:
     def test_content_array_property(self, qapp, temp_config_dir):
         """Test ContentArray property getter and setter"""
         with patch.object(configuration, "__init__", lambda x: None):
-            config = configuration()
+            config = configuration.configuration()
             test_array = ["/path/to/image1.jpg", "/path/to/image2.png"]
             config.set_content_array(test_array)
             assert config.get_content_array() == test_array
@@ -128,7 +128,7 @@ class TestConfigurationProperties:
     def test_data_property(self, qapp, temp_config_dir):
         """Test Data property getter and setter"""
         with patch.object(configuration, "__init__", lambda x: None):
-            config = configuration()
+            config = configuration.configuration()
             test_data = {
                 "rotate_content": True,
                 "rotate_content_time": 20,
