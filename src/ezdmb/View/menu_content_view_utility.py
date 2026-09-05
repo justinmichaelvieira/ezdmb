@@ -1,14 +1,16 @@
 # pylint: disable=no-name-in-module
 import os.path
-from PySide6.QtCore import QPoint, Signal, Slot, QThread
+
+from PySide6.QtCore import QPoint, QThread, Signal, Slot
 from PySide6.QtGui import QFont, QPainter, QPixmap, Qt
-from ezdmb.Controller.Configuration import Configuration
+
+from ezdmb.Controller.configuration import configuration
 
 
-class MenuContentViewUtility(QThread):
+class menu_content_view_utility(QThread):
     contentUpdated = Signal(QPixmap)
 
-    def __init__(self, config: Configuration, pixmap, windowName, onRefresh):
+    def __init__(self, config: configuration, pixmap, windowName, onRefresh):
         QThread.__init__(self)
         self._config = config
 

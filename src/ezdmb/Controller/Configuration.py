@@ -1,17 +1,18 @@
 """
-Configuration.py
+configuration.py
 Encapsulates configuration file serialization and deserialization
 """
 
-import os
 import errno
 import json
+import os
 from pathlib import Path
-from PySide6.QtCore import Signal, QObject
+
+from PySide6.QtCore import QObject, Signal
 
 
 # pylint: disable=too-many-instance-attributes, missing-function-docstring, missing-class-docstring
-class Configuration(QObject):
+class configuration(QObject):
     # signals
     configUpdated = Signal(dict)
 
@@ -81,7 +82,7 @@ class Configuration(QObject):
         # self._logger = logger
 
         flags = os.O_CREAT | os.O_RDWR
-        self._data = dict()
+        self._data = {}
 
         if os.name == "nt":
             appdata_path = os.path.join(os.getenv("APPDATA"), "ezdmb")

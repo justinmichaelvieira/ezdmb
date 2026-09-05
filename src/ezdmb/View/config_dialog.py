@@ -19,17 +19,17 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from ezdmb.Controller.Configuration import Configuration
-from ezdmb.Utility.IconUtility import getWindowIcon
+from ezdmb.Controller.configuration import configuration
+from ezdmb.Utility.icon_utility import getWindowIcon
 
 
-class ConfigDialog(QDialog):
-    def __init__(self, config: Configuration):
+class config_dialog(QDialog):
+    def __init__(self, config: configuration):
         super(self.__class__, self).__init__()
         self._config = config
 
         # widgets
-        self.setObjectName("ConfigDialog")
+        self.setObjectName("config_dialog")
         self.setWindowModality(Qt.ApplicationModal)
         self.resize(401, 331)
 
@@ -185,9 +185,7 @@ class ConfigDialog(QDialog):
         self.addRemoveGrpBox.setTitle("Add/Remove content")
         self.addContentButton.setText("Add Content")
         self.deleteSelectionButton.setText("Delete Selection")
-        self.settingsTabs.setTabText(
-            self.settingsTabs.indexOf(self.contentTab), ""
-        )
+        self.settingsTabs.setTabText(self.settingsTabs.indexOf(self.contentTab), "")
 
         self.settingsTabs.setCurrentIndex(0)
         self.setUiFromConfig()
@@ -200,7 +198,7 @@ class ConfigDialog(QDialog):
 
         # Display list of loaded content files for the DMB in the loadedContentWidget
         for i in config.ContentArray:
-            item = QListWidgetItem("%s" % str(i))
+            item = QListWidgetItem(f"{i!s}")
             self.loadedContentWidget.addItem(item)
 
     def closeDialog(self):

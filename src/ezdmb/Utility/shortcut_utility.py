@@ -1,7 +1,7 @@
 # pylint: disable=no-name-in-module
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QKeySequence, QShortcut
+from PySide6.QtWidgets import QApplication
 
 
 def setCloseOnEscKey(window):

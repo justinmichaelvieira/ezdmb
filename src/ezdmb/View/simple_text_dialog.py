@@ -1,13 +1,13 @@
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QDialog,
     QDialogButtonBox,
     QLabel,
     QVBoxLayout,
 )
-from PySide6.QtCore import Qt
 
 
-class SimpleTextDialog(QDialog):
+class simple_text_dialog(QDialog):
     def __init__(self, titleText, messageText):
         super().__init__()
 

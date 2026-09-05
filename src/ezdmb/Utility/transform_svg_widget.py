@@ -1,9 +1,9 @@
 from PySide6.QtGui import QPainter, QTransform
-from PySide6.QtWidgets import QWidget
 from PySide6.QtSvg import QSvgRenderer
+from PySide6.QtWidgets import QWidget
 
 
-class TransformSvgWidget(QWidget):
+class transform_svg_widget(QWidget):
     def __init__(self, svg_file):
         super().__init__()
         self.renderer = QSvgRenderer(svg_file)

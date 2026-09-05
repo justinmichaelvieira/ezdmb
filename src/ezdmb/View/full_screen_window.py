@@ -1,27 +1,27 @@
 # pylint: disable=no-name-in-module
-from PySide6.QtCore import Qt, Slot, QSize
+from PySide6.QtCore import QSize, Qt, Slot
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
+    QFrame,
+    QGridLayout,
+    QLabel,
     QMainWindow,
     QSizePolicy,
     QWidget,
-    QFrame,
-    QLabel,
-    QGridLayout,
 )
-from PySide6.QtGui import QPixmap
 
-from ezdmb.Utility.IconUtility import getWindowIcon
-from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey, setOpenOnOKey
-from ezdmb.View import MenuContentViewUtility
-from ezdmb.Controller.Configuration import Configuration
+from ezdmb.Controller.configuration import configuration
+from ezdmb.Utility.icon_utility import getWindowIcon
+from ezdmb.Utility.shortcut_utility import setCloseOnEscKey, setOpenOnOKey
+from ezdmb.View import menu_content_view_utility
 
 
-class FullScreenWindow(QMainWindow):
-    def __init__(self, config: Configuration, reopen_preview_window):
+class full_screen_window(QMainWindow):
+    def __init__(self, config: configuration, reopen_preview_window):
         super(self.__class__, self).__init__()
         self._config = config
 
-        self.setObjectName("FullScreenWindow")
+        self.setObjectName("full_screen_window")
         self.setWindowModality(Qt.WindowModal)
         self.setEnabled(True)
 
@@ -61,10 +61,10 @@ class FullScreenWindow(QMainWindow):
         self.setCentralWidget(self.centralwidget)
         self.setWindowTitle("Menu")
 
-        self.contentViewUtil = MenuContentViewUtility.MenuContentViewUtility(
+        self.contentViewUtil = menu_content_view_utility.menu_content_view_utility(
             self._config,
             self.contentLbl,
-            "FullScreenWindow",
+            "full_screen_window",
             self.onRefresh,
         )
         setCloseOnEscKey(self)

@@ -1,5 +1,6 @@
-from os.path import dirname, join, abspath
-from setuptools import setup, find_packages
+from os.path import abspath, dirname, join
+
+from setuptools import find_packages, setup
 
 CURDIR = dirname(abspath(__file__))
 with open(join(CURDIR, "requirements.txt")) as rs:

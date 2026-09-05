@@ -1,34 +1,35 @@
 # pylint: disable=no-name-in-module
 import sys
-from PySide6.QtCore import QSize, Qt, QRect, Slot
-from PySide6.QtGui import QFont, QPixmap, QAction
+
+from PySide6.QtCore import QRect, QSize, Qt, Slot
+from PySide6.QtGui import QAction, QFont, QPixmap
 from PySide6.QtWidgets import (
-    QMainWindow,
-    QWidget,
-    QSizePolicy,
+    QFrame,
     QGridLayout,
     QGroupBox,
-    QLabel,
-    QFrame,
-    QLayout,
-    QMenuBar,
-    QMenu,
     QHBoxLayout,
+    QLabel,
+    QLayout,
+    QMainWindow,
+    QMenu,
+    QMenuBar,
+    QSizePolicy,
+    QWidget,
 )
 
-from ezdmb.Utility.IconUtility import getIcon, getWindowIcon
-from ezdmb.Utility.ShortcutUtility import setCloseOnEscKey
-from ezdmb.View import MenuContentViewUtility
+from ezdmb.Utility.icon_utility import getIcon, getWindowIcon
+from ezdmb.Utility.shortcut_utility import setCloseOnEscKey
+from ezdmb.View import menu_content_view_utility
 
 
-class PreviewWindow(QMainWindow):
+class preview_window(QMainWindow):
     def __init__(self, config, showConfig, showAboutWindow, showQuickstartWindow):
         super(self.__class__, self).__init__()
         self.setupUi(showConfig, showAboutWindow, showQuickstartWindow)
-        self.contentUtil = MenuContentViewUtility.MenuContentViewUtility(
+        self.contentUtil = menu_content_view_utility.menu_content_view_utility(
             config,
             self.headerLabel,
-            "PreviewWindow",
+            "preview_window",
             self.onRefresh,
         )
         setCloseOnEscKey(self)
@@ -127,7 +128,9 @@ class PreviewWindow(QMainWindow):
         font.setItalic(False)
         font.setLegacyWeight(50)
         self.currentMenuLabel.setFont(font)
-        self.currentMenuLabel.setStyleSheet("font-size: 32px; text-align: left; font-weight: bold; vertical-align: text-top;")
+        self.currentMenuLabel.setStyleSheet(
+            "font-size: 32px; text-align: left; font-weight: bold; vertical-align: text-top;"
+        )
         self.currentMenuLabel.setFrameShape(QFrame.NoFrame)
         self.currentMenuLabel.setFrameShadow(QFrame.Plain)
         self.currentMenuLabel.setLineWidth(0)
@@ -155,13 +158,17 @@ class PreviewWindow(QMainWindow):
         self.menuFile.setTitle("File")
         self.menuFile.setObjectName("menuFile")
 
-        self.displaySettingsAction = QAction(self, icon=getIcon("settings.svg"), shortcut=Qt.CTRL | Qt.Key_E)
+        self.displaySettingsAction = QAction(
+            self, icon=getIcon("settings.svg"), shortcut=Qt.CTRL | Qt.Key_E
+        )
         self.displaySettingsAction.setText("&Display Settings")
         self.displaySettingsAction.setObjectName("displaySettingsAction")
         self.displaySettingsAction.triggered.connect(showConfig)
         self.menuFile.addAction(self.displaySettingsAction)
 
-        self.exitAction = QAction(self, icon=getIcon("close.svg"), shortcut=Qt.CTRL | Qt.Key_X)
+        self.exitAction = QAction(
+            self, icon=getIcon("close.svg"), shortcut=Qt.CTRL | Qt.Key_X
+        )
         self.exitAction.setText("E&xit")
         self.exitAction.setObjectName("exitAction")
         self.exitAction.triggered.connect(lambda: sys.exit())
@@ -173,13 +180,17 @@ class PreviewWindow(QMainWindow):
         self.menuHelp.setTitle("Help")
         self.menuHelp.setObjectName("menuHelp")
 
-        self.showQuickstartAction = QAction(self, icon=getIcon("library_add.svg"), shortcut=Qt.CTRL | Qt.Key_Q)
+        self.showQuickstartAction = QAction(
+            self, icon=getIcon("library_add.svg"), shortcut=Qt.CTRL | Qt.Key_Q
+        )
         self.showQuickstartAction.setText("&Quickstart")
         self.showQuickstartAction.setObjectName("quickstartAction")
         self.showQuickstartAction.triggered.connect(showQuickstartWindow)
         self.menuHelp.addAction(self.showQuickstartAction)
 
-        self.showAboutAction = QAction(self, icon=getIcon("about.svg"), shortcut=Qt.CTRL | Qt.Key_A)
+        self.showAboutAction = QAction(
+            self, icon=getIcon("about.svg"), shortcut=Qt.CTRL | Qt.Key_A
+        )
         self.showAboutAction.setText("&About")
         self.showAboutAction.setObjectName("aboutAction")
         self.showAboutAction.triggered.connect(showAboutWindow)
