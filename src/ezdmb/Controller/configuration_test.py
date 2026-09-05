@@ -1,6 +1,6 @@
 """
 configuration_test.py
-Tests for the configuration module
+Tests for the configuration module.
 """
 
 import json

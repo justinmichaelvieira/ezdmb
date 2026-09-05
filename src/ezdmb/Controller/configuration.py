@@ -1,6 +1,6 @@
 """
 configuration.py
-Encapsulates configuration file serialization and deserialization
+Encapsulates configuration file serialization and deserialization.
 """
 
 import errno
