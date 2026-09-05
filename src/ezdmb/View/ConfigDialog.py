@@ -179,8 +179,8 @@ class ConfigDialog(QDialog):
         self.vLayout6.addWidget(self.settingsTabs)
 
         self.setWindowTitle("Settings")
-        self.rotationSettingsGrpBox.setTitle("Rotation settings")
-        self.rotateImagesCheck.setText(" Rotate content every")
+        self.rotationSettingsGrpBox.setTitle("Rotation")
+        self.rotateImagesCheck.setText("Rotate content every")
         self.secondsLabel.setText("seconds")
         self.addRemoveGrpBox.setTitle("Add/Remove content")
         self.addContentButton.setText("Add Content")

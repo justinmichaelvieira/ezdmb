@@ -1,0 +1,20 @@
+[project]
+name = "ezdmb"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Justin Vieira", email = "justin@rancorsoft.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "aqtinstall>=3.3.0",
+    "black>=26.5.1",
+    "pyinstaller>=6.22.2",
+    "pyqt-distutils>=0.7.3",
+    "pyside6>=6.0.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.10,<0.13.0"]
+build-backend = "uv_build"
