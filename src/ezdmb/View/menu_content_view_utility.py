@@ -25,6 +25,9 @@ class menu_content_view_utility(QThread):
         self._config.configUpdated.connect(self.onConfigUpdated)
         self.start()
 
+    def __del__(self):
+        self.wait()
+
     @Slot(dict)
     def onConfigUpdated(self, data):
         self.contentArray = data["imported_content"]
