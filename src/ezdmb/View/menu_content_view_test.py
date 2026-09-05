@@ -12,7 +12,7 @@ from PySide6.QtCore import QThread
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QApplication, QLabel
 
-from ezdmb.Controller.configuration import configuration
+from ezdmb.Controller import configuration
 from ezdmb.View import menu_content_view
 
 
