@@ -36,7 +36,11 @@ class test_configuration_init:
 
     def test_configuration_creates_instance(self, qapp):
         """Test that configuration can be instantiated"""
-        with patch("os.getenv", return_value=None), patch("os.name", "posix"), patch.object(Path, "home", return_value=Path(tempfile.gettempdir())):
+        with (
+            patch("os.getenv", return_value=None),
+            patch("os.name", "posix"),
+            patch.object(Path, "home", return_value=Path(tempfile.gettempdir())),
+        ):
             config = configuration()
             assert config is not None
             assert isinstance(config.Data, dict)
@@ -46,7 +50,11 @@ class test_configuration_init:
     ):
         """Test that configuration creates appdata directory on Windows"""
         config_path = os.path.join(temp_config_dir, "ezdmb")
-        with patch("os.name", "nt"), patch("os.getenv", return_value=temp_config_dir), patch.object(configuration, "__init__", lambda x: None):
+        with (
+            patch("os.name", "nt"),
+            patch("os.getenv", return_value=temp_config_dir),
+            patch.object(configuration, "__init__", lambda x: None),
+        ):
             configuration()  # noqq: F841
             # Manually call the init logic
             os.makedirs(config_path, exist_ok=True)
@@ -54,7 +62,10 @@ class test_configuration_init:
 
     def test_configuration_creates_appdata_directory_linux(self, qapp, temp_config_dir):
         """Test that configuration creates appdata directory on Linux"""
-        with patch("os.name", "posix"), patch.object(Path, "home", return_value=Path(temp_config_dir)):
+        with (
+            patch("os.name", "posix"),
+            patch.object(Path, "home", return_value=Path(temp_config_dir)),
+        ):
             config_path = os.path.join(temp_config_dir, ".ezdmb")
             os.makedirs(config_path, exist_ok=True)
             assert os.path.exists(config_path)
@@ -86,7 +97,11 @@ class TestConfigurationProperties:
 
     def test_rotate_content_property(self, qapp, temp_config_dir):
         """Test RotateContent property getter and setter"""
-        with patch("os.getenv", return_value=temp_config_dir), patch("os.name", "nt"), patch.object(configuration, "__init__", lambda x: None):
+        with (
+            patch("os.getenv", return_value=temp_config_dir),
+            patch("os.name", "nt"),
+            patch.object(configuration, "__init__", lambda x: None),
+        ):
             config = configuration()
             config.set_rotate_content(True)
             assert config.get_rotate_content() is True

@@ -95,12 +95,12 @@ def populate_instance():
     preview_win.raise_()
     preview_win.activateWindow()
 
-    print(f'''
+    print(f"""
 ezdmb v{__version__} started with:
     Rotation: {config.RotateContent}
     RotateContentTime {config.RotateContentTime} sec
     and {config.ContentArray.__len__()} screens to rotate through.
-''')
+""")
     return app, full_screen_win, config_win, preview_win
 
 

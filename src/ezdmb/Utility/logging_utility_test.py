@@ -19,7 +19,15 @@ class TestSetupLogging:
     def test_setup_logging_creates_file_handler(self):
         """Test that setupLogging creates a file handler"""
         mock_logger = MagicMock()
-        with (tempfile.TemporaryDirectory(), patch("ezdmb.Controller.logging_utility.logging.FileHandler") as mock_file_handler, patch("ezdmb.Controller.logging_utility.logging.StreamHandler"), patch("builtins.open", create=True), patch("ezdmb.Controller.logging_utility.logger", mock_logger)):
+        with (
+            tempfile.TemporaryDirectory(),
+            patch(
+                "ezdmb.Controller.logging_utility.logging.FileHandler"
+            ) as mock_file_handler,
+            patch("ezdmb.Controller.logging_utility.logging.StreamHandler"),
+            patch("builtins.open", create=True),
+            patch("ezdmb.Controller.logging_utility.logger", mock_logger),
+        ):
             setupLogging()
             # Verify FileHandler was called
             mock_file_handler.assert_called_once()
@@ -27,15 +35,25 @@ class TestSetupLogging:
     def test_setup_logging_creates_stream_handler(self):
         """Test that setupLogging creates a stream handler for console output"""
         mock_logger = MagicMock()
-        with patch("ezdmb.Controller.logging_utility.logging.FileHandler"), patch("ezdmb.Controller.logging_utility.logging.StreamHandler") as mock_stream_handler, patch("ezdmb.Controller.logging_utility.logger", mock_logger):
+        with (
+            patch("ezdmb.Controller.logging_utility.logging.FileHandler"),
+            patch(
+                "ezdmb.Controller.logging_utility.logging.StreamHandler"
+            ) as mock_stream_handler,
+            patch("ezdmb.Controller.logging_utility.logger", mock_logger),
+        ):
             setupLogging()
             # Verify StreamHandler was called
-            mock_stream_handler.assert_called_once() 
+            mock_stream_handler.assert_called_once()
 
     def test_setup_logging_sets_debug_level_on_logger(self):
         """Test that setupLogging sets DEBUG level on main logger"""
         mock_logger = MagicMock()
-        with patch("ezdmb.Controller.logging_utility.logging.FileHandler"), patch("ezdmb.Controller.logging_utility.logging.StreamHandler"), patch("ezdmb.Controller.logging_utility.logger", mock_logger):
+        with (
+            patch("ezdmb.Controller.logging_utility.logging.FileHandler"),
+            patch("ezdmb.Controller.logging_utility.logging.StreamHandler"),
+            patch("ezdmb.Controller.logging_utility.logger", mock_logger),
+        ):
             setupLogging()
             # Verify setLevel was called with DEBUG
             mock_logger.setLevel.assert_called_once_with(logging.DEBUG)
@@ -44,7 +62,13 @@ class TestSetupLogging:
         """Test that setupLogging sets DEBUG level on file handler"""
         mock_file_handler = MagicMock()
         mock_logger = MagicMock()
-        with patch("ezdmb.Controller.logging_utility.logging.FileHandler") as mock_file_handler_class, patch("ezdmb.Controller.logging_utility.logging.StreamHandler"), patch("ezdmb.Controller.logging_utility.logger", mock_logger):
+        with (
+            patch(
+                "ezdmb.Controller.logging_utility.logging.FileHandler"
+            ) as mock_file_handler_class,
+            patch("ezdmb.Controller.logging_utility.logging.StreamHandler"),
+            patch("ezdmb.Controller.logging_utility.logger", mock_logger),
+        ):
             mock_file_handler_class.return_value = mock_file_handler
             setupLogging()
             # Verify file handler setLevel was called with DEBUG
@@ -54,7 +78,13 @@ class TestSetupLogging:
         """Test that setupLogging sets DEBUG level on stream handler"""
         mock_stream_handler = MagicMock()
         mock_logger = MagicMock()
-        with patch("ezdmb.Controller.logging_utility.logging.FileHandler"), patch("ezdmb.Controller.logging_utility.logging.StreamHandler") as mock_stream_handler_class, patch("ezdmb.Controller.logging_utility.logger", mock_logger):
+        with (
+            patch("ezdmb.Controller.logging_utility.logging.FileHandler"),
+            patch(
+                "ezdmb.Controller.logging_utility.logging.StreamHandler"
+            ) as mock_stream_handler_class,
+            patch("ezdmb.Controller.logging_utility.logger", mock_logger),
+        ):
             mock_stream_handler_class.return_value = mock_stream_handler
             setupLogging()
             # Verify stream handler setLevel was called with DEBUG
@@ -63,7 +93,14 @@ class TestSetupLogging:
     def test_setup_logging_creates_formatter(self):
         """Test that setupLogging creates a formatter"""
         mock_logger = MagicMock()
-        with patch("ezdmb.Controller.logging_utility.logging.FileHandler"), patch("ezdmb.Controller.logging_utility.logging.StreamHandler"), patch("ezdmb.Controller.logging_utility.logging.Formatter") as mock_formatter, patch("ezdmb.Controller.logging_utility.logger", mock_logger):
+        with (
+            patch("ezdmb.Controller.logging_utility.logging.FileHandler"),
+            patch("ezdmb.Controller.logging_utility.logging.StreamHandler"),
+            patch(
+                "ezdmb.Controller.logging_utility.logging.Formatter"
+            ) as mock_formatter,
+            patch("ezdmb.Controller.logging_utility.logger", mock_logger),
+        ):
             setupLogging()
             # Verify Formatter was called
             mock_formatter.assert_called_once()
@@ -78,7 +115,17 @@ class TestSetupLogging:
         mock_formatter = MagicMock()
         mock_file_handler = MagicMock()
         mock_logger = MagicMock()
-        with patch("ezdmb.Controller.logging_utility.logging.FileHandler") as mock_file_handler_class, patch("ezdmb.Controller.logging_utility.logging.StreamHandler"), patch("ezdmb.Controller.logging_utility.logging.Formatter", return_value=mock_formatter), patch("ezdmb.Controller.logging_utility.logger", mock_logger):
+        with (
+            patch(
+                "ezdmb.Controller.logging_utility.logging.FileHandler"
+            ) as mock_file_handler_class,
+            patch("ezdmb.Controller.logging_utility.logging.StreamHandler"),
+            patch(
+                "ezdmb.Controller.logging_utility.logging.Formatter",
+                return_value=mock_formatter,
+            ),
+            patch("ezdmb.Controller.logging_utility.logger", mock_logger),
+        ):
             mock_file_handler_class.return_value = mock_file_handler
             setupLogging()
             # Verify setFormatter was called on file handler
@@ -88,7 +135,16 @@ class TestSetupLogging:
         """Test that setupLogging sets formatter on stream handler"""
         mock_formatter = MagicMock()
 
-        with patch("ezdmb.Controller.logging_utility.logging.FileHandler"), patch("ezdmb.Controller.logging_utility.logging.StreamHandler") as mock_stream_handler_class, patch("ezdmb.Controller.logging_utility.logging.Formatter", return_value=mock_formatter):
+        with (
+            patch("ezdmb.Controller.logging_utility.logging.FileHandler"),
+            patch(
+                "ezdmb.Controller.logging_utility.logging.StreamHandler"
+            ) as mock_stream_handler_class,
+            patch(
+                "ezdmb.Controller.logging_utility.logging.Formatter",
+                return_value=mock_formatter,
+            ),
+        ):
             mock_stream_handler = MagicMock()
             mock_stream_handler_class.return_value = mock_stream_handler
 
@@ -97,15 +153,18 @@ class TestSetupLogging:
                 setupLogging()
 
                 # Verify setFormatter was called on stream handler
-                mock_stream_handler.setFormatter.assert_called_once_with(
-                    mock_formatter
-                )
+                mock_stream_handler.setFormatter.assert_called_once_with(mock_formatter)
 
     def test_setup_logging_adds_file_handler_to_logger(self):
         """Test that setupLogging adds file handler to logger"""
-        with patch(
-            "ezdmb.Controller.logging_utility.logging.FileHandler"
-        ) as mock_file_handler_class, patch("ezdmb.Controller.logging_utility.logging.StreamHandler"), patch("ezdmb.Controller.logging_utility.logging.Formatter"), patch("ezdmb.Controller.logging_utility.logging.Formatter"):
+        with (
+            patch(
+                "ezdmb.Controller.logging_utility.logging.FileHandler"
+            ) as mock_file_handler_class,
+            patch("ezdmb.Controller.logging_utility.logging.StreamHandler"),
+            patch("ezdmb.Controller.logging_utility.logging.Formatter"),
+            patch("ezdmb.Controller.logging_utility.logging.Formatter"),
+        ):
             mock_file_handler = MagicMock()
             mock_file_handler_class.return_value = mock_file_handler
 
@@ -120,26 +179,34 @@ class TestSetupLogging:
 
     def test_setup_logging_adds_stream_handler_to_logger(self):
         """Test that setupLogging adds stream handler to logger"""
-        with patch("ezdmb.Controller.logging_utility.logging.FileHandler"), patch(
+        with (
+            patch("ezdmb.Controller.logging_utility.logging.FileHandler"),
+            patch(
                 "ezdmb.Controller.logging_utility.logging.StreamHandler"
-            ) as mock_stream_handler_class, patch("ezdmb.Controller.logging_utility.logging.Formatter"):
-                    mock_stream_handler = MagicMock()
-                    mock_stream_handler_class.return_value = mock_stream_handler
+            ) as mock_stream_handler_class,
+            patch("ezdmb.Controller.logging_utility.logging.Formatter"),
+        ):
+            mock_stream_handler = MagicMock()
+            mock_stream_handler_class.return_value = mock_stream_handler
 
-                    mock_logger = MagicMock()
-                    with patch("ezdmb.Controller.logging_utility.logger", mock_logger):
-                        setupLogging()
+            mock_logger = MagicMock()
+            with patch("ezdmb.Controller.logging_utility.logger", mock_logger):
+                setupLogging()
 
-                        # Verify addHandler was called with stream handler
-                        assert mock_logger.addHandler.call_count >= 1
-                        calls = mock_logger.addHandler.call_args_list
-                        assert any(call[0][0] == mock_stream_handler for call in calls)
+                # Verify addHandler was called with stream handler
+                assert mock_logger.addHandler.call_count >= 1
+                calls = mock_logger.addHandler.call_args_list
+                assert any(call[0][0] == mock_stream_handler for call in calls)
 
     def test_setup_logging_idempotent(self):
         """Test that setupLogging can be called multiple times safely"""
         mock_logger = MagicMock()
 
-        with patch("ezdmb.Controller.logging_utility.logging.FileHandler"), patch("ezdmb.Controller.logging_utility.logging.StreamHandler"), patch("ezdmb.Controller.logging_utility.logger", mock_logger):
+        with (
+            patch("ezdmb.Controller.logging_utility.logging.FileHandler"),
+            patch("ezdmb.Controller.logging_utility.logging.StreamHandler"),
+            patch("ezdmb.Controller.logging_utility.logger", mock_logger),
+        ):
             # Call setupLogging multiple times
             setupLogging()
             setupLogging()
