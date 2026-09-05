@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
 from ezdmb.Controller.configuration import configuration
 from ezdmb.Utility.icon_utility import getWindowIcon
 from ezdmb.Utility.shortcut_utility import setCloseOnEscKey, setOpenOnOKey
-from ezdmb.View import menu_content_view_utility
+from ezdmb.View import menu_content_view
 
 
 class full_screen_window(QMainWindow):
@@ -61,7 +61,7 @@ class full_screen_window(QMainWindow):
         self.setCentralWidget(self.centralwidget)
         self.setWindowTitle("Menu")
 
-        self.contentViewUtil = menu_content_view_utility.menu_content_view_utility(
+        self.contentViewUtil = menu_content_view.menu_content_view(
             self._config,
             self.contentLbl,
             "full_screen_window",

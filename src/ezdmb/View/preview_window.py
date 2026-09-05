@@ -19,14 +19,14 @@ from PySide6.QtWidgets import (
 
 from ezdmb.Utility.icon_utility import getIcon, getWindowIcon
 from ezdmb.Utility.shortcut_utility import setCloseOnEscKey
-from ezdmb.View import menu_content_view_utility
+from ezdmb.View import menu_content_view
 
 
 class preview_window(QMainWindow):
     def __init__(self, config, showConfig, showAboutWindow, showQuickstartWindow):
         super(self.__class__, self).__init__()
         self.setupUi(showConfig, showAboutWindow, showQuickstartWindow)
-        self.contentUtil = menu_content_view_utility.menu_content_view_utility(
+        self.contentUtil = menu_content_view.menu_content_view(
             config,
             self.headerLabel,
             "preview_window",

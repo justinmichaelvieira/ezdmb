@@ -12,7 +12,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from PySide6.QtWidgets import QApplication
 
-from ezdmb.Controller.configuration import configuration
+from ezdmb.Controller import configuration
 
 
 @pytest.fixture

@@ -13,7 +13,7 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QApplication, QLabel
 
 from ezdmb.Controller.configuration import configuration
-from ezdmb.View.menu_content_view_utility import menu_content_view_utility
+from ezdmb.View import menu_content_view
 
 
 @pytest.fixture
@@ -43,7 +43,7 @@ def mock_pixmap_label(qapp):
     return label
 
 
-class test_menu_content_view_utility_init:
+class test_menu_content_view_init:
     """Tests for MenuContentViewUtility initialization"""
 
     def test_initialization(self, qapp, mock_config, mock_pixmap_label):
@@ -51,7 +51,7 @@ class test_menu_content_view_utility_init:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -68,7 +68,7 @@ class test_menu_content_view_utility_init:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -83,7 +83,7 @@ class test_menu_content_view_utility_init:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -99,7 +99,7 @@ class TestGetViewableFileContent:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -123,7 +123,7 @@ class TestGetViewableFileContent:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -144,7 +144,7 @@ class TestGetViewableFileContent:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -165,7 +165,7 @@ class TestGetViewableFileContent:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -186,7 +186,7 @@ class TestGetViewableFileContent:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -207,7 +207,7 @@ class TestGetViewableFileContent:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -219,7 +219,7 @@ class TestGetViewableFileContent:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -245,7 +245,7 @@ class TestOnConfigUpdated:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -264,7 +264,7 @@ class TestOnConfigUpdated:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -283,7 +283,7 @@ class TestOnConfigUpdated:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -306,7 +306,7 @@ class TestMenuContentViewUtilityProperties:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "FullScreenWindow", callback
             )
 
@@ -317,7 +317,7 @@ class TestMenuContentViewUtilityProperties:
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view_utility(
+            util = menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 

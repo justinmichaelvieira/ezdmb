@@ -7,7 +7,7 @@ from PySide6.QtGui import QFont, QPainter, QPixmap, Qt
 from ezdmb.Controller.configuration import configuration
 
 
-class menu_content_view_utility(QThread):
+class menu_content_view(QThread):
     contentUpdated = Signal(QPixmap)
 
     def __init__(self, config: configuration, pixmap, windowName, onRefresh):
