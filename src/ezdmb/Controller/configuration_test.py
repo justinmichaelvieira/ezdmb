@@ -153,7 +153,7 @@ class TestConfigurationSaveConfig:
 
         # Call the actual save_config method
         configuration.save_config(config, True, "20", ["/path/to/image.jpg"])
-    
+
         # Verify file was created and contains correct data
         assert os.path.exists(config_file)
         with open(config_file, "r") as f:
