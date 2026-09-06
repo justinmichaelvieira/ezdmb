@@ -211,7 +211,7 @@ class config_dialog(QDialog):
         ]
 
     def saveUpdatedConfig(self):
-        self._config.SaveConfig(
+        self._config.save_config(
             self.rotateImagesCheck.isChecked(),
             float(self.rotateTimeBox.value()),
             self.getContentList(),

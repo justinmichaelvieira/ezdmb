@@ -106,7 +106,7 @@ class configuration(QObject):
                     raise
             else:  # No exception, so the file must have been created successfully.
                 # Settings defaults here, for first runs
-                self.SaveConfig(True, "15", [])
+                self.save_config(True, "15", [])
 
         with open(self.config_path, "r+") as json_data_file:
             self._data = json.load(json_data_file)
@@ -117,7 +117,7 @@ class configuration(QObject):
         self.set_content_array(self._data["imported_content"])
 
     # Saves our JSON config file
-    def SaveConfig(
+    def save_config(
         self,
         RotateContent,
         RotateContentTime,

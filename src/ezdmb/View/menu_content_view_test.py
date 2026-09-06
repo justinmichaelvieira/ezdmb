@@ -1,6 +1,6 @@
 """
-MenuContentViewUtility_test.py
-Tests for the MenuContentViewUtility module
+menu_content_view_test.py
+Tests for the menu_content_view module
 """
 
 import os
@@ -44,14 +44,14 @@ def mock_pixmap_label(qapp):
 
 
 class test_menu_content_view_init:
-    """Tests for MenuContentViewUtility initialization"""
+    """Tests for menu_content_view initialization"""
 
     def test_initialization(self, qapp, mock_config, mock_pixmap_label):
-        """Test MenuContentViewUtility can be initialized"""
+        """Test menu_content_view can be initialized"""
         callback = MagicMock()
 
         with patch.object(QThread, "start"):
-            util = menu_content_view.menu_content_view.menu_content_view(
+            util = menu_content_view.menu_content_view(
                 mock_config, mock_pixmap_label, "TestWindow", callback
             )
 
@@ -110,7 +110,7 @@ class TestGetViewableFileContent:
 
                 # Mock QPixmap to avoid actual image loading
                 with patch(
-                    "ezdmb.View.MenuContentViewUtility.QPixmap"
+                    "ezdmb.View.menu_content_view.QPixmap"
                 ) as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
@@ -132,7 +132,7 @@ class TestGetViewableFileContent:
                 open(test_file, "a").close()
 
                 with patch(
-                    "ezdmb.View.MenuContentViewUtility.QPixmap"
+                    "ezdmb.View.menu_content_view.QPixmap"
                 ) as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
@@ -153,7 +153,7 @@ class TestGetViewableFileContent:
                 open(test_file, "a").close()
 
                 with patch(
-                    "ezdmb.View.MenuContentViewUtility.QPixmap"
+                    "ezdmb.View.menu_content_view.QPixmap"
                 ) as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
@@ -174,7 +174,7 @@ class TestGetViewableFileContent:
                 open(test_file, "a").close()
 
                 with patch(
-                    "ezdmb.View.MenuContentViewUtility.QPixmap"
+                    "ezdmb.View.menu_content_view.QPixmap"
                 ) as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
@@ -195,7 +195,7 @@ class TestGetViewableFileContent:
                 open(test_file, "a").close()
 
                 with patch(
-                    "ezdmb.View.MenuContentViewUtility.QPixmap"
+                    "ezdmb.View.menu_content_view.QPixmap"
                 ) as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
@@ -229,7 +229,7 @@ class TestGetViewableFileContent:
                 open(test_file, "a").close()
 
                 with patch(
-                    "ezdmb.View.MenuContentViewUtility.QPixmap"
+                    "ezdmb.View.menu_content_view.QPixmap"
                 ) as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
@@ -298,8 +298,8 @@ class TestOnConfigUpdated:
             assert util.rotateTimeout == 60
 
 
-class TestMenuContentViewUtilityProperties:
-    """Tests for MenuContentViewUtility properties"""
+class test_menu_content_view_utility_properties:
+    """Tests for menu_content_view_utility properties"""
 
     def test_window_name_stored(self, qapp, mock_config, mock_pixmap_label):
         """Test that window name is properly stored"""

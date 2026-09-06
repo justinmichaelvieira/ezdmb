@@ -30,13 +30,13 @@ Tests are organized alongside source code using the `*_test.py` naming conventio
 ```text
 src/ezdmb/
 ├── Controller/
-│   ├── Configuration.py
-│   ├── Configuration_test.py          # Tests for Configuration
-│   ├── LoggingUtility.py
-│   └── LoggingUtility_test.py          # Tests for LoggingUtility
+│   ├── configuration.py
+│   ├── configuration_test.py          # Tests for Configuration
+│   ├── logging_utility.py
+│   └── logging_utility_test.py          # Tests for LoggingUtility
 └── View/
-    ├── MenuContentViewUtility.py
-    └── MenuContentViewUtility_test.py  # Tests for MenuContentViewUtility
+    ├── menu_content_view.py
+    └── menu_content_view_test.py  # Tests for menu_content_view
 ```
 
 ## Running Specific Tests
@@ -127,9 +127,9 @@ This generates an HTML coverage report in `htmlcov/index.html`
 
 | Module | Tests | Status |
 |--------|-------|--------|
-| Configuration.py | 13 | ✅ 100% |
-| LoggingUtility.py | 14 | ✅ 100% |
-| MenuContentViewUtility.py | 15 | ✅ 100% |
+| configuration.py | 13 | ✅ 100% |
+| logging_utility.py | 14 | ✅ 100% |
+| menu_content_view.py | 15 | ✅ 100% |
 | **Total** | **42** | ✅ **100%** |
 
 ## Common Test Patterns
