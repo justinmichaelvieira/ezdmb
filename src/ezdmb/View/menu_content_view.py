@@ -59,18 +59,25 @@ class menu_content_view(QThread):
     def run(self):
         i = 0
         while True:
-            if len(self.contentArray) > 0:
-                index = i % len(self.contentArray)
-                pixels = self.contentArray[index]
-                img = self.getViewableFilecontent(pixels)
-                if img is not None:
-                    self.pixmap.setPixmap(img)
-                    self.contentUpdated.emit(img)
+            if len(self.contentArray) > 0 and self.rotateContent:
+                index = self.display_index(i)
                 i += 1
 
                 if self.debug:
-                    print(self.windowName + ": Displaying image " + str(index))
+                    print(self.windowName + ": Displaying image " + str(index + 1) + " of " + str(len(self.contentArray)))
+            elif len(self.contentArray) > 0 and not self.rotateContent:
+                print("Rotation is disabled; Showing first content in the list.")
+                self.display_index(0)
             else:
                 print("No content to display; Skipping rotation.")
 
             self.sleep(int(self.rotateTimeout))
+
+    def display_index(self, i):
+        index = i % len(self.contentArray)
+        pixels = self.contentArray[index]
+        img = self.getViewableFilecontent(pixels)
+        if img is not None:
+            self.pixmap.setPixmap(img)
+            self.contentUpdated.emit(img)
+        return index

@@ -1,9 +1,8 @@
 # pylint: disable=no-name-in-module
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtCore import QSize
 from PySide6.QtGui import QFont, QIcon, QPixmap
 from PySide6.QtWidgets import (
     QCheckBox,
-    QDialog,
     QDoubleSpinBox,
     QFileDialog,
     QFrame,
@@ -14,7 +13,6 @@ from PySide6.QtWidgets import (
     QListWidgetItem,
     QPushButton,
     QSizePolicy,
-    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -23,14 +21,13 @@ from ezdmb.Controller.configuration import configuration
 from ezdmb.Utility.icon_utility import getWindowIcon
 
 
-class config_dialog(QDialog):
-    def __init__(self, config: configuration):
-        super(self.__class__, self).__init__()
+class config_widget(QWidget):
+    def __init__(self, parent, config: configuration):
+        super(self.__class__, self).__init__(parent)
         self._config = config
 
         # widgets
-        self.setObjectName("config_dialog")
-        self.setWindowModality(Qt.ApplicationModal)
+        self.setObjectName("config_widget")
         self.resize(401, 331)
 
         self.setWindowIcon(getWindowIcon())
@@ -54,9 +51,9 @@ class config_dialog(QDialog):
         )
         fixedFixedSizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
-        self.settingsTabs = QTabWidget(self)
-        self.settingsTabs.setSizePolicy(minMinSizePolicy)
-        self.settingsTabs.setMinimumSize(QSize(200, 240))
+        self.settingsWidget = QWidget(self)
+        self.settingsWidget.setSizePolicy(minMinSizePolicy)
+        self.settingsWidget.setMinimumSize(QSize(200, 240))
 
         # fonts
         twelvePtFont = QFont()
@@ -74,11 +71,11 @@ class config_dialog(QDialog):
         twentyPointFont = QFont()
         twentyPointFont.setPointSize(20)
 
-        self.settingsTabs.setFont(twentyPointFont)
-        self.settingsTabs.setTabPosition(QTabWidget.North)
-        self.settingsTabs.setTabShape(QTabWidget.Rounded)
-        self.settingsTabs.setObjectName("settingsTabs")
-        self.contentTab = QWidget()
+        self.settingsWidget.setFont(twentyPointFont)
+        # self.settingsWidget.setTabPosition(QTabWidget.North)
+        # self.settingsWidget.setTabShape(QTabWidget.Rounded)
+        self.settingsWidget.setObjectName("settingsWidget")
+        self.contentTab = QWidget(self.settingsWidget)
         self.contentTab.setSizePolicy(minExpMinExpSizePolicy)
         self.contentTab.setMinimumSize(QSize(300, 100))
         self.contentTab.setObjectName("contentTab")
@@ -121,7 +118,7 @@ class config_dialog(QDialog):
 
         self.secondsLabel = QLabel(self.rotationSettingsGrpBox)
         self.secondsLabel.setSizePolicy(minExpMinExpSizePolicy)
-        self.secondsLabel.setMinimumSize(QSize(50, 31))
+        self.secondsLabel.setMinimumSize(QSize(30, 31))
         self.secondsLabel.setFont(twelvePtFont)
         self.secondsLabel.setObjectName("secondsLabel")
         self.hLayout2.addWidget(self.secondsLabel)
@@ -175,8 +172,8 @@ class config_dialog(QDialog):
         self.vLayout2.addWidget(self.frame)
         self.vLayout5.addWidget(self.addRemoveGrpBox)
 
-        self.settingsTabs.addTab(self.contentTab, "")
-        self.vLayout6.addWidget(self.settingsTabs)
+        # self.settingsWidget.addTab(self.contentTab, "")
+        self.vLayout6.addWidget(self.settingsWidget)
 
         self.setWindowTitle("Settings")
         self.rotationSettingsGrpBox.setTitle("Rotation")
@@ -185,9 +182,9 @@ class config_dialog(QDialog):
         self.addRemoveGrpBox.setTitle("Add/Remove content")
         self.addContentButton.setText("Add Content")
         self.deleteSelectionButton.setText("Delete Selection")
-        self.settingsTabs.setTabText(self.settingsTabs.indexOf(self.contentTab), "")
+        # self.settingsWidget.setTabText(self.settingsWidget.indexOf(self.contentTab), "")
 
-        self.settingsTabs.setCurrentIndex(0)
+        # self.settingsWidget.setCurrentIndex(0)
         self.setUiFromConfig()
 
         # signals

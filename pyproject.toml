@@ -1,7 +1,7 @@
 [project]
 name = "ezdmb"
-version = "0.1.0"
-description = "Add your description here"
+version = "1.0.5"
+description = "A dead-simple digital menu board display and configuration."
 readme = "README.md"
 authors = [
     { name = "Justin Vieira", email = "justin@rancorsoft.com" }
@@ -9,7 +9,6 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "aqtinstall>=3.3.0",
-    "black>=26.5.1",
     "pyinstaller>=6.22.2",
     "pyqt-distutils>=0.7.3",
     "pyside6>=6.0.0",
@@ -22,4 +21,5 @@ build-backend = "uv_build"
 [dependency-groups]
 dev = [
     "ruff>=0.16.6",
+    "ty>=0.0.78",
 ]

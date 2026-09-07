@@ -6,9 +6,10 @@ Encapsulates configuration file serialization and deserialization.
 import errno
 import json
 import os
-from pathlib import Path
 
 from PySide6.QtCore import QObject, Signal
+
+from ezdmb.Utility.path_utility import get_appdata_path
 
 
 # pylint: disable=too-many-instance-attributes, missing-function-docstring, missing-class-docstring
@@ -73,6 +74,11 @@ class configuration(QObject):
 
     ContentArray = property(get_content_array, set_content_array)
 
+    def get_config_path(self):
+        return self.config_path
+
+    ConfigPath = property(get_config_path)
+
     # Functions
 
     # Initializes the object when Configuration is first instanced
@@ -84,10 +90,7 @@ class configuration(QObject):
         flags = os.O_CREAT | os.O_RDWR
         self._data = {}
 
-        if os.name == "nt":
-            appdata_path = os.path.join(os.getenv("APPDATA"), "ezdmb")
-        else:
-            appdata_path = os.path.join(str(Path.home()), ".ezdmb")
+        appdata_path = get_appdata_path()
 
         # self._logger.info(f"Configuration path: {appdata_path}")
 

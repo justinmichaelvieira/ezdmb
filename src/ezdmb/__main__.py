@@ -17,9 +17,8 @@ from ezdmb.Controller import configuration
 from ezdmb.Utility.icon_utility import getWindowIcon
 from ezdmb.Utility.logging_utility import setupLogging
 from ezdmb.View import (
-    config_dialog,
+    config_window,
     full_screen_window,
-    preview_window,
     simple_text_dialog,
 )
 
@@ -31,7 +30,7 @@ Starting point of the app runtime
 
 
 def main():
-    app, full_screen_menu, _advanced_config, _mainwin = populate_instance()
+    app, full_screen_menu, _mainwin = populate_instance()
     setupLogging()
     # store screen geometry
     screen_width = full_screen_menu.frameGeometry().width()
@@ -60,17 +59,12 @@ def populate_instance():
 
     quickstart_win = simple_text_dialog.simple_text_dialog(
         "Quickstart Guide",
-        """<b>File > Settings</b> to change content and cycle time.<br />
-        <b>File > Exit</b> to exit the application.<br />
+        """<b>File > Exit</b> to exit the application.<br />
         <b>Help > About</b> to display version and source information.<br />
         <b>Help > Quickstart</b> to display this quickstart guide.<br />""",
     )
 
     config = configuration.configuration()
-    config_win = config_dialog.config_dialog(config)
-
-    def show_config():
-        config_win.show()
 
     def show_about_window():
         about_win.show()
@@ -78,13 +72,13 @@ def populate_instance():
     def show_quickstart_window():
         quickstart_win.show()
 
-    preview_win = preview_window.preview_window(
-        config, show_config, show_about_window, show_quickstart_window
+    config_win = config_window.config_window(
+        config, show_about_window, show_quickstart_window
     )
-    preview_win.setWindowIcon(getWindowIcon())
+    config_win.setWindowIcon(getWindowIcon())
 
     def open_preview_window():
-        show_and_bring_to_front(preview_win)
+        show_and_bring_to_front(config_win)
 
     full_screen_win = full_screen_window.full_screen_window(config, open_preview_window)
 
@@ -92,8 +86,8 @@ def populate_instance():
     full_screen_win.showFullScreen()
 
     open_preview_window()
-    preview_win.raise_()
-    preview_win.activateWindow()
+    config_win.raise_()
+    config_win.activateWindow()
 
     print(f"""
 ezdmb v{__version__} started with:
@@ -101,7 +95,7 @@ ezdmb v{__version__} started with:
     - RotateContentTime: {config.RotateContentTime}s
     - Total Content Screens: {config.ContentArray.__len__()}
 """)
-    return app, full_screen_win, config_win, preview_win
+    return app, full_screen_win, config_win
 
 
 def show_and_bring_to_front(window):

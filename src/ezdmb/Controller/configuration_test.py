@@ -138,7 +138,7 @@ class TestConfigurationProperties:
             assert config.get_data() == test_data
 
 
-class TestConfigurationSaveConfig:
+class test_configuration_save_config:
     """Tests for configuration.save_config method"""
 
     def test_save_config_creates_json(self, qapp, temp_config_dir):
@@ -218,7 +218,7 @@ class TestConfigurationSaveConfig:
         config.configUpdated.emit.assert_called_once()
 
 
-class TestConfigurationIntegration:
+class test_configuration_integration:
     """Integration tests for configuration"""
 
     def test_full_configuration_workflow(self, qapp, temp_config_dir):
