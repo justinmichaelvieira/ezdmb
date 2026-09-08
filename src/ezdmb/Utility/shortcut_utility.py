@@ -5,10 +5,10 @@ from PySide6.QtWidgets import QApplication
 
 
 def setCloseOnEscKey(window):
-    window.closeOnEscShortcut = QShortcut(QKeySequence(Qt.Key_Escape), window)
+    window.closeOnEscShortcut = QShortcut(QKeySequence(Qt.Key.Key_Escape), window)
     window.closeOnEscShortcut.activated.connect(lambda: QApplication.quit())
 
 
 def setOpenOnOKey(window, openLambda):
-    window.openOnOShortcut = QShortcut(QKeySequence(Qt.Key_O), window)
+    window.openOnOShortcut = QShortcut(QKeySequence(Qt.Key.Key_O), window)
     window.openOnOShortcut.activated.connect(openLambda)

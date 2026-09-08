@@ -82,7 +82,7 @@ def populate_instance():
 
     full_screen_win = full_screen_window.full_screen_window(config, open_preview_window)
 
-    full_screen_win.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+    full_screen_win.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint)
     full_screen_win.showFullScreen()
 
     open_preview_window()

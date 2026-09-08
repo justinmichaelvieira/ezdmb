@@ -42,7 +42,7 @@ class menu_content_view(QThread):
             with open(fileName, "r") as f:
                 txt_content = f.read()
                 pix = QPixmap(400, 300)
-                pix.fill(Qt.white)
+                pix.fill(Qt.GlobalColor.white)
                 painter = QPainter(pix)
                 painter.setFont(QFont("Arial"))
 

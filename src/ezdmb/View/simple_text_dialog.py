@@ -14,11 +14,11 @@ class simple_text_dialog(QDialog):
         self.setWindowTitle(titleText)
 
         message = QLabel(messageText)
-        message.setTextFormat(Qt.RichText)
-        message.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        message.setTextFormat(Qt.TextFormat.RichText)
+        message.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction)
         message.setOpenExternalLinks(True)
 
-        self.buttonBox = QDialogButtonBox(QDialogButtonBox.Close)
+        self.buttonBox = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
 
