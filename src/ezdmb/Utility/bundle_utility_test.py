@@ -34,6 +34,6 @@ class bundle_utility_test:
         unzip_dir(archive_path, extract_dir)
 
         assert (extract_dir / "menu.txt").read_text(encoding="utf-8") == "daily menu"
-        assert (
-            extract_dir / "nested" / "special.txt"
-        ).read_text(encoding="utf-8") == "today's special"
+        assert (extract_dir / "nested" / "special.txt").read_text(
+            encoding="utf-8"
+        ) == "today's special"

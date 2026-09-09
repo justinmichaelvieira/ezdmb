@@ -51,7 +51,9 @@ class config_window(QMainWindow):
 
         self.config_widget = config_widget(self.centralWidget, self.config)
         self.config_widget.setSizePolicy(sizePolicy)
-        self.gridLayout_2.addWidget(self.config_widget, 0, 0, 1, 1, alignment=Qt.AlignmentFlag.AlignTop)
+        self.gridLayout_2.addWidget(
+            self.config_widget, 0, 0, 1, 1, alignment=Qt.AlignmentFlag.AlignTop
+        )
         self.setCentralWidget(self.centralWidget)
 
         self.menuBar: QMenuBar = QMenuBar(self)
@@ -64,7 +66,9 @@ class config_window(QMainWindow):
         self.menuFile.setObjectName("menuFile")
 
         self.exitAction: QAction = QAction(
-            parent=self, icon=getIcon("close.svg"), shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_X)
+            parent=self,
+            icon=getIcon("close.svg"),
+            shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_X),
         )
         self.exitAction.setText("E&xit")
         self.exitAction.setObjectName("exitAction")
@@ -78,7 +82,9 @@ class config_window(QMainWindow):
         self.menuHelp.setObjectName("menuHelp")
 
         self.showQuickstartAction: QAction = QAction(
-            parent=self, icon=getIcon("library_add.svg"), shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_Q)
+            parent=self,
+            icon=getIcon("library_add.svg"),
+            shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_Q),
         )
         self.showQuickstartAction.setText("&Quickstart")
         self.showQuickstartAction.setObjectName("quickstartAction")
@@ -86,7 +92,9 @@ class config_window(QMainWindow):
         self.menuHelp.addAction(self.showQuickstartAction)
 
         self.showAboutAction: QAction = QAction(
-            parent=self, icon=getIcon("about.svg"), shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_A)
+            parent=self,
+            icon=getIcon("about.svg"),
+            shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_A),
         )
         self.showAboutAction.setText("&About")
         self.showAboutAction.setObjectName("aboutAction")

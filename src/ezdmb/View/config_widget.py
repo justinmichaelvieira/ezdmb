@@ -45,11 +45,15 @@ class config_widget(QWidget):
         self.vLayout6.setSpacing(0)
         self.vLayout6.setObjectName("vLayout6")
 
-        minMinSizePolicy = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        minMinSizePolicy = QSizePolicy(
+            QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum
+        )
         minExpMinExpSizePolicy = QSizePolicy(
             QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding
         )
-        fixedFixedSizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        fixedFixedSizePolicy = QSizePolicy(
+            QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed
+        )
 
         self.settingsWidget = QWidget(self)
         self.settingsWidget.setSizePolicy(minMinSizePolicy)
@@ -83,7 +87,9 @@ class config_widget(QWidget):
         self.vLayout5 = QVBoxLayout(self.contentTab)
         self.vLayout5.setObjectName("vLayout5")
         self.rotationSettingsGrpBox = QGroupBox(self.contentTab)
-        preferredSizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        preferredSizePolicy = QSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
         preferredSizePolicy.setHorizontalStretch(0)
         preferredSizePolicy.setVerticalStretch(0)
         preferredSizePolicy.setHeightForWidth(

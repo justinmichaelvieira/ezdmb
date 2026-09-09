@@ -21,12 +21,14 @@ def zip_dir(dir: Path | str, output_filename: Path | str):
         for entry in dir.rglob("*"):
             zip_file.write(entry, entry.relative_to(dir))
 
+
 # Source - https://stackoverflow.com/a/3451150
 # Posted by Rahul, modified by community. See post 'Timeline' for change history
 # Retrieved 2026-09-06, License - CC BY-SA 4.0
 def unzip_dir(zip_file: Path | str, extract_dir: Path | str):
-    with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+    with zipfile.ZipFile(zip_file, "r") as zip_ref:
         zip_ref.extractall(extract_dir)
+
 
 def select_dir_and_save_bundle(configuration: configuration):
     """Select a directory and save it as a zip file in a temporary location."""

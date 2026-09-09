@@ -64,7 +64,13 @@ class menu_content_view(QThread):
                 i += 1
 
                 if self.debug:
-                    print(self.windowName + ": Displaying image " + str(index + 1) + " of " + str(len(self.contentArray)))
+                    print(
+                        self.windowName
+                        + ": Displaying image "
+                        + str(index + 1)
+                        + " of "
+                        + str(len(self.contentArray))
+                    )
             elif len(self.contentArray) > 0 and not self.rotateContent:
                 print("Rotation is disabled; Showing first content in the list.")
                 self.display_index(0)

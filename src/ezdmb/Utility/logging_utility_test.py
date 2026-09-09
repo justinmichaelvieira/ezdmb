@@ -96,9 +96,7 @@ class TestSetupLogging:
         with (
             patch("ezdmb.Utility.logging_utility.logging.FileHandler"),
             patch("ezdmb.Utility.logging_utility.logging.StreamHandler"),
-            patch(
-                "ezdmb.Utility.logging_utility.logging.Formatter"
-            ) as mock_formatter,
+            patch("ezdmb.Utility.logging_utility.logging.Formatter") as mock_formatter,
             patch("ezdmb.Utility.logging_utility.logger", mock_logger),
         ):
             setupLogging()

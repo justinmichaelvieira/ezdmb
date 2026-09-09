@@ -109,9 +109,7 @@ class TestGetViewableFileContent:
                 open(test_file, "a").close()
 
                 # Mock QPixmap to avoid actual image loading
-                with patch(
-                    "ezdmb.View.menu_content_view.QPixmap"
-                ) as mock_pixmap_class:
+                with patch("ezdmb.View.menu_content_view.QPixmap") as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
 
@@ -131,9 +129,7 @@ class TestGetViewableFileContent:
                 test_file = os.path.join(tmpdir, "test.png")
                 open(test_file, "a").close()
 
-                with patch(
-                    "ezdmb.View.menu_content_view.QPixmap"
-                ) as mock_pixmap_class:
+                with patch("ezdmb.View.menu_content_view.QPixmap") as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
 
@@ -152,9 +148,7 @@ class TestGetViewableFileContent:
                 test_file = os.path.join(tmpdir, "test.gif")
                 open(test_file, "a").close()
 
-                with patch(
-                    "ezdmb.View.menu_content_view.QPixmap"
-                ) as mock_pixmap_class:
+                with patch("ezdmb.View.menu_content_view.QPixmap") as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
 
@@ -173,9 +167,7 @@ class TestGetViewableFileContent:
                 test_file = os.path.join(tmpdir, "test.bmp")
                 open(test_file, "a").close()
 
-                with patch(
-                    "ezdmb.View.menu_content_view.QPixmap"
-                ) as mock_pixmap_class:
+                with patch("ezdmb.View.menu_content_view.QPixmap") as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
 
@@ -194,9 +186,7 @@ class TestGetViewableFileContent:
                 test_file = os.path.join(tmpdir, "test.ico")
                 open(test_file, "a").close()
 
-                with patch(
-                    "ezdmb.View.menu_content_view.QPixmap"
-                ) as mock_pixmap_class:
+                with patch("ezdmb.View.menu_content_view.QPixmap") as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
 
@@ -228,9 +218,7 @@ class TestGetViewableFileContent:
                 test_file = os.path.join(tmpdir, "test.JPG")
                 open(test_file, "a").close()
 
-                with patch(
-                    "ezdmb.View.menu_content_view.QPixmap"
-                ) as mock_pixmap_class:
+                with patch("ezdmb.View.menu_content_view.QPixmap") as mock_pixmap_class:
                     mock_pixmap_class.return_value = MagicMock(spec=QPixmap)
                     result = util.getViewableFilecontent(test_file)
 

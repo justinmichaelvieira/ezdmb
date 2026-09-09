@@ -27,14 +27,18 @@ class full_screen_window(QMainWindow):
 
         self.setWindowIcon(getWindowIcon())
 
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy = QSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         self.setSizePolicy(sizePolicy)
         self.setMinimumSize(QSize(200, 200))
         self.setAutoFillBackground(True)
         self.centralwidget = QWidget(self)
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy = QSizePolicy(
+            QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         self.centralwidget.setSizePolicy(sizePolicy)
@@ -47,7 +51,9 @@ class full_screen_window(QMainWindow):
         self.gridLayout_2 = QGridLayout()
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.contentLbl = QLabel(self.centralwidget)
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy = QSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         self.contentLbl.setSizePolicy(sizePolicy)
