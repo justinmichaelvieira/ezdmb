@@ -7,7 +7,6 @@ import logging
 import os
 import tempfile
 
-# import pytest
 from unittest.mock import MagicMock, patch
 
 from ezdmb.Utility.logging_utility import setupLogging
