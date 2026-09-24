@@ -1,24 +1,25 @@
 #!/bin/bash
+set -euo pipefail
+
 # Build script for .deb package used to install on linux platforms
+if ! command -v fakeroot >/dev/null 2>&1; then
+    echo "Error: fakeroot is required to build the .deb package. Install it with: sudo apt-get install fakeroot" >&2
+    exit 1
+fi
+
+if ! command -v dpkg-deb >/dev/null 2>&1; then
+    echo "Error: dpkg-deb is required to build the .deb package. Install the dpkg package on Debian/Ubuntu." >&2
+    exit 1
+fi
 
 # Version to be used as the 'release version'
 VERSION="1.0.5"
 
 # Update version in control file
-sed -i -e 's/Version: .*/Version: '$VERSION'/g' DEBIAN/control
+sed -i -e "s/^Version: .*/Version: $VERSION/" ./DEBIAN/control
 
 # Make temp dir
 TMP_DIR=$(mktemp -d)
-
-# Copy image resources
-cd ../../src/ezdmb/Resources/ || exit
-IMAGE_RESOURCES_DIR="../../debian/overlay/opt/ezdmb/Resources"
-mkdir -p "$IMAGE_RESOURCES_DIR"
-cp -v ./*.png "$IMAGE_RESOURCES_DIR"
-cd - || exit
-
-# Copy overlay to temp dir
-cp -R "./overlay/"* "$TMP_DIR"
 
 # Copy deb package descriptors and scripts in the DEBIAN folder
 cp -R "./DEBIAN" "$TMP_DIR"
@@ -38,4 +39,8 @@ fakeroot dpkg-deb --build "$TMP_DIR" $OUTPUT_DEB_FILE
 rm -f $BUILD_RESOURCE_PATH/*.deb
 cp "$OUTPUT_DEB_FILE" "$BUILD_RESOURCE_PATH/ezdmb_${VERSION}_all.deb"
 
-echo "Deb package build complete."
+# Copy deb to python package build resources folder
+rm -f $BUILD_RESOURCE_PATH/*.deb
+cp "$OUTPUT_DEB_FILE" "$BUILD_RESOURCE_PATH/ezdmb_${VERSION}_all.deb"
+
+echo "Deb package build complete: $OUTPUT_DEB_FILE"
