@@ -7,23 +7,28 @@ case "$1" in
         CURRUSER=${SUDO_USER:-$(whoami)}
 
         # Set variable to indicate installing username
-        echo -e '\033[0;34mProceeding with install as user $CURRUSER.\033[0m'
+        echo -e "\033[0;34mProceeding with install as user $CURRUSER.\033[0m"
 
-        sudo pip3 install aqtinstall
+        python3 -m venv /home/"$CURRUSER"/.ezdmb-venv
+        source /home/"$CURRUSER"/.ezdmb-venv/bin/activate
+
+        # Install or upgrade pip for Python 3.12
+        curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
+
+        pip3 install aqtinstall
 
         # install qt
-        sudo aqt install-qt linux desktop 6.9.0
-
-        sudo py -m ensurepip --upgrade
+        aqt install-qt linux desktop 6.9.0
 
         # Install Qt platform + PySide6
-        sudo py -m pip install PySide6
-        sudo py -m pip install ezdmb --force-reinstall
+        pip3 install PySide6
+        pip3 install ezdmb --force-reinstall
 
         # Add a script that starts ezdmb to the current users Desktop folder
+        EXEC_STRING="source /home/$CURRUSER/.ezdmb-venv/bin/activate && python -m ezdmb"
         DESKTOP_RUN_SCRIPT=$(cat << EOF
 #!/bin/bash
-cd /opt/ezdmb && python3 -m ezdmb
+$EXEC_STRING
 EOF
 )
 
@@ -36,11 +41,10 @@ EOF
         read -r -p "Do you want the app to run at startup? [Y/n] " yn
         case $yn in
             [nN][oO]|[nN])
-                echo -e '\033[0;34mNot Installing run at startup components.\033[0m'
+                echo -e "\033[0;34mNot Installing run at startup components.\033[0m"
                 ;;
             * )
-                EXEC_STRING="cd /opt/ezdmb && python -m ezdmb"
-                echo -e '\033[0;34mInstalling run at startup components.\033[0m'
+                echo -e "\033[0;34mInstalling run at startup components.\033[0m"
                 if [ -f "/etc/gdm3/custom.conf" ]; then
                     # Turn on Ubuntu64 Autologin w/gdm
                     sed -i 's/#  AutomaticLoginEnable = true/   AutomaticLoginEnable = true/' /etc/gdm3/custom.conf
@@ -100,7 +104,7 @@ EOF
                 ;;
         esac
 
-        echo -e '\033[0;32mezdmb Installation script completed.\033[0m'
+        echo -e "\033[0;32mezdmb Installation script completed.\033[0m"
 
     ;;
 
