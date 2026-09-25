@@ -14,7 +14,11 @@ case "$1" in
         # install qt
         sudo aqt install-qt linux desktop 6.9.0
 
-        # TODO: Install python package locally
+        sudo py -m ensurepip --upgrade
+
+        # Install Qt platform + PySide6
+        sudo py -m pip install PySide6
+        sudo py -m pip install ezdmb --force-reinstall
 
         # Add a script that starts ezdmb to the current users Desktop folder
         DESKTOP_RUN_SCRIPT=$(cat << EOF
