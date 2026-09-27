@@ -39,14 +39,14 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install flake8 pytest pytest-qt
+        python -m pip install ruff ty pytest pytest-qt
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
+    - name: Lint with ruff and typecheck with ty
       run: |
         cd src/ezdmb
         # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --per-file-ignores="./View/resources.py:E302,E305"
-        flake8 . --count --statistics --per-file-ignores="./View/resources.py:E302,E305"
+        ruff check
+        ty check
     - name: Test with pytest
       run: |
         cd src/ezdmb
