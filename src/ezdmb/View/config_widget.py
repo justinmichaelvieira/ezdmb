@@ -39,7 +39,7 @@ class config_widget(QWidget):
         preferredSizePolicy.setVerticalStretch(0)
         preferredSizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
         self.setSizePolicy(preferredSizePolicy)
-        self.setMinimumSize(QSize(640, 480))
+        self.setMinimumSize(QSize(800, 600))
         self.vLayout6 = QVBoxLayout(self)
         self.vLayout6.setContentsMargins(0, 0, 0, 0)
         self.vLayout6.setSpacing(0)
@@ -57,7 +57,7 @@ class config_widget(QWidget):
 
         self.settingsWidget = QWidget(self)
         self.settingsWidget.setSizePolicy(minMinSizePolicy)
-        self.settingsWidget.setMinimumSize(QSize(200, 240))
+        self.settingsWidget.setMinimumSize(QSize(790, 570))
 
         # fonts
         twelvePtFont = QFont()
@@ -76,12 +76,10 @@ class config_widget(QWidget):
         twentyPointFont.setPointSize(20)
 
         self.settingsWidget.setFont(twentyPointFont)
-        # self.settingsWidget.setTabPosition(QTabWidget.North)
-        # self.settingsWidget.setTabShape(QTabWidget.Rounded)
         self.settingsWidget.setObjectName("settingsWidget")
         self.contentTab = QWidget(self.settingsWidget)
         self.contentTab.setSizePolicy(minExpMinExpSizePolicy)
-        self.contentTab.setMinimumSize(QSize(300, 100))
+        self.contentTab.setMinimumSize(QSize(790, 570))
         self.contentTab.setObjectName("contentTab")
 
         self.vLayout5 = QVBoxLayout(self.contentTab)
@@ -96,7 +94,7 @@ class config_widget(QWidget):
             self.rotationSettingsGrpBox.sizePolicy().hasHeightForWidth()
         )
         self.rotationSettingsGrpBox.setSizePolicy(preferredSizePolicy)
-        self.rotationSettingsGrpBox.setMinimumSize(QSize(180, 80))
+        self.rotationSettingsGrpBox.setMinimumSize(QSize(180, 40))
         self.rotationSettingsGrpBox.setFont(sixteenPtFont)
         self.rotationSettingsGrpBox.setObjectName("rotationSettingsGrpBox")
 
