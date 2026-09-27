@@ -33,7 +33,7 @@ def unzip_dir(zip_file: Path | str, extract_dir: Path | str):
         zip_ref.extractall(extract_dir)
 
 
-def import_bundle(configuration: configuration):
+def import_bundle(configuration: configuration, testing=False):
     """Select a zip bundle and extract it to the application directory, updating the configuration accordingly."""
 
     # Open a dialog to select a zip file
@@ -67,10 +67,11 @@ def import_bundle(configuration: configuration):
 
     # TODO: refresh ui with new values
 
-    simple_text_dialog(
-        "Export Successful",
-        "The bundle has been successfully imported.",
-    ).exec()
+    if not testing:
+        simple_text_dialog(
+            "Export Successful",
+            "The bundle has been successfully imported.",
+        ).exec()
 
 
 def export_bundle(configuration: configuration, testing=False):

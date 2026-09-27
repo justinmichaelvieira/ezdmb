@@ -76,7 +76,7 @@ class bundle_utility_test(unittest.TestCase):
                     return_value=appdata_path,
                 ),
             ):
-                import_bundle(config)
+                import_bundle(config, True)
 
             assert config.ConfigPath == os.path.join(extract_path, "dmb_config.json")
             assert not (extract_path / "stale.txt").exists()
@@ -94,7 +94,7 @@ class bundle_utility_test(unittest.TestCase):
             ),
             patch("ezdmb.Utility.bundle_utility.get_appdata_path") as get_appdata_path,
         ):
-            import_bundle(config)
+            import_bundle(config, True)
 
         assert config.ConfigPath == Path("current-config.json")
         assert config.ContentArray == [Path("current-menu.png")]
