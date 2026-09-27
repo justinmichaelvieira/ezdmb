@@ -26,30 +26,6 @@ class configuration(QObject):
 
     Data = property(get_data, set_data)
 
-    def set_use_images(self, value):
-        self._use_images = value
-
-    def get_use_images(self):
-        return self._use_images
-
-    UseImages = property(get_use_images, set_use_images)
-
-    def set_use_html(self, value):
-        self._use_html = value
-
-    def get_use_html(self):
-        return self._use_html
-
-    UseHTML = property(get_use_html, set_use_html)
-
-    def set_use_imported(self, value):
-        self._use_imported = value
-
-    def get_use_imported(self):
-        return self._use_imported
-
-    UseImported = property(get_use_imported, set_use_imported)
-
     def set_rotate_content(self, value):
         self._rotate_content = value
 
@@ -77,7 +53,10 @@ class configuration(QObject):
     def get_config_path(self):
         return self.config_path
 
-    ConfigPath = property(get_config_path)
+    def set_config_path(self, value):
+        self.config_path = value
+
+    ConfigPath = property(get_config_path, set_config_path)
 
     # Functions
 

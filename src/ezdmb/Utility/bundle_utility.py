@@ -1,11 +1,14 @@
+import os
+import tempfile
 import zipfile
 from pathlib import Path
-from shutil import copyfile
-from tempfile import mkdtemp
+from shutil import copyfile, rmtree
 
 from PySide6.QtWidgets import QFileDialog
 
 from ezdmb.Controller.configuration import configuration
+from ezdmb.Utility.path_utility import get_appdata_path
+from ezdmb.View.simple_text_dialog import simple_text_dialog
 
 
 # Source - https://stackoverflow.com/a/68817065
@@ -30,24 +33,61 @@ def unzip_dir(zip_file: Path | str, extract_dir: Path | str):
         zip_ref.extractall(extract_dir)
 
 
-def select_dir_and_save_bundle(configuration: configuration):
+def import_bundle(configuration: configuration):
+    """Select a zip bundle and extract it to the application directory, updating the configuration accordingly."""
+
+    # Open a dialog to select a zip file
+    zip_file = QFileDialog.getOpenFileName(None, "Select Zip Bundle", filter="Zip Files (*.zip)")[0]
+    if not zip_file:
+        return  # User canceled the dialog
+
+    # Create a folder for extraction
+    extract_folder = os.path.join(get_appdata_path(), "ezdmb_bundle")
+    if os.path.exists(extract_folder):
+        rmtree(extract_folder)
+
+    Path(extract_folder).mkdir(parents=True, exist_ok=False)
+
+    # Extract the zip file to the folder
+    unzip_dir(zip_file, extract_folder)
+
+    # Update the configuration with the extracted files
+    config_path = os.path.join(extract_folder, "dmb_config.json")
+    if os.path.exists(config_path):
+        configuration.ConfigPath = config_path
+
+    content_files = list(Path(extract_folder).glob("*"))
+    configuration.set_content_array([Path(f) for f in content_files if f != config_path])
+    configuration.save_config(
+        configuration.get_rotate_content(),
+        configuration.get_rotate_content_time(),
+        configuration.get_content_array(),
+        configuration.get_config_path(),
+    )
+
+
+def export_bundle(configuration: configuration):
     """Select a directory and save it as a zip file in a temporary location."""
 
     # Open a dialog to select a directory
-    output_dir = QFileDialog.getExistingDirectory(None, "Select Directory to Zip")
+    output_dir = QFileDialog.getExistingDirectory(None, "Select Directory to save zip bundle")
     if not output_dir:
         return  # User canceled the dialog
 
     # Create a temporary folder for the files to zip
-    temp_folder = Path(mkdtemp())
+    with tempfile.TemporaryDirectory() as temp_folder:
+        # Copy the config file and content files to the temporary folder
+        copyfile(configuration.ConfigPath, os.path.join(temp_folder, "dmb_config.json"))
+        for content_file in configuration.ContentArray:
+            copyfile(content_file, os.path.join(temp_folder, Path(content_file).name))
 
-    # Copy the config file and content files to the temporary folder
-    copyfile(configuration.ConfigPath, temp_folder / "dmb_config.json")
-    for content_file in configuration.ContentArray:
-        copyfile(content_file, temp_folder)
+        # Zip the directory
+        zip_dir(temp_folder, "ezdmb_bundle.zip")
 
-    # Zip the directory
-    zip_dir(temp_folder, "ezdmb_bundle.zip")
+        # Copy the zip bundle to the selected output directory
+        copyfile("ezdmb_bundle.zip", os.path.join(output_dir, "ezdmb_bundle.zip"))
 
-    # Copy the zip bundle to the selected output directory
-    copyfile("ezdmb_bundle.zip", Path(output_dir) / "ezdmb_bundle.zip")
+    simple_text_dialog(
+        "Export Successful",
+        f"""The bundle has been successfully exported to: {Path(output_dir) / 'ezdmb_bundle.zip'}""",
+    ).exec()

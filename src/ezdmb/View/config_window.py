@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from ezdmb.Utility.bundle_utility import export_bundle, import_bundle
 from ezdmb.Utility.icon_utility import getIcon, getWindowIcon
 from ezdmb.Utility.shortcut_utility import setCloseOnEscKey
 from ezdmb.View.config_widget import config_widget
@@ -65,6 +66,26 @@ class config_window(QMainWindow):
         self.menuFile.setTitle("File")
         self.menuFile.setObjectName("menuFile")
 
+        self.exportBundleAction: QAction = QAction(
+            parent=self,
+            # icon=getIcon("export.svg"),
+            shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_E),
+        )
+        self.exportBundleAction.setText("&Export Content Bundle")
+        self.exportBundleAction.setObjectName("exportBundleAction")
+        self.exportBundleAction.triggered.connect(lambda: export_bundle(self.config))
+        self.menuFile.addAction(self.exportBundleAction)
+
+        self.importBundleAction: QAction = QAction(
+            parent=self,
+            # icon=getIcon("import.svg"),
+            shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_I),
+        )
+        self.importBundleAction.setText("&Import Content Bundle")
+        self.importBundleAction.setObjectName("importBundleAction")
+        self.importBundleAction.triggered.connect(lambda: import_bundle(self.config))
+        self.menuFile.addAction(self.importBundleAction)
+
         self.exitAction: QAction = QAction(
             parent=self,
             icon=getIcon("close.svg"),
@@ -100,7 +121,6 @@ class config_window(QMainWindow):
         self.showAboutAction.setObjectName("aboutAction")
         self.showAboutAction.triggered.connect(showAboutWindow)
         self.menuHelp.addAction(self.showAboutAction)
-
         self.menuBar.addAction(self.menuHelp.menuAction())
 
         self.setWindowTitle("Configuration")

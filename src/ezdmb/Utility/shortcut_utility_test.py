@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QApplication, QWidget
 
 from ezdmb.Utility.shortcut_utility import setCloseOnEscKey, setOpenOnOKey
 
+
 class TestShortcutUtility:
     @pytest.fixture
     def qapp(self):

@@ -1,6 +1,7 @@
-from pathlib import Path
 import os
+from pathlib import Path
 from unittest.mock import patch
+
 from ezdmb.Utility.path_utility import get_appdata_path
 
 

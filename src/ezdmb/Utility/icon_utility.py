@@ -1,7 +1,7 @@
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon
 
-from ezdmb.View import (resources)  # noqa: E302, F401
+from ezdmb.View import resources  # noqa: F401
 
 
 def getWindowIcon():

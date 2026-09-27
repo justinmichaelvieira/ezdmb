@@ -6,7 +6,6 @@ Tests for the LoggingUtility module
 import logging
 import os
 import tempfile
-
 from unittest.mock import MagicMock, patch
 
 from ezdmb.Utility.logging_utility import setupLogging
