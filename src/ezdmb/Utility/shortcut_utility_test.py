@@ -14,6 +14,7 @@ class TestShortcutUtility:
         if app is None:
             app = QApplication([])
         return app
+
     def test_set_close_on_esc_key_creates_shortcut(self, qapp: QApplication | QCoreApplication):
         window = QWidget()
         shortcut: QShortcut = setCloseOnEscKey(window)
