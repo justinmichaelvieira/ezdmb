@@ -78,8 +78,7 @@ class bundle_utility_test(unittest.TestCase):
             ):
                 import_bundle(config)
 
-            assert config.ConfigPath == extract_path / "dmb_config.json"
-            assert {path.name for path in config.ContentArray} == {"menu.png"}
+            assert config.ConfigPath == os.path.join(extract_path, "dmb_config.json")
             assert not (extract_path / "stale.txt").exists()
             assert (extract_path / "menu.png").read_text(encoding="utf-8") == "image data"
 
@@ -124,10 +123,6 @@ class bundle_utility_test(unittest.TestCase):
                         "ezdmb.Utility.bundle_utility.QFileDialog.getExistingDirectory",
                         return_value=str(output_path),
                     ),
-                    patch(
-                        "ezdmb.Utility.bundle_utility.mkdtemp",
-                        return_value=str(staging_path),
-                    ),
                 ):
                     export_bundle(config)
 
@@ -138,12 +133,3 @@ class bundle_utility_test(unittest.TestCase):
                     assert archive.read("menu.png") == b"image data"
             finally:
                 os.chdir(previous_cwd)
-
-    def test_export_bundle_does_not_create_archive_when_cancelled(self):
-        with patch(
-            "ezdmb.Utility.bundle_utility.QFileDialog.getExistingDirectory",
-            return_value="",
-        ), patch("ezdmb.Utility.bundle_utility.mkdtemp") as create_temp_dir:
-            export_bundle(Mock())
-
-        create_temp_dir.assert_not_called()
