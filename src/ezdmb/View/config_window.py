@@ -1,8 +1,8 @@
 # pylint: disable=no-name-in-module
 import sys
 
-from PySide6.QtCore import QRect, QSize, Qt
-from PySide6.QtGui import QAction, QKeySequence
+from PySide6.QtCore import QRect, QSize
+from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
     QGridLayout,
     QLayout,
@@ -32,8 +32,6 @@ class config_window(QMainWindow):
         sizePolicy = QSizePolicy(
             QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
 
         self.centralWidget: QWidget = QWidget(self)
         self.centralWidget.setSizePolicy(sizePolicy)
@@ -48,12 +46,14 @@ class config_window(QMainWindow):
         self.gridLayout.setSizeConstraint(QLayout.SizeConstraint.SetMinAndMaxSize)
         self.gridLayout.setSpacing(6)
         self.gridLayout.setObjectName("gridLayout")
-        self.gridLayout_2.addLayout(self.gridLayout, 2, 0, 1, 1)
+        self.gridLayout_2.addLayout(self.gridLayout, 1, 0, 1, 1)
 
         self.config_widget = config_widget(self.centralWidget, self.config)
         self.config_widget.setSizePolicy(sizePolicy)
+        self.gridLayout_2.setRowStretch(0, 1)
+        self.gridLayout_2.setColumnStretch(0, 1)
         self.gridLayout_2.addWidget(
-            self.config_widget, 0, 0, 1, 1, alignment=Qt.AlignmentFlag.AlignTop
+            self.config_widget, 0, 0, 1, 1
         )
         self.setCentralWidget(self.centralWidget)
 

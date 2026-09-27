@@ -4,11 +4,13 @@ from PySide6.QtGui import QKeySequence, QShortcut
 from PySide6.QtWidgets import QApplication
 
 
-def setCloseOnEscKey(window):
+def setCloseOnEscKey(window) -> QShortcut:
     window.closeOnEscShortcut = QShortcut(QKeySequence(Qt.Key.Key_Escape), window)
     window.closeOnEscShortcut.activated.connect(lambda: QApplication.quit())
+    return window.closeOnEscShortcut
 
 
-def setOpenOnOKey(window, openLambda):
+def setOpenOnOKey(window, openLambda) -> QShortcut:
     window.openOnOShortcut = QShortcut(QKeySequence(Qt.Key.Key_O), window)
     window.openOnOShortcut.activated.connect(openLambda)
+    return window.openOnOShortcut

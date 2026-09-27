@@ -69,7 +69,7 @@ def import_bundle(configuration: configuration):
 
     simple_text_dialog(
         "Export Successful",
-        f"The bundle has been successfully imported.",
+        "The bundle has been successfully imported.",
     ).exec()
 
 
