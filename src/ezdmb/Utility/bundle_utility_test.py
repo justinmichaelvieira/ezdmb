@@ -14,7 +14,7 @@ from ezdmb.Utility.bundle_utility import (
 
 
 class bundle_utility_test(unittest.TestCase):
-    
+
     def test_zip_dir_preserves_files_and_relative_paths(self):
         temp_dir = tempfile.TemporaryDirectory()
         source_dir = os.path.join(temp_dir.name, "source")
