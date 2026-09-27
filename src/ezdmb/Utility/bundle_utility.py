@@ -66,7 +66,7 @@ def import_bundle(configuration: configuration):
     )
 
 
-def export_bundle(configuration: configuration):
+def export_bundle(configuration: configuration, testing=False):
     """Select a directory and save it as a zip file in a temporary location."""
 
     # Open a dialog to select a directory
@@ -87,7 +87,8 @@ def export_bundle(configuration: configuration):
         # Copy the zip bundle to the selected output directory
         copyfile("ezdmb_bundle.zip", os.path.join(output_dir, "ezdmb_bundle.zip"))
 
-    simple_text_dialog(
-        "Export Successful",
-        f"""The bundle has been successfully exported to: {Path(output_dir) / 'ezdmb_bundle.zip'}""",
-    ).exec()
+    if not testing:
+        simple_text_dialog(
+            "Export Successful",
+            f"""The bundle has been successfully exported to: {Path(output_dir) / 'ezdmb_bundle.zip'}""",
+        ).exec()

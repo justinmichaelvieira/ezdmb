@@ -124,7 +124,7 @@ class bundle_utility_test(unittest.TestCase):
                         return_value=str(output_path),
                     ),
                 ):
-                    export_bundle(config)
+                    export_bundle(config, True)
 
                 bundle_path = output_path / "ezdmb_bundle.zip"
                 with zipfile.ZipFile(bundle_path) as archive:
