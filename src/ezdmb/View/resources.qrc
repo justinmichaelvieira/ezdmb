@@ -24,6 +24,10 @@
         <file alias="delete.svg">delete.svg</file>
         <file alias="library_add.svg">library_add.svg</file>
         <file alias="settings.svg">settings.svg</file>
-        <file alias="settings_screen.svg">settings_screen.svg</file> 
+        <file alias="settings_screen.svg">settings_screen.svg</file>
+        <file alias="visibility.svg">visibility.svg</file>
+        <file alias="quickstart.svg">quickstart.svg</file>
+        <file alias="export.svg">export.svg</file>
+        <file alias="import.svg">import.svg</file>
     </qresource>
 </RCC>

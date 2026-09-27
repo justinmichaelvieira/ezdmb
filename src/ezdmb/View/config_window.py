@@ -68,8 +68,7 @@ class config_window(QMainWindow):
 
         self.exportBundleAction: QAction = QAction(
             parent=self,
-            # icon=getIcon("export.svg"),
-            shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_E),
+            icon=getIcon("export.svg"),
         )
         self.exportBundleAction.setText("&Export Content Bundle")
         self.exportBundleAction.setObjectName("exportBundleAction")
@@ -78,8 +77,7 @@ class config_window(QMainWindow):
 
         self.importBundleAction: QAction = QAction(
             parent=self,
-            # icon=getIcon("import.svg"),
-            shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_I),
+            icon=getIcon("import.svg"),
         )
         self.importBundleAction.setText("&Import Content Bundle")
         self.importBundleAction.setObjectName("importBundleAction")
@@ -89,7 +87,6 @@ class config_window(QMainWindow):
         self.exitAction: QAction = QAction(
             parent=self,
             icon=getIcon("close.svg"),
-            shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_X),
         )
         self.exitAction.setText("E&xit")
         self.exitAction.setObjectName("exitAction")
@@ -104,8 +101,7 @@ class config_window(QMainWindow):
 
         self.showQuickstartAction: QAction = QAction(
             parent=self,
-            icon=getIcon("library_add.svg"),
-            shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_Q),
+            icon=getIcon("quickstart.svg"),
         )
         self.showQuickstartAction.setText("&Quickstart")
         self.showQuickstartAction.setObjectName("quickstartAction")
@@ -115,7 +111,6 @@ class config_window(QMainWindow):
         self.showAboutAction: QAction = QAction(
             parent=self,
             icon=getIcon("about.svg"),
-            shortcut=QKeySequence(Qt.Key.Key_Control | Qt.Key.Key_A),
         )
         self.showAboutAction.setText("&About")
         self.showAboutAction.setObjectName("aboutAction")
