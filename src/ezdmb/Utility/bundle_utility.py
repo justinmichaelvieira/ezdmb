@@ -57,13 +57,20 @@ def import_bundle(configuration: configuration):
         configuration.ConfigPath = config_path
 
     content_files = list(Path(extract_folder).glob("*"))
-    configuration.set_content_array([Path(f) for f in content_files if f != config_path])
+    configuration.set_content_array([str(f) for f in content_files if f != config_path])
     configuration.save_config(
         configuration.get_rotate_content(),
         configuration.get_rotate_content_time(),
         configuration.get_content_array(),
         configuration.get_config_path(),
     )
+
+    # TODO: refresh ui with new values
+
+    simple_text_dialog(
+        "Export Successful",
+        f"The bundle has been successfully imported.",
+    ).exec()
 
 
 def export_bundle(configuration: configuration, testing=False):
