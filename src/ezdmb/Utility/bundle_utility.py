@@ -1,10 +1,13 @@
+import json
 import os
+import re
 import tempfile
 import zipfile
 from pathlib import Path
 from shutil import copyfile, rmtree
 
 from PySide6.QtWidgets import QFileDialog
+from PySide6.QtCore import Signal
 
 from ezdmb.Controller.configuration import configuration
 from ezdmb.Utility.path_utility import get_appdata_path
@@ -33,7 +36,7 @@ def unzip_dir(zip_file: Path | str, extract_dir: Path | str):
         zip_ref.extractall(extract_dir)
 
 
-def import_bundle(configuration: configuration, testing=False):
+def import_bundle(trigger_settings_ui_update: Signal, configuration: configuration, testing=False):
     """Select a zip bundle and extract it to the application directory, updating the configuration accordingly."""
 
     # Open a dialog to select a zip file
@@ -52,26 +55,28 @@ def import_bundle(configuration: configuration, testing=False):
     unzip_dir(zip_file, extract_folder)
 
     # Update the configuration with the extracted files
-    config_path = os.path.join(extract_folder, "dmb_config.json")
-    if os.path.exists(config_path):
-        configuration.ConfigPath = config_path
+    new_config_path = os.path.join(extract_folder, "dmb_config.json")
+    if os.path.exists(new_config_path):
+        regex = re.compile('(.*jpg$)|(.*png$)|(.*gif$)|(.*bmp$)|(.*ico$)|(.*txt$)') 
+        content_files = [f for f in Path(extract_folder).glob("*") if regex.match(str(f))]
 
-    content_files = list(Path(extract_folder).glob("*"))
-    configuration.set_content_array([str(f) for f in content_files if f != config_path])
-    configuration.save_config(
-        configuration.get_rotate_content(),
-        configuration.get_rotate_content_time(),
-        configuration.get_content_array(),
-        configuration.get_config_path(),
-    )
+        configuration.load_from_file(new_config_path)
 
-    # TODO: refresh ui with new values
+        configuration.save_config(
+            configuration.get_rotate_content(),
+            configuration.get_rotate_content_time(),
+            content_files,
+            configuration.get_config_path(),
+        )
 
-    if not testing:
-        simple_text_dialog(
-            "Export Successful",
-            "The bundle has been successfully imported.",
-        ).exec()
+        # TODO: refresh ui with new values
+        trigger_settings_ui_update.emit()
+
+        if not testing:
+            simple_text_dialog(
+                "Export Successful",
+                "The bundle has been successfully imported.",
+            ).exec()
 
 
 def export_bundle(configuration: configuration, testing=False):

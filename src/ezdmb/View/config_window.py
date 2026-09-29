@@ -81,7 +81,12 @@ class config_window(QMainWindow):
         )
         self.importBundleAction.setText("&Import Content Bundle")
         self.importBundleAction.setObjectName("importBundleAction")
-        self.importBundleAction.triggered.connect(lambda: import_bundle(self.config))
+        self.importBundleAction.triggered.connect(
+            lambda: import_bundle(
+                self.config_widget.trigger_settings_ui_update,
+                self.config,
+            ),
+        )
         self.menuFile.addAction(self.importBundleAction)
 
         self.exitAction: QAction = QAction(

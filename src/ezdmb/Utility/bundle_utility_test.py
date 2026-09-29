@@ -66,6 +66,7 @@ class bundle_utility_test(unittest.TestCase):
                 archive.writestr("menu.png", "image data")
 
             config = Mock()
+            trigger_settings_ui_update = Mock()
             with (
                 patch(
                     "ezdmb.Utility.bundle_utility.QFileDialog.getOpenFileName",
@@ -76,9 +77,8 @@ class bundle_utility_test(unittest.TestCase):
                     return_value=appdata_path,
                 ),
             ):
-                import_bundle(config, True)
+                import_bundle(trigger_settings_ui_update, config, True)
 
-            assert config.ConfigPath == os.path.join(extract_path, "dmb_config.json")
             assert not (extract_path / "stale.txt").exists()
             assert (extract_path / "menu.png").read_text(encoding="utf-8") == "image data"
 
@@ -87,6 +87,7 @@ class bundle_utility_test(unittest.TestCase):
         config.ConfigPath = Path("current-config.json")
         config.ContentArray = [Path("current-menu.png")]
 
+        trigger_settings_ui_update = Mock()
         with (
             patch(
                 "ezdmb.Utility.bundle_utility.QFileDialog.getOpenFileName",
@@ -94,7 +95,7 @@ class bundle_utility_test(unittest.TestCase):
             ),
             patch("ezdmb.Utility.bundle_utility.get_appdata_path") as get_appdata_path,
         ):
-            import_bundle(config, True)
+            import_bundle(trigger_settings_ui_update, config, True)
 
         assert config.ConfigPath == Path("current-config.json")
         assert config.ContentArray == [Path("current-menu.png")]

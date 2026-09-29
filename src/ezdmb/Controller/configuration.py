@@ -90,7 +90,10 @@ class configuration(QObject):
                 # Settings defaults here, for first runs
                 self.save_config(True, "15", [])
 
-        with open(self.config_path, "r+") as json_data_file:
+        self.load_from_file(self.config_path)
+
+    def load_from_file(self, path):
+        with open(path, "r+") as json_data_file:
             self._data = json.load(json_data_file)
 
         # Set variables for the app to use
@@ -113,6 +116,6 @@ class configuration(QObject):
         if savePath is None:  # Default to the config path if not doing a save as
             savePath = self.config_path
         with open(savePath, "w+") as outfile:
-            json.dump(self.get_data(), outfile)
+            json.dump(self._data, outfile)
 
         self.configUpdated.emit(self._data)

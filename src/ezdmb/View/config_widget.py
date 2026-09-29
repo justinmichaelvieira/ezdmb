@@ -1,5 +1,5 @@
 # pylint: disable=no-name-in-module
-from PySide6.QtCore import QSize
+from PySide6.QtCore import QSize, Signal
 from PySide6.QtGui import QFont, QIcon, QPixmap
 from PySide6.QtWidgets import (
     QCheckBox,
@@ -22,9 +22,12 @@ from ezdmb.Utility.icon_utility import getWindowIcon
 
 
 class config_widget(QWidget):
+    trigger_settings_ui_update = Signal()
+
     def __init__(self, parent, config: configuration):
         super(self.__class__, self).__init__(parent)
         self._config = config
+        self.trigger_settings_ui_update.connect(self.setUiFromConfig)
 
         # widgets
         self.setObjectName("config_widget")
@@ -77,14 +80,14 @@ class config_widget(QWidget):
 
         self.settingsWidget.setFont(twentyPointFont)
         self.settingsWidget.setObjectName("settingsWidget")
-        self.contentTab = QWidget(self.settingsWidget)
-        self.contentTab.setSizePolicy(minExpMinExpSizePolicy)
-        self.contentTab.setMinimumSize(QSize(790, 570))
-        self.contentTab.setObjectName("contentTab")
+        self.contentWidget = QWidget(self.settingsWidget)
+        self.contentWidget.setSizePolicy(minExpMinExpSizePolicy)
+        self.contentWidget.setMinimumSize(QSize(790, 570))
+        self.contentWidget.setObjectName("contentTab")
 
-        self.vLayout5 = QVBoxLayout(self.contentTab)
+        self.vLayout5 = QVBoxLayout(self.contentWidget)
         self.vLayout5.setObjectName("vLayout5")
-        self.rotationSettingsGrpBox = QGroupBox(self.contentTab)
+        self.rotationSettingsGrpBox = QGroupBox(self.contentWidget)
         preferredSizePolicy = QSizePolicy(
             QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred
         )
@@ -129,7 +132,7 @@ class config_widget(QWidget):
 
         self.vLayout5.addWidget(self.rotationSettingsGrpBox)
 
-        self.addRemoveGrpBox = QGroupBox(self.contentTab)
+        self.addRemoveGrpBox = QGroupBox(self.contentWidget)
         self.addRemoveGrpBox.setSizePolicy(minExpMinExpSizePolicy)
         self.addRemoveGrpBox.setMinimumSize(QSize(180, 140))
         self.addRemoveGrpBox.setFont(sixteenPtFont)
@@ -197,11 +200,6 @@ class config_widget(QWidget):
         self.rotateImagesCheck.stateChanged.connect(self.saveUpdatedConfig)
         self.rotateTimeBox.valueChanged.connect(self.saveUpdatedConfig)
 
-        # Display list of loaded content files for the DMB in the loadedContentWidget
-        for i in config.ContentArray:
-            item = QListWidgetItem(f"{i!s}")
-            self.loadedContentWidget.addItem(item)
-
     def closeDialog(self):
         self.close()
 
@@ -242,3 +240,10 @@ class config_widget(QWidget):
     def setUiFromConfig(self):
         self.rotateImagesCheck.setChecked(bool(self._config.RotateContent))
         self.rotateTimeBox.setValue(float(self._config.RotateContentTime))
+
+        self.loadedContentWidget.clear()
+        for i in self._config.ContentArray:
+            item = QListWidgetItem(f"{i!s}")
+            self.loadedContentWidget.addItem(item)
+
+        print("UI updated from config")
