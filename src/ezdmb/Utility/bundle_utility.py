@@ -1,4 +1,3 @@
-import json
 import os
 import re
 import tempfile
@@ -6,8 +5,8 @@ import zipfile
 from pathlib import Path
 from shutil import copyfile, rmtree
 
-from PySide6.QtWidgets import QFileDialog
 from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QFileDialog
 
 from ezdmb.Controller.configuration import configuration
 from ezdmb.Utility.path_utility import get_appdata_path
