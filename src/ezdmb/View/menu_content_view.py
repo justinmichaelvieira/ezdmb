@@ -1,5 +1,6 @@
 # pylint: disable=no-name-in-module
 import os.path
+from threading import Event
 
 from PySide6.QtCore import QPoint, QThread, Signal, Slot
 from PySide6.QtGui import QFont, QPainter, QPixmap, Qt
@@ -13,6 +14,7 @@ class menu_content_view(QThread):
     def __init__(self, config: configuration, pixmap, windowName, onRefresh):
         QThread.__init__(self)
         self._config = config
+        self._stop_event = Event()
 
         self.debug = True
         self.contentArray = self._config.ContentArray
@@ -24,6 +26,10 @@ class menu_content_view(QThread):
         self.contentUpdated.connect(onRefresh)
         self._config.configUpdated.connect(self.onConfigUpdated)
         self.start()
+
+    def stop(self):
+        self._stop_event.set()
+        self.wait()
 
     @Slot(dict)
     def onConfigUpdated(self, data):
@@ -58,7 +64,7 @@ class menu_content_view(QThread):
 
     def run(self):
         i = 0
-        while True:
+        while not self._stop_event.is_set():
             if len(self.contentArray) > 0 and self.rotateContent:
                 index = self.display_index(i)
                 i += 1
@@ -77,7 +83,7 @@ class menu_content_view(QThread):
             else:
                 print("No content to display; Skipping rotation.")
 
-            self.sleep(int(self.rotateTimeout))
+            self._stop_event.wait(max(float(self.rotateTimeout), 1))
 
     def display_index(self, i):
         index = i % len(self.contentArray)

@@ -13,6 +13,7 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QApplication, QLabel
 
 from ezdmb.Controller import configuration
+from ezdmb.View import full_screen_window
 from ezdmb.View import menu_content_view
 
 
@@ -89,6 +90,26 @@ class test_menu_content_view_init:
 
             # Verify contentUpdated signal was connected
             assert util.contentUpdated is not None
+
+
+class TestMenuContentViewShutdown:
+    def test_stop_interrupts_rotation_wait(self, qapp, mock_config):
+        mock_config.RotateContentTime = 3600
+        worker = menu_content_view.menu_content_view(
+            mock_config, QLabel(), "TestWindow", MagicMock()
+        )
+
+        worker.stop()
+
+        assert not worker.isRunning()
+
+    def test_application_shutdown_stops_display_worker(self, qapp, mock_config):
+        mock_config.RotateContentTime = 3600
+        window = full_screen_window.full_screen_window(mock_config, MagicMock())
+
+        qapp.aboutToQuit.emit()
+
+        assert not window.contentViewUtil.isRunning()
 
 
 class TestGetViewableFileContent:

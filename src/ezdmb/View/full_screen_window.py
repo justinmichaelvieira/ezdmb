@@ -2,6 +2,7 @@
 from PySide6.QtCore import QSize, Qt, Slot
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
+    QApplication,
     QFrame,
     QGridLayout,
     QLabel,
@@ -73,6 +74,9 @@ class full_screen_window(QMainWindow):
             "full_screen_window",
             self.onRefresh,
         )
+        app = QApplication.instance()
+        if app is not None:
+            app.aboutToQuit.connect(self.contentViewUtil.stop)
         setCloseOnEscKey(self)
         setOpenOnOKey(self, reopen_preview_window)
 

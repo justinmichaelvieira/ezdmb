@@ -1,80 +1,104 @@
 __version__ = "1.0.5"
 
 STYLESHEET = """
-* {
-    border-color: #2b2b2b;
-    font-size: 13px;
-    alternate-background-color: #3c3f41;
+QWidget {
+    background-color: #f5f6f7;
+    color: #20252b;
+    font-size: 10pt;
 }
 
-QPushButton::pressed {
-    background: #303F9F;
-    color: #448AFF;
+QMainWindow {
+    background-color: #f5f6f7;
 }
 
-QToolButton {
-    color: #FFFFFF;
+QMenuBar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dce1e6;
 }
 
-QLineEdit[accessibleName="selectedFileEdit"] {
-    color: #757575;
+QMenuBar::item {
+    padding: 6px 10px;
 }
 
-QScrollArea {
-    background: #ffffff;
+QMenuBar::item:selected, QMenu::item:selected {
+    background-color: #e7eef8;
+    color: #174f91;
 }
 
-QToolButton {
-    background: #303F9F;
-    border: 0;
+QGroupBox {
+    background-color: #ffffff;
+    border: 1px solid #dce1e6;
+    border-radius: 5px;
+    margin-top: 12px;
+    padding: 12px;
+    font-weight: 600;
 }
 
-QFrame[accessibleName="navHeaderFrame"] {
-    background: #303F9F;
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 10px;
+    padding: 0 5px;
+    color: #343b43;
 }
 
-QLabel[accessibleName="titleBar"] {
-    background: #3F51B5;
-    color: #FFFFFF;
+QPushButton {
+    background-color: #ffffff;
+    border: 1px solid #cbd2da;
+    border-radius: 4px;
+    padding: 7px 12px;
 }
 
-QFrame {
-    border: none;
+QPushButton:hover {
+    background-color: #eef3f8;
+    border-color: #8ba9c8;
 }
 
-QScrollArea {
-    color: #bbbbbb;
-    background-color: #3c3f41;
-    border: none;
-    border-top: 1px solid #2b2b2b;
-    selection-background-color: #2f65ca;
-    selection-color: #bbbbbb;
+QPushButton:pressed {
+    background-color: #dce8f5;
 }
 
-QDialog QScrollArea {
-    border-top: none;
-    border: none;
+QPushButton#addContentButton {
+    background-color: #1f5f9f;
+    border-color: #1f5f9f;
+    color: #ffffff;
 }
 
-QPlainTextEdit {
-    background-color: #2b2b2b;
-    border: none;
-    color: #bbbbbb;
-    selection-background-color: #2f65ca;
+QPushButton#addContentButton:hover {
+    background-color: #174f84;
 }
 
-QGraphicsView {
-    background-color: #3c3f41;
-    border-color: #2b2b2b;
-    color: #bbbbbb;
+QPushButton#deleteSelectionButton {
+    color: #8a3d3a;
+}
+
+QListWidget, QDoubleSpinBox {
+    background-color: #ffffff;
+    border: 1px solid #cbd2da;
+    border-radius: 4px;
+    padding: 5px;
 }
 
 QListWidget::item {
-    border: 1px solid #2b2b2b;
+    padding: 6px 8px;
+    border-bottom: 1px solid #edf0f2;
 }
 
 QListWidget::item:selected {
-    background: #324a8b;
-    color: #ffffff;
+    background-color: #e5eef9;
+    color: #174f91;
+}
+
+QCheckBox {
+    spacing: 8px;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+}
+
+QToolButton {
+    color: #20252b;
+    background-color: transparent;
 }
 """

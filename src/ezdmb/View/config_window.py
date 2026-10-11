@@ -1,11 +1,9 @@
 # pylint: disable=no-name-in-module
-import sys
-
 from PySide6.QtCore import QRect, QSize
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
     QGridLayout,
-    QLayout,
+    QApplication,
     QMainWindow,
     QMenu,
     QMenuBar,
@@ -35,7 +33,7 @@ class config_window(QMainWindow):
 
         self.centralWidget: QWidget = QWidget(self)
         self.centralWidget.setSizePolicy(sizePolicy)
-        self.centralWidget.setMinimumSize(QSize(800, 240))
+        self.centralWidget.setMinimumSize(QSize(560, 400))
         self.centralWidget.setObjectName("centralWidget")
 
         self.gridLayout_2 = QGridLayout(self.centralWidget)
@@ -43,7 +41,6 @@ class config_window(QMainWindow):
         self.gridLayout_2.setSpacing(6)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.gridLayout = QGridLayout()
-        self.gridLayout.setSizeConstraint(QLayout.SizeConstraint.SetMinAndMaxSize)
         self.gridLayout.setSpacing(6)
         self.gridLayout.setObjectName("gridLayout")
         self.gridLayout_2.addLayout(self.gridLayout, 1, 0, 1, 1)
@@ -95,7 +92,7 @@ class config_window(QMainWindow):
         )
         self.exitAction.setText("E&xit")
         self.exitAction.setObjectName("exitAction")
-        self.exitAction.triggered.connect(lambda: sys.exit())
+        self.exitAction.triggered.connect(lambda: QApplication.quit())
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.exitAction)
         self.menuBar.addAction(self.menuFile.menuAction())
@@ -108,7 +105,7 @@ class config_window(QMainWindow):
             parent=self,
             icon=getIcon("quickstart.svg"),
         )
-        self.showQuickstartAction.setText("&Quickstart")
+        self.showQuickstartAction.setText("&Quickstart Guide")
         self.showQuickstartAction.setObjectName("quickstartAction")
         self.showQuickstartAction.triggered.connect(showQuickstartWindow)
         self.menuHelp.addAction(self.showQuickstartAction)
@@ -117,7 +114,7 @@ class config_window(QMainWindow):
             parent=self,
             icon=getIcon("about.svg"),
         )
-        self.showAboutAction.setText("&About")
+        self.showAboutAction.setText("&About ezdmb")
         self.showAboutAction.setObjectName("aboutAction")
         self.showAboutAction.triggered.connect(showAboutWindow)
         self.menuHelp.addAction(self.showAboutAction)

@@ -31,7 +31,7 @@ class config_widget(QWidget):
 
         # widgets
         self.setObjectName("config_widget")
-        self.resize(401, 331)
+        self.setMinimumSize(QSize(520, 360))
 
         self.setWindowIcon(getWindowIcon())
 
@@ -42,10 +42,9 @@ class config_widget(QWidget):
         preferredSizePolicy.setVerticalStretch(0)
         preferredSizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
         self.setSizePolicy(preferredSizePolicy)
-        self.setMinimumSize(QSize(800, 600))
         self.vLayout6 = QVBoxLayout(self)
-        self.vLayout6.setContentsMargins(0, 0, 0, 0)
-        self.vLayout6.setSpacing(0)
+        self.vLayout6.setContentsMargins(20, 18, 20, 18)
+        self.vLayout6.setSpacing(12)
         self.vLayout6.setObjectName("vLayout6")
 
         minMinSizePolicy = QSizePolicy(
@@ -59,33 +58,23 @@ class config_widget(QWidget):
         )
 
         self.settingsWidget = QWidget(self)
-        self.settingsWidget.setSizePolicy(minMinSizePolicy)
-        self.settingsWidget.setMinimumSize(QSize(790, 570))
+        self.settingsWidget.setSizePolicy(minExpMinExpSizePolicy)
+        self.settingsWidget.setObjectName("settingsWidget")
+        self.settingsLayout = QVBoxLayout(self.settingsWidget)
+        self.settingsLayout.setContentsMargins(0, 0, 0, 0)
 
         # fonts
         twelvePtFont = QFont()
         twelvePtFont.setPointSize(12)
         twelvePtFont.setBold(False)
-        twelvePtFont.setLegacyWeight(50)
-        fourteenPtFont = QFont()
-        fourteenPtFont.setPointSize(14)
-        fourteenPtFont.setBold(False)
-        fourteenPtFont.setLegacyWeight(50)
-        sixteenPtFont = QFont()
-        sixteenPtFont.setPointSize(16)
-        sixteenPtFont.setBold(False)
-        sixteenPtFont.setLegacyWeight(50)
-        twentyPointFont = QFont()
-        twentyPointFont.setPointSize(20)
-
-        self.settingsWidget.setFont(twentyPointFont)
-        self.settingsWidget.setObjectName("settingsWidget")
         self.contentWidget = QWidget(self.settingsWidget)
         self.contentWidget.setSizePolicy(minExpMinExpSizePolicy)
-        self.contentWidget.setMinimumSize(QSize(790, 570))
         self.contentWidget.setObjectName("contentTab")
+        self.settingsLayout.addWidget(self.contentWidget)
 
         self.vLayout5 = QVBoxLayout(self.contentWidget)
+        self.vLayout5.setContentsMargins(0, 0, 0, 0)
+        self.vLayout5.setSpacing(12)
         self.vLayout5.setObjectName("vLayout5")
         self.rotationSettingsGrpBox = QGroupBox(self.contentWidget)
         preferredSizePolicy = QSizePolicy(
@@ -97,13 +86,13 @@ class config_widget(QWidget):
             self.rotationSettingsGrpBox.sizePolicy().hasHeightForWidth()
         )
         self.rotationSettingsGrpBox.setSizePolicy(preferredSizePolicy)
-        self.rotationSettingsGrpBox.setMinimumSize(QSize(180, 40))
-        self.rotationSettingsGrpBox.setFont(sixteenPtFont)
+        self.rotationSettingsGrpBox.setMinimumSize(QSize(180, 64))
+        self.rotationSettingsGrpBox.setFont(twelvePtFont)
         self.rotationSettingsGrpBox.setObjectName("rotationSettingsGrpBox")
 
         self.hLayout2 = QHBoxLayout(self.rotationSettingsGrpBox)
-        self.hLayout2.setContentsMargins(8, 0, 8, 0)
-        self.hLayout2.setSpacing(2)
+        self.hLayout2.setContentsMargins(8, 8, 8, 8)
+        self.hLayout2.setSpacing(10)
         self.hLayout2.setObjectName("hLayout2")
 
         self.rotateImagesCheck = QCheckBox(self.rotationSettingsGrpBox)
@@ -125,7 +114,7 @@ class config_widget(QWidget):
 
         self.secondsLabel = QLabel(self.rotationSettingsGrpBox)
         self.secondsLabel.setSizePolicy(minExpMinExpSizePolicy)
-        self.secondsLabel.setMinimumSize(QSize(30, 31))
+        self.secondsLabel.setMinimumSize(QSize(30, 30))
         self.secondsLabel.setFont(twelvePtFont)
         self.secondsLabel.setObjectName("secondsLabel")
         self.hLayout2.addWidget(self.secondsLabel)
@@ -135,12 +124,12 @@ class config_widget(QWidget):
         self.addRemoveGrpBox = QGroupBox(self.contentWidget)
         self.addRemoveGrpBox.setSizePolicy(minExpMinExpSizePolicy)
         self.addRemoveGrpBox.setMinimumSize(QSize(180, 140))
-        self.addRemoveGrpBox.setFont(sixteenPtFont)
+        self.addRemoveGrpBox.setFont(twelvePtFont)
         self.addRemoveGrpBox.setObjectName("addRemoveGrpBox")
 
         self.vLayout2 = QVBoxLayout(self.addRemoveGrpBox)
-        self.vLayout2.setContentsMargins(6, 0, 6, 0)
-        self.vLayout2.setSpacing(0)
+        self.vLayout2.setContentsMargins(8, 8, 8, 8)
+        self.vLayout2.setSpacing(8)
         self.vLayout2.setObjectName("vLayout2")
 
         self.loadedContentWidget = QListWidget(self.addRemoveGrpBox)
@@ -150,14 +139,14 @@ class config_widget(QWidget):
         self.vLayout2.addWidget(self.loadedContentWidget)
 
         self.frame = QFrame(self.addRemoveGrpBox)
-        self.frame.setMinimumSize(QSize(180, 40))
+        self.frame.setMinimumSize(QSize(180, 48))
         self.frame.setFrameShape(QFrame.Shape.NoFrame)
         self.frame.setFrameShadow(QFrame.Shadow.Plain)
         self.frame.setObjectName("frame")
 
         self.horizontalLayout = QHBoxLayout(self.frame)
-        self.horizontalLayout.setContentsMargins(8, 12, 8, 12)
-        self.horizontalLayout.setSpacing(12)
+        self.horizontalLayout.setContentsMargins(0, 4, 0, 0)
+        self.horizontalLayout.setSpacing(8)
         self.horizontalLayout.setObjectName("horizontalLayout")
 
         addPixmap = QPixmap("add.svg")
@@ -166,12 +155,12 @@ class config_widget(QWidget):
         self.addContentButton = QPushButton(self.frame)
         self.addContentButton.setIcon(addButtonIcon)
         self.addContentButton.setIconSize(addPixmap.rect().size())
-        self.addContentButton.setMinimumSize(QSize(120, 36))
+        self.addContentButton.setMinimumSize(QSize(120, 34))
         self.addContentButton.setFont(twelvePtFont)
         self.addContentButton.setObjectName("addContentButton")
         self.horizontalLayout.addWidget(self.addContentButton)
         self.deleteSelectionButton = QPushButton(self.frame)
-        self.deleteSelectionButton.setMinimumSize(QSize(120, 36))
+        self.deleteSelectionButton.setMinimumSize(QSize(120, 34))
         self.deleteSelectionButton.setFont(twelvePtFont)
         self.deleteSelectionButton.setObjectName("deleteSelectionButton")
         self.horizontalLayout.addWidget(self.deleteSelectionButton)
