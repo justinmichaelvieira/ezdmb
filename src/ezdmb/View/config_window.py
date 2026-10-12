@@ -1,5 +1,5 @@
 # pylint: disable=no-name-in-module
-from PySide6.QtCore import QRect, QSize
+from PySide6.QtCore import QRect, QSize, Signal
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
     QGridLayout,
@@ -18,6 +18,8 @@ from ezdmb.View.config_widget import config_widget
 
 
 class config_window(QMainWindow):
+    minimizeToTrayRequested = Signal()
+
     def __init__(self, config, showAboutWindow, showQuickstartWindow):
         super(self.__class__, self).__init__()
         self.config = config
@@ -86,6 +88,15 @@ class config_window(QMainWindow):
         )
         self.menuFile.addAction(self.importBundleAction)
 
+        self.menuFile.addSeparator()
+        self.minimizeToTrayAction: QAction = QAction(parent=self)
+        self.minimizeToTrayAction.setText("Minimize To Tray")
+        self.minimizeToTrayAction.setObjectName("minimizeToTrayAction")
+        self.minimizeToTrayAction.triggered.connect(
+            lambda: self.minimizeToTrayRequested.emit()
+        )
+        self.menuFile.addAction(self.minimizeToTrayAction)
+
         self.exitAction: QAction = QAction(
             parent=self,
             icon=getIcon("close.svg"),
@@ -93,7 +104,6 @@ class config_window(QMainWindow):
         self.exitAction.setText("E&xit")
         self.exitAction.setObjectName("exitAction")
         self.exitAction.triggered.connect(lambda: QApplication.quit())
-        self.menuFile.addSeparator()
         self.menuFile.addAction(self.exitAction)
         self.menuBar.addAction(self.menuFile.menuAction())
 

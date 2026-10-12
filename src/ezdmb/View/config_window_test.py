@@ -37,12 +37,22 @@ class TestConfigWindow:
         assert window.config_widget._config is config
         assert window.menuFile.title() == "File"
         assert window.menuHelp.title() == "Help"
+        assert window.minimizeToTrayAction.text() == "Minimize To Tray"
 
         window.showAboutAction.trigger()
         window.showQuickstartAction.trigger()
 
         show_about.assert_called_once_with()
         show_quickstart.assert_called_once_with()
+
+    def test_minimize_to_tray_action_emits_request(self, qapp, config):
+        minimize_to_tray = MagicMock()
+        window = config_window.config_window(config, MagicMock(), MagicMock())
+        window.minimizeToTrayRequested.connect(minimize_to_tray)
+
+        window.minimizeToTrayAction.trigger()
+
+        minimize_to_tray.assert_called_once_with()
 
     def test_bundle_menu_actions_forward_config(self, qapp, config, monkeypatch):
         export = MagicMock()

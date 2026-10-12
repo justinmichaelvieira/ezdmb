@@ -96,6 +96,9 @@ def populate_instance():
         app.quit,
         app,
     )
+    config_win.minimizeToTrayRequested.connect(
+        app.system_tray.minimize_to_tray
+    )
     app.system_tray.show()
 
     print(f"""
