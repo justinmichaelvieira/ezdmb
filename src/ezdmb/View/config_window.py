@@ -19,6 +19,8 @@ from ezdmb.View.config_widget import config_widget
 
 class config_window(QMainWindow):
     minimizeToTrayRequested = Signal()
+    minimizeFullScreenWindowRequested = Signal()
+    showFullScreenWindowRequested = Signal()
 
     def __init__(self, config, showAboutWindow, showQuickstartWindow):
         super(self.__class__, self).__init__()
@@ -89,14 +91,46 @@ class config_window(QMainWindow):
         self.menuFile.addAction(self.importBundleAction)
 
         self.menuFile.addSeparator()
+
+        self.minimizeConfigurationWindowAction: QAction = QAction(parent=self)
+        self.minimizeConfigurationWindowAction.setText(
+            "Minimize Configuration Window"
+        )
+        self.minimizeConfigurationWindowAction.setObjectName(
+            "minimizeConfigurationWindowAction"
+        )
+        self.minimizeConfigurationWindowAction.triggered.connect(
+            lambda: self.showMinimized()
+        )
+        self.menuFile.addAction(self.minimizeConfigurationWindowAction)
+
+        self.minimizeFullScreenWindowAction: QAction = QAction(parent=self)
+        self.minimizeFullScreenWindowAction.setText("Minimize Full Screen Window")
+        self.minimizeFullScreenWindowAction.setObjectName(
+            "minimizeFullScreenWindowAction"
+        )
+        self.minimizeFullScreenWindowAction.triggered.connect(
+            lambda: self.minimizeFullScreenWindowRequested.emit()
+        )
+        self.menuFile.addAction(self.minimizeFullScreenWindowAction)
+
         self.minimizeToTrayAction: QAction = QAction(parent=self)
-        self.minimizeToTrayAction.setText("Minimize To Tray")
+        self.minimizeToTrayAction.setText("Minimize All")
         self.minimizeToTrayAction.setObjectName("minimizeToTrayAction")
         self.minimizeToTrayAction.triggered.connect(
             lambda: self.minimizeToTrayRequested.emit()
         )
         self.menuFile.addAction(self.minimizeToTrayAction)
 
+        self.showFullScreenWindowAction: QAction = QAction(parent=self)
+        self.showFullScreenWindowAction.setText("Show Full Screen Window")
+        self.showFullScreenWindowAction.setObjectName("showFullScreenWindowAction")
+        self.showFullScreenWindowAction.triggered.connect(
+            lambda: self.showFullScreenWindowRequested.emit()
+        )
+        self.menuFile.addAction(self.showFullScreenWindowAction)
+
+        self.menuFile.addSeparator()
         self.exitAction: QAction = QAction(
             parent=self,
             icon=getIcon("close.svg"),

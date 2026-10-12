@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock
 
 import pytest
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QSystemTrayIcon, QWidget
 
 from ezdmb.Utility.system_tray_utility import system_tray_utility
@@ -18,11 +19,65 @@ class TestSystemTrayUtility:
     def test_menu_has_minimize_and_exit_actions(self, qapp):
         utility = system_tray_utility([], MagicMock(), qapp)
 
-        assert [action.text() for action in utility.menu.actions()] == [
-            "Minimize to tray",
+        assert [
+            action.text()
+            for action in utility.menu.actions()
+            if not action.isSeparator()
+        ] == [
+            "Minimize Configuration Window",
+            "Minimize Full Screen Window",
+            "Minimize All",
+            "Show Full Screen Window",
+            "Show Configuration Window",
+            "Show All Windows",
             "Exit",
         ]
         assert utility.tray_icon.contextMenu() is utility.menu
+
+    def test_individual_actions_target_their_window(self, qapp):
+        config_window = MagicMock()
+        full_screen_window = MagicMock()
+        config_window.windowState.return_value = Qt.WindowState.WindowNoState
+        utility = system_tray_utility(
+            [],
+            MagicMock(),
+            qapp,
+            configuration_window=config_window,
+            full_screen_window=full_screen_window,
+        )
+
+        utility.minimize_configuration_action.trigger()
+        utility.minimize_full_screen_action.trigger()
+        utility.show_full_screen_action.trigger()
+        utility.show_configuration_action.trigger()
+
+        config_window.showMinimized.assert_called_once_with()
+        config_window.showNormal.assert_called_once_with()
+        full_screen_window.showMinimized.assert_called_once_with()
+        full_screen_window.showFullScreen.assert_called_once_with()
+
+    def test_show_all_shows_full_screen_before_configuration(self, qapp):
+        calls = []
+        config_window = MagicMock()
+        config_window.windowState.return_value = Qt.WindowState.WindowNoState
+        config_window.showNormal.side_effect = lambda: calls.append("configuration")
+        full_screen_window = MagicMock()
+        full_screen_window.showFullScreen.side_effect = lambda: calls.append(
+            "full_screen"
+        )
+        utility = system_tray_utility(
+            [],
+            MagicMock(),
+            qapp,
+            configuration_window=config_window,
+            full_screen_window=full_screen_window,
+        )
+
+        utility.show_all_action.trigger()
+
+        assert calls == ["full_screen", "configuration"]
+        config_window.raise_.assert_called_once_with()
+        config_window.activateWindow.assert_called_once_with()
 
     def test_minimize_and_restore_only_previously_visible_windows(self, qapp):
         visible_window = QWidget()

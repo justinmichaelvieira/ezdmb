@@ -37,7 +37,14 @@ class TestConfigWindow:
         assert window.config_widget._config is config
         assert window.menuFile.title() == "File"
         assert window.menuHelp.title() == "Help"
-        assert window.minimizeToTrayAction.text() == "Minimize To Tray"
+        assert window.minimizeToTrayAction.text() == "Minimize All"
+        assert window.minimizeConfigurationWindowAction.text() == (
+            "Minimize Configuration Window"
+        )
+        assert window.minimizeFullScreenWindowAction.text() == (
+            "Minimize Full Screen Window"
+        )
+        assert window.showFullScreenWindowAction.text() == "Show Full Screen Window"
 
         window.showAboutAction.trigger()
         window.showQuickstartAction.trigger()
@@ -53,6 +60,29 @@ class TestConfigWindow:
         window.minimizeToTrayAction.trigger()
 
         minimize_to_tray.assert_called_once_with()
+
+    def test_minimize_configuration_action_minimizes_window(self, qapp, config):
+        window = config_window.config_window(config, MagicMock(), MagicMock())
+        window.show()
+        qapp.processEvents()
+
+        window.minimizeConfigurationWindowAction.trigger()
+        qapp.processEvents()
+
+        assert window.isMinimized()
+
+    def test_full_screen_actions_emit_requests(self, qapp, config):
+        minimize_full_screen = MagicMock()
+        show_full_screen = MagicMock()
+        window = config_window.config_window(config, MagicMock(), MagicMock())
+        window.minimizeFullScreenWindowRequested.connect(minimize_full_screen)
+        window.showFullScreenWindowRequested.connect(show_full_screen)
+
+        window.minimizeFullScreenWindowAction.trigger()
+        window.showFullScreenWindowAction.trigger()
+
+        minimize_full_screen.assert_called_once_with()
+        show_full_screen.assert_called_once_with()
 
     def test_bundle_menu_actions_forward_config(self, qapp, config, monkeypatch):
         export = MagicMock()

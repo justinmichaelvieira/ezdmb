@@ -5,16 +5,49 @@ from ezdmb.Utility.icon_utility import getWindowIcon
 
 
 class system_tray_utility:
-    def __init__(self, windows, quit_callback, parent=None):
+    def __init__(
+        self,
+        windows,
+        quit_callback,
+        parent=None,
+        *,
+        configuration_window=None,
+        full_screen_window=None,
+    ):
         self.windows = tuple(windows)
+        self.configuration_window = configuration_window
+        self.full_screen_window = full_screen_window
         self._quit_callback = quit_callback
         self._hidden_window_states = []
         self._active_window = None
 
         self.menu = QMenu()
-        self.minimize_action = self.menu.addAction("Minimize to tray")
+        self.minimize_configuration_action = self.menu.addAction(
+            "Minimize Configuration Window"
+        )
+        self.minimize_full_screen_action = self.menu.addAction(
+            "Minimize Full Screen Window"
+        )
+        self.minimize_action = self.menu.addAction("Minimize All")
+        self.show_full_screen_action = self.menu.addAction("Show Full Screen Window")
+        self.show_configuration_action = self.menu.addAction(
+            "Show Configuration Window"
+        )
+        self.show_all_action = self.menu.addAction("Show All Windows")
+        self.menu.addSeparator()
         self.exit_action = self.menu.addAction("Exit")
         self.minimize_action.triggered.connect(self.minimize_to_tray)
+        self.minimize_configuration_action.triggered.connect(
+            self.minimize_configuration_window
+        )
+        self.minimize_full_screen_action.triggered.connect(
+            self.minimize_full_screen_window
+        )
+        self.show_full_screen_action.triggered.connect(self.show_full_screen_window)
+        self.show_configuration_action.triggered.connect(
+            self.show_configuration_window
+        )
+        self.show_all_action.triggered.connect(self.show_all_windows)
         self.exit_action.triggered.connect(self._quit_callback)
 
         self.tray_icon = QSystemTrayIcon(getWindowIcon(), parent)
@@ -57,6 +90,54 @@ class system_tray_utility:
             self._active_window.raise_()
             self._active_window.activateWindow()
         self._active_window = None
+
+    def minimize_configuration_window(self):
+        self._minimize_window(self.configuration_window)
+
+    def minimize_full_screen_window(self):
+        self._minimize_window(self.full_screen_window)
+
+    def show_full_screen_window(self):
+        if self.full_screen_window is None:
+            return
+        self.full_screen_window.showFullScreen()
+        self.full_screen_window.raise_()
+        self.full_screen_window.activateWindow()
+        self._update_saved_state(self.full_screen_window)
+
+    def show_configuration_window(self):
+        if self.configuration_window is None:
+            return
+        self._show_window(self.configuration_window)
+        self._update_saved_state(self.configuration_window)
+
+    def show_all_windows(self):
+        self.show_full_screen_window()
+        self.show_configuration_window()
+
+    def _minimize_window(self, window):
+        if window is None:
+            return
+        window.showMinimized()
+        self._update_saved_state(window)
+
+    @staticmethod
+    def _show_window(window):
+        state = window.windowState()
+        if state & Qt.WindowState.WindowFullScreen:
+            window.showFullScreen()
+        elif state & Qt.WindowState.WindowMaximized:
+            window.showMaximized()
+        else:
+            window.showNormal()
+        window.raise_()
+        window.activateWindow()
+
+    def _update_saved_state(self, window):
+        self._hidden_window_states = [
+            (saved_window, window.windowState() if saved_window is window else state)
+            for saved_window, state in self._hidden_window_states
+        ]
 
     def _on_activated(self, reason):
         if reason == QSystemTrayIcon.ActivationReason.DoubleClick:

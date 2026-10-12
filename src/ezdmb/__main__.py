@@ -95,9 +95,17 @@ def populate_instance():
         [full_screen_win, config_win, about_win, quickstart_win],
         app.quit,
         app,
+        configuration_window=config_win,
+        full_screen_window=full_screen_win,
     )
     config_win.minimizeToTrayRequested.connect(
         app.system_tray.minimize_to_tray
+    )
+    config_win.minimizeFullScreenWindowRequested.connect(
+        app.system_tray.minimize_full_screen_window
+    )
+    config_win.showFullScreenWindowRequested.connect(
+        app.system_tray.show_full_screen_window
     )
     app.system_tray.show()
 
