@@ -13,8 +13,7 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QApplication, QLabel
 
 from ezdmb.Controller import configuration
-from ezdmb.View import full_screen_window
-from ezdmb.View import menu_content_view
+from ezdmb.View import full_screen_window, menu_content_view
 
 
 @pytest.fixture

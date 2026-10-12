@@ -47,9 +47,6 @@ class config_widget(QWidget):
         self.vLayout6.setSpacing(12)
         self.vLayout6.setObjectName("vLayout6")
 
-        minMinSizePolicy = QSizePolicy(
-            QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum
-        )
         minExpMinExpSizePolicy = QSizePolicy(
             QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding
         )
@@ -90,34 +87,39 @@ class config_widget(QWidget):
         self.rotationSettingsGrpBox.setFont(twelvePtFont)
         self.rotationSettingsGrpBox.setObjectName("rotationSettingsGrpBox")
 
-        self.hLayout2 = QHBoxLayout(self.rotationSettingsGrpBox)
+        self.hLayout2 = QVBoxLayout(self.rotationSettingsGrpBox)
         self.hLayout2.setContentsMargins(8, 8, 8, 8)
-        self.hLayout2.setSpacing(10)
+        self.hLayout2.setSpacing(6)
         self.hLayout2.setObjectName("hLayout2")
 
         self.rotateImagesCheck = QCheckBox(self.rotationSettingsGrpBox)
         self.rotateImagesCheck.setSizePolicy(fixedFixedSizePolicy)
-        self.rotateImagesCheck.setMinimumSize(QSize(180, 24))
-        self.rotateImagesCheck.setFont(twelvePtFont)
+        self.rotateImagesCheck.setMinimumSize(QSize(220, 34))
+        rotationToggleFont = QFont(twelvePtFont)
+        rotationToggleFont.setPointSize(14)
+        self.rotateImagesCheck.setFont(rotationToggleFont)
         self.rotateImagesCheck.setObjectName("rotateImagesCheck")
         self.hLayout2.addWidget(self.rotateImagesCheck)
 
         self.rotateTimeBox = QDoubleSpinBox(self.rotationSettingsGrpBox)
         self.rotateTimeBox.setSizePolicy(fixedFixedSizePolicy)
-        self.rotateTimeBox.setMinimumSize(QSize(70, 24))
+        self.rotateTimeBox.setMinimumSize(QSize(70, 32))
         self.rotateTimeBox.setFont(twelvePtFont)
         self.rotateTimeBox.setDecimals(0)
         self.rotateTimeBox.setMinimum(1)
         self.rotateTimeBox.setMaximum(1800)
         self.rotateTimeBox.setObjectName("rotateTimeBox")
-        self.hLayout2.addWidget(self.rotateTimeBox)
-
         self.secondsLabel = QLabel(self.rotationSettingsGrpBox)
         self.secondsLabel.setSizePolicy(minExpMinExpSizePolicy)
         self.secondsLabel.setMinimumSize(QSize(30, 30))
         self.secondsLabel.setFont(twelvePtFont)
         self.secondsLabel.setObjectName("secondsLabel")
-        self.hLayout2.addWidget(self.secondsLabel)
+
+        self.rotationIntervalLayout = QHBoxLayout()
+        self.rotationIntervalLayout.setSpacing(10)
+        self.rotationIntervalLayout.addWidget(self.rotateTimeBox)
+        self.rotationIntervalLayout.addWidget(self.secondsLabel)
+        self.hLayout2.addLayout(self.rotationIntervalLayout)
 
         self.vLayout5.addWidget(self.rotationSettingsGrpBox)
 
@@ -187,6 +189,7 @@ class config_widget(QWidget):
         self.addContentButton.clicked.connect(self.addContent)
         self.deleteSelectionButton.clicked.connect(self.deleteSelectedContent)
         self.rotateImagesCheck.stateChanged.connect(self.saveUpdatedConfig)
+        self.rotateImagesCheck.toggled.connect(self.setRotationControlsEnabled)
         self.rotateTimeBox.valueChanged.connect(self.saveUpdatedConfig)
 
     def closeDialog(self):
@@ -228,6 +231,7 @@ class config_widget(QWidget):
 
     def setUiFromConfig(self):
         self.rotateImagesCheck.setChecked(bool(self._config.RotateContent))
+        self.setRotationControlsEnabled(self.rotateImagesCheck.isChecked())
         self.rotateTimeBox.setValue(float(self._config.RotateContentTime))
 
         self.loadedContentWidget.clear()
@@ -236,3 +240,13 @@ class config_widget(QWidget):
             self.loadedContentWidget.addItem(item)
 
         print("UI updated from config")
+
+    def setRotationControlsEnabled(self, enabled):
+        self.rotateTimeBox.setEnabled(enabled)
+        self.secondsLabel.setEnabled(enabled)
+        group_font = self.rotationSettingsGrpBox.font()
+        self.rotationSettingsGrpBox.setProperty("rotationEnabled", enabled)
+        self.rotationSettingsGrpBox.style().unpolish(self.rotationSettingsGrpBox)
+        self.rotationSettingsGrpBox.style().polish(self.rotationSettingsGrpBox)
+        self.rotationSettingsGrpBox.setFont(group_font)
+        self.rotationSettingsGrpBox.update()

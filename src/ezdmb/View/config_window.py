@@ -2,8 +2,8 @@
 from PySide6.QtCore import QRect, QSize, Signal
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
-    QGridLayout,
     QApplication,
+    QGridLayout,
     QMainWindow,
     QMenu,
     QMenuBar,

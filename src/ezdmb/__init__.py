@@ -34,6 +34,14 @@ QGroupBox {
     font-weight: 600;
 }
 
+QGroupBox[rotationEnabled="false"] {
+    background-color: #e8eaed;
+}
+
+QCheckBox#rotateImagesCheck, QLabel#secondsLabel {
+    background-color: transparent;
+}
+
 QGroupBox::title {
     subcontrol-origin: margin;
     left: 10px;
@@ -78,6 +86,14 @@ QListWidget, QDoubleSpinBox {
     padding: 5px;
 }
 
+QDoubleSpinBox {
+    min-height: 32px;
+}
+
+QDoubleSpinBox#rotateTimeBox {
+    background-color: transparent;
+}
+
 QListWidget::item {
     padding: 6px 8px;
     border-bottom: 1px solid #edf0f2;
@@ -95,6 +111,11 @@ QCheckBox {
 QCheckBox::indicator {
     width: 16px;
     height: 16px;
+}
+
+QCheckBox#rotateImagesCheck::indicator {
+    width: 20px;
+    height: 20px;
 }
 
 QToolButton {
