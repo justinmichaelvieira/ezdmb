@@ -16,6 +16,7 @@ from ezdmb import STYLESHEET, __version__
 from ezdmb.Controller import configuration
 from ezdmb.Utility.icon_utility import getWindowIcon
 from ezdmb.Utility.logging_utility import setupLogging
+from ezdmb.Utility.system_tray_utility import system_tray_utility
 from ezdmb.View import (
     config_window,
     full_screen_window,
@@ -47,6 +48,7 @@ def populate_instance():
     app.setOrganizationName("Rancorsoft")
     app.setOrganizationDomain("Rancorsoft.com")
     app.setApplicationName("Digital Menu Board")
+    app.setQuitOnLastWindowClosed(False)
 
     app.setStyleSheet(STYLESHEET)
 
@@ -88,6 +90,13 @@ def populate_instance():
     open_preview_window()
     config_win.raise_()
     config_win.activateWindow()
+
+    app.system_tray = system_tray_utility(
+        [full_screen_win, config_win, about_win, quickstart_win],
+        app.quit,
+        app,
+    )
+    app.system_tray.show()
 
     print(f"""
 ezdmb v{__version__} started with:
