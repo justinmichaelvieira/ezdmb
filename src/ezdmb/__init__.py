@@ -31,6 +31,7 @@ QGroupBox {
     border-radius: 5px;
     margin-top: 12px;
     padding: 12px;
+    font-size: 12pt;
     font-weight: 600;
 }
 
@@ -40,6 +41,10 @@ QGroupBox[rotationEnabled="false"] {
 
 QCheckBox#rotateImagesCheck, QLabel#secondsLabel {
     background-color: transparent;
+}
+
+QCheckBox#rotateImagesCheck {
+    font-size: 14pt;
 }
 
 QGroupBox::title {

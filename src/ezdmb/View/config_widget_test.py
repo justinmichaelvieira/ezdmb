@@ -1,4 +1,5 @@
 from types import SimpleNamespace
+from unittest.mock import Mock
 
 import pytest
 from PySide6.QtCore import Qt
@@ -46,6 +47,7 @@ def settings_widget(qapp):
         RotateContent=True,
         RotateContentTime=15,
         ContentArray=[],
+        save_config=Mock(),
     )
     return config_widget(None, config)
 
