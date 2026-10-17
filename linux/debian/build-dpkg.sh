@@ -13,7 +13,7 @@ if ! command -v dpkg-deb >/dev/null 2>&1; then
 fi
 
 # Version to be used as the 'release version'
-VERSION="1.0.5"
+VERSION="1.1.0"
 
 # Update version in control file
 sed -i -e "s/^Version: .*/Version: $VERSION/" ./DEBIAN/control
