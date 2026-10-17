@@ -66,6 +66,7 @@ def test_settings_controls_have_compact_hierarchy(settings_widget):
     assert settings_widget.rotateImagesCheck.minimumHeight() == 34
     assert settings_widget.vLayout5.spacing() == 12
     assert settings_widget.addContentButton.minimumHeight() == 34
+    assert not settings_widget.addContentButton.icon().isNull()
 
 
 def test_application_theme_styles_settings_controls(qapp):

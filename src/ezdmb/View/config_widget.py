@@ -151,7 +151,7 @@ class config_widget(QWidget):
         self.horizontalLayout.setSpacing(8)
         self.horizontalLayout.setObjectName("horizontalLayout")
 
-        addPixmap = QPixmap("add.svg")
+        addPixmap = QPixmap(":/images/add.svg")
         addButtonIcon = QIcon(addPixmap)
 
         self.addContentButton = QPushButton(self.frame)
@@ -175,7 +175,7 @@ class config_widget(QWidget):
 
         self.setWindowTitle("Settings")
         self.rotationSettingsGrpBox.setTitle("Rotation")
-        self.rotateImagesCheck.setText("Rotate content every")
+        self.rotateImagesCheck.setText("Rotate content every:")
         self.secondsLabel.setText("seconds")
         self.addRemoveGrpBox.setTitle("Add/Remove content")
         self.addContentButton.setText("Add Content")
