@@ -18,8 +18,8 @@ from PySide6.QtWidgets import (
 )
 
 from ezdmb.Controller.configuration import configuration
-from ezdmb.View import resources  # noqa: F401
 from ezdmb.Utility.icon_utility import getWindowIcon
+from ezdmb.View import resources  # noqa: F401
 
 
 class config_widget(QWidget):
