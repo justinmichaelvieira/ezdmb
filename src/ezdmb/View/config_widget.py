@@ -18,6 +18,7 @@ from PySide6.QtWidgets import (
 )
 
 from ezdmb.Controller.configuration import configuration
+from ezdmb.View import resources  # noqa: F401
 from ezdmb.Utility.icon_utility import getWindowIcon
 
 
@@ -161,7 +162,12 @@ class config_widget(QWidget):
         self.addContentButton.setFont(twelvePtFont)
         self.addContentButton.setObjectName("addContentButton")
         self.horizontalLayout.addWidget(self.addContentButton)
+
+        deletePixmap = QPixmap(":/images/delete.svg")
+        deleteButtonIcon = QIcon(deletePixmap)
         self.deleteSelectionButton = QPushButton(self.frame)
+        self.deleteSelectionButton.setIcon(deleteButtonIcon)
+        self.deleteSelectionButton.setIconSize(deletePixmap.rect().size())
         self.deleteSelectionButton.setMinimumSize(QSize(120, 34))
         self.deleteSelectionButton.setFont(twelvePtFont)
         self.deleteSelectionButton.setObjectName("deleteSelectionButton")
