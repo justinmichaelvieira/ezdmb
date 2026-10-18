@@ -33,7 +33,9 @@ class TestConfigWindow:
         window = config_window.config_window(config, show_about, show_quickstart)
 
         assert window.windowTitle() == "Configuration"
-        assert window.centralWidget.objectName() == "centralWidget"
+        central_widget = window.centralWidget()
+        assert central_widget is not None
+        assert central_widget.objectName() == "centralWidget"
         assert window.config_widget._config is config
         assert window.menuFile.title() == "File"
         assert window.menuHelp.title() == "Help"

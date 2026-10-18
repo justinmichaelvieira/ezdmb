@@ -29,6 +29,7 @@ class TestIconUtility:
         assert all(
             (manifest.parent / resource_file.text).is_file()
             for resource_file in resource_files
+            if resource_file.text is not None
         )
 
     def test_get_window_icon_returns_qicon(self, qapp):

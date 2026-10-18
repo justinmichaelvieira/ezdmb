@@ -91,7 +91,7 @@ def populate_instance():
     config_win.raise_()
     config_win.activateWindow()
 
-    app.system_tray = system_tray_utility(
+    system_tray = system_tray_utility(
         [full_screen_win, config_win, about_win, quickstart_win],
         app.quit,
         app,
@@ -99,15 +99,15 @@ def populate_instance():
         full_screen_window=full_screen_win,
     )
     config_win.minimizeToTrayRequested.connect(
-        app.system_tray.minimize_to_tray
+        system_tray.minimize_to_tray
     )
     config_win.minimizeFullScreenWindowRequested.connect(
-        app.system_tray.minimize_full_screen_window
+        system_tray.minimize_full_screen_window
     )
     config_win.showFullScreenWindowRequested.connect(
-        app.system_tray.show_full_screen_window
+        system_tray.show_full_screen_window
     )
-    app.system_tray.show()
+    system_tray.show()
 
     print(f"""
 ezdmb v{__version__} started with:

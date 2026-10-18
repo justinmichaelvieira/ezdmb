@@ -1,3 +1,5 @@
+from typing import cast
+
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon
 
@@ -63,7 +65,9 @@ class system_tray_utility:
             return
 
         app = QApplication.instance()
-        self._active_window = app.activeWindow() if app is not None else None
+        self._active_window = (
+            cast(QApplication, app).activeWindow() if app is not None else None
+        )
         self._hidden_window_states = [
             (window, window.windowState())
             for window in self.windows
@@ -86,7 +90,7 @@ class system_tray_utility:
             else:
                 window.show()
 
-        if self._active_window in (window for window, _ in windows_to_restore):
+        if self._active_window in (window for window, _ in windows_to_restore) and self._active_window is not None:
             self._active_window.raise_()
             self._active_window.activateWindow()
         self._active_window = None

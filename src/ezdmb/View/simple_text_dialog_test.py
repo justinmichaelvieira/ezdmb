@@ -21,6 +21,7 @@ class TestSimpleTextDialog:
         label = dialog.findChild(QLabel)
 
         assert dialog.windowTitle() == "About"
+        assert label is not None
         assert label.textFormat() == Qt.TextFormat.RichText
         assert label.openExternalLinks()
         assert (

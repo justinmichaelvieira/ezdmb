@@ -1,4 +1,5 @@
 from types import SimpleNamespace
+from typing import cast
 from unittest.mock import Mock
 
 import pytest
@@ -12,6 +13,7 @@ from PySide6.QtWidgets import (
 )
 
 from ezdmb import STYLESHEET
+from ezdmb.Controller.configuration import configuration
 from ezdmb.View.config_widget import config_widget
 
 
@@ -21,8 +23,8 @@ def spin_subcontrol_rect(spin_box, subcontrol):
     option.rect = spin_box.rect()
     option.buttonSymbols = spin_box.buttonSymbols()
     option.stepEnabled = (
-        QAbstractSpinBox.StepEnabled.StepUpEnabled
-        | QAbstractSpinBox.StepEnabled.StepDownEnabled
+        QAbstractSpinBox.StepEnabledFlag.StepUpEnabled
+        | QAbstractSpinBox.StepEnabledFlag.StepDownEnabled
     )
     return spin_box.style().subControlRect(
         QStyle.ComplexControl.CC_SpinBox,
@@ -37,8 +39,9 @@ def qapp():
     app = QApplication.instance()
     if app is None:
         app = QApplication([])
-    app.setStyleSheet(STYLESHEET)
-    return app
+    application = cast(QApplication, app)
+    application.setStyleSheet(STYLESHEET)
+    return application
 
 
 @pytest.fixture
@@ -49,7 +52,7 @@ def settings_widget(qapp):
         ContentArray=[],
         save_config=Mock(),
     )
-    return config_widget(None, config)
+    return config_widget(None, cast(configuration, config))
 
 
 def test_settings_layout_is_responsive(settings_widget):
@@ -128,7 +131,7 @@ def test_rotation_controls_follow_loaded_configuration(qapp):
         RotateContentTime=15,
         ContentArray=[],
     )
-    widget = config_widget(None, config)
+    widget = config_widget(None, cast(configuration, config))
 
     assert not widget.rotateImagesCheck.isChecked()
     assert not widget.rotateTimeBox.isEnabled()

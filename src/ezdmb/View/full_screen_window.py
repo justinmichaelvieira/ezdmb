@@ -1,6 +1,6 @@
 # pylint: disable=no-name-in-module
 from PySide6.QtCore import QSize, Qt, Slot
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QShortcut
 from PySide6.QtWidgets import (
     QApplication,
     QFrame,
@@ -78,7 +78,7 @@ class full_screen_window(QMainWindow):
         if app is not None:
             app.aboutToQuit.connect(self.contentViewUtil.stop)
         setCloseOnEscKey(self)
-        setOpenOnOKey(self, reopen_preview_window)
+        self.openOnOShortcut: QShortcut = setOpenOnOKey(self, reopen_preview_window)
 
     @Slot(QPixmap)
     def onRefresh(self, value):

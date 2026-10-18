@@ -5,7 +5,7 @@ import zipfile
 from pathlib import Path
 from shutil import copyfile, rmtree
 
-from PySide6.QtCore import Signal
+from PySide6.QtCore import SignalInstance
 from PySide6.QtWidgets import QFileDialog
 
 from ezdmb.Controller.configuration import configuration
@@ -35,7 +35,7 @@ def unzip_dir(zip_file: Path | str, extract_dir: Path | str):
         zip_ref.extractall(extract_dir)
 
 
-def import_bundle(trigger_settings_ui_update: Signal, configuration: configuration, testing=False):
+def import_bundle(trigger_settings_ui_update: SignalInstance, configuration: configuration, testing=False):
     """Select a zip bundle and extract it to the application directory, updating the configuration accordingly."""
 
     # Open a dialog to select a zip file

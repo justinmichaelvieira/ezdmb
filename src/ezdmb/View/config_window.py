@@ -35,12 +35,12 @@ class config_window(QMainWindow):
             QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding
         )
 
-        self.centralWidget: QWidget = QWidget(self)
-        self.centralWidget.setSizePolicy(sizePolicy)
-        self.centralWidget.setMinimumSize(QSize(560, 400))
-        self.centralWidget.setObjectName("centralWidget")
+        self._central_widget: QWidget = QWidget(self)
+        self._central_widget.setSizePolicy(sizePolicy)
+        self._central_widget.setMinimumSize(QSize(560, 400))
+        self._central_widget.setObjectName("centralWidget")
 
-        self.gridLayout_2 = QGridLayout(self.centralWidget)
+        self.gridLayout_2 = QGridLayout(self._central_widget)
         self.gridLayout_2.setContentsMargins(11, 0, 11, 0)
         self.gridLayout_2.setSpacing(6)
         self.gridLayout_2.setObjectName("gridLayout_2")
@@ -49,14 +49,14 @@ class config_window(QMainWindow):
         self.gridLayout.setObjectName("gridLayout")
         self.gridLayout_2.addLayout(self.gridLayout, 1, 0, 1, 1)
 
-        self.config_widget = config_widget(self.centralWidget, self.config)
+        self.config_widget = config_widget(self._central_widget, self.config)
         self.config_widget.setSizePolicy(sizePolicy)
         self.gridLayout_2.setRowStretch(0, 1)
         self.gridLayout_2.setColumnStretch(0, 1)
         self.gridLayout_2.addWidget(
             self.config_widget, 0, 0, 1, 1
         )
-        self.setCentralWidget(self.centralWidget)
+        self.setCentralWidget(self._central_widget)
 
         self.menuBar: QMenuBar = QMenuBar(self)
         self.menuBar.setGeometry(QRect(0, 0, 800, 29))
