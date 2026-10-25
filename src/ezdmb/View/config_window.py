@@ -114,7 +114,10 @@ class config_window(QMainWindow):
         )
         self.menuFile.addAction(self.minimizeFullScreenWindowAction)
 
-        self.minimizeToTrayAction: QAction = QAction(parent=self)
+        self.minimizeToTrayAction: QAction = QAction(
+            parent=self,
+            icon=getIcon("minimize.svg"),
+        )
         self.minimizeToTrayAction.setText("Minimize All")
         self.minimizeToTrayAction.setObjectName("minimizeToTrayAction")
         self.minimizeToTrayAction.triggered.connect(

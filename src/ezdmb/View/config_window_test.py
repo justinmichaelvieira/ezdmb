@@ -4,6 +4,10 @@ from unittest.mock import MagicMock
 import pytest
 from PySide6.QtWidgets import QApplication
 
+from ezdmb.Controller.configuration import (
+    default_content_groups,
+    default_time_blocks,
+)
 from ezdmb.View import config_window
 
 
@@ -21,6 +25,9 @@ def config():
         RotateContent=True,
         RotateContentTime=15,
         ContentArray=[],
+        RotationMode="interval",
+        ContentGroups=default_content_groups(),
+        TimeBlocks=default_time_blocks(),
         save_config=MagicMock(),
         configUpdated=MagicMock(),
     )
@@ -40,6 +47,7 @@ class TestConfigWindow:
         assert window.menuFile.title() == "File"
         assert window.menuHelp.title() == "Help"
         assert window.minimizeToTrayAction.text() == "Minimize All"
+        assert not window.minimizeToTrayAction.icon().isNull()
         assert window.minimizeConfigurationWindowAction.text() == (
             "Minimize Configuration Window"
         )

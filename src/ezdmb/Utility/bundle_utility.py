@@ -2,6 +2,7 @@ import os
 import re
 import tempfile
 import zipfile
+from copy import deepcopy
 from pathlib import Path
 from shutil import copyfile, rmtree
 
@@ -57,15 +58,32 @@ def import_bundle(trigger_settings_ui_update: SignalInstance, configuration: con
     new_config_path = os.path.join(extract_folder, "dmb_config.json")
     if os.path.exists(new_config_path):
         regex = re.compile('(.*jpg$)|(.*png$)|(.*gif$)|(.*bmp$)|(.*ico$)|(.*txt$)') 
-        content_files = [f for f in Path(extract_folder).glob("*") if regex.match(str(f))]
+        content_files = [
+            file_path
+            for file_path in Path(extract_folder).glob("*")
+            if file_path.is_file() and regex.match(str(file_path))
+        ]
 
         configuration.load_from_file(new_config_path)
+        extracted_files = {
+            file_path.name.casefold(): str(file_path)
+            for file_path in content_files
+        }
+        content_groups = deepcopy(configuration.ContentGroups)
+        for group in content_groups:
+            group["content"] = [
+                extracted_files[Path(content_path).name.casefold()]
+                for content_path in group["content"]
+            ]
 
         configuration.save_config(
             configuration.get_rotate_content(),
             configuration.get_rotate_content_time(),
             content_files,
             configuration.get_config_path(),
+            TimeBlocks=configuration.TimeBlocks,
+            ContentGroups=content_groups,
+            RotationMode=configuration.RotationMode,
         )
 
         # TODO: refresh ui with new values

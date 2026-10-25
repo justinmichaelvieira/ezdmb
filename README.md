@@ -2,7 +2,7 @@
 
 ![ezdmb logo](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/logo_crop.png "ezdmb logo")
 
-A dead-simple digital menu board display and configuration.  Engineered to be the simplest, cheapest, fastest way to get your menu to display on **any** tablet or computer. Engineered for user-friendliness, with a simple, basic, configuration interface that easily allows rotation of images and quick configuration.
+A dead-simple digital menu board display and configuration.  Engineered to be the simplest, cheapest, fastest way to get your menu to display on **any** tablet or computer. Engineered for user-friendliness, with a simple, basic, configuration interface that easily allows rotation of image, video, and text content.
 
 ![Menu board display](https://github.com/justinmichaelvieira/ezdmb/raw/master/readme_images/sample1.png "Menu board display")
 
@@ -23,9 +23,13 @@ A dead-simple digital menu board display and configuration.  Engineered to be th
 
 The Configuration window includes the Settings controls:
 
-- Enable or disable content rotation and set the interval in seconds.
-- Add and remove content files. ezdmb displays images (`.jpg`, `.png`, `.gif`, `.bmp`, or `.ico`) and text files (`.txt`).
-- Changes to the rotation settings and content list are saved automatically.
+- Set the content rotation interval in seconds.
+- Add and remove content files. ezdmb displays images (`.jpg`, `.png`, `.gif`, `.bmp`, or `.ico`), text files (`.txt`), and videos (`.mp4`, `.m4v`, `.mov`, `.avi`, `.mkv`, `.webm`, `.wmv`, `.mpeg`, `.mpg`, or `.3gp`), depending on the installed Qt Multimedia codecs.
+- Videos play with audio, loop while selected, and follow the configured rotation interval. In **None** mode, the first video loops continuously.
+- Choose **Every x seconds**, **By schedule**, or **None** for playback.
+- Create named content groups with separate content lists, then assign groups to 30-minute Daily, Weekly, or dated schedule blocks.
+- Scheduled groups rotate through their content using the configured interval. Outside scheduled blocks, the last displayed content remains visible.
+- Changes to rotation settings, groups, content, and schedules are saved automatically.
 - Use **File > Export Content Bundle** to export the configuration and its content files as a ZIP bundle. Use **File > Import Content Bundle** to load a bundle.
 
 The **File** menu also provides commands to minimize or show the Configuration and fullscreen windows, minimize all windows to the tray, and exit. The **Help** menu opens the Quickstart Guide and About window.

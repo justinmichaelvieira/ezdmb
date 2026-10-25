@@ -111,9 +111,10 @@ def populate_instance():
 
     print(f"""
 ezdmb v{__version__} started with:
-    - Rotation: {config.RotateContent}
+    - Rotation Mode: {config.RotationMode}
     - RotateContentTime: {config.RotateContentTime}s
     - Total Content Screens: {config.ContentArray.__len__()}
+    - Content Groups: {len(config.ContentGroups)}
 """)
     return app, full_screen_win, config_win
 

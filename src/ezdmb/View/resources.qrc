@@ -23,6 +23,7 @@
         <file alias="edit_square.svg">images/edit_square.svg</file>
         <file alias="delete.svg">images/delete.svg</file>
         <file alias="library_add.svg">images/library_add.svg</file>
+        <file alias="minimize.svg">images/minimize.svg</file>
         <file alias="settings.svg">images/settings.svg</file>
         <file alias="settings_screen.svg">images/settings_screen.svg</file>
         <file alias="visibility.svg">images/visibility.svg</file>

@@ -39,11 +39,20 @@ QGroupBox[rotationEnabled="false"] {
     background-color: #e8eaed;
 }
 
-QCheckBox#rotateImagesCheck, QLabel#secondsLabel {
+QWidget#groupToolbar {
     background-color: transparent;
 }
 
-QCheckBox#rotateImagesCheck {
+QRadioButton#everySecondsRadio,
+QRadioButton#byScheduleRadio,
+QRadioButton#noneRadio,
+QLabel#secondsLabel {
+    background-color: transparent;
+}
+
+QRadioButton#everySecondsRadio,
+QRadioButton#byScheduleRadio,
+QRadioButton#noneRadio {
     font-size: 14pt;
 }
 
@@ -109,18 +118,29 @@ QListWidget::item:selected {
     color: #174f91;
 }
 
-QCheckBox {
+QRadioButton {
     spacing: 8px;
 }
 
-QCheckBox::indicator {
+QRadioButton::indicator {
     width: 16px;
     height: 16px;
+    border: 2px solid #68727d;
+    border-radius: 8px;
+    background-color: #ffffff;
 }
 
-QCheckBox#rotateImagesCheck::indicator {
+QRadioButton::indicator:checked {
+    border-color: #1f5f9f;
+    background-color: #1f5f9f;
+}
+
+QRadioButton#everySecondsRadio::indicator,
+QRadioButton#byScheduleRadio::indicator,
+QRadioButton#noneRadio::indicator {
     width: 20px;
     height: 20px;
+    border-radius: 10px;
 }
 
 QToolButton {

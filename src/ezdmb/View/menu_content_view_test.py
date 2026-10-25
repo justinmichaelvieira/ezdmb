@@ -5,6 +5,7 @@ Tests for the menu_content_view module
 
 import os
 import tempfile
+from datetime import datetime
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -13,6 +14,10 @@ from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QApplication, QLabel
 
 from ezdmb.Controller import configuration
+from ezdmb.Controller.configuration import (
+    default_content_groups,
+    default_time_blocks,
+)
 from ezdmb.View import full_screen_window, menu_content_view
 
 
@@ -30,7 +35,10 @@ def mock_config(qapp):
     """Create a mock Configuration object"""
     config = MagicMock(spec=configuration.configuration)
     config.ContentArray = []
+    config.ContentGroups = default_content_groups()
+    config.TimeBlocks = default_time_blocks()
     config.RotateContent = True
+    config.RotationMode = "interval"
     config.RotateContentTime = 5
     config.configUpdated = MagicMock()
     return config
@@ -224,6 +232,26 @@ class TestGetViewableFileContent:
             result = util.getViewableFilecontent("document.psf")
             assert result is None
 
+    def test_display_index_emits_video_path(self, qapp, mock_config, mock_pixmap_label):
+        callback = MagicMock()
+        video_callback = MagicMock()
+        video_path = "menu-video.MP4"
+
+        with patch.object(QThread, "start"):
+            util = menu_content_view.menu_content_view(
+                mock_config,
+                mock_pixmap_label,
+                "TestWindow",
+                callback,
+                video_callback,
+            )
+            index = util.display_index(0, [video_path])
+
+        assert index == 0
+        video_callback.assert_called_once_with(video_path)
+        callback.assert_not_called()
+        mock_pixmap_label.setPixmap.assert_not_called()
+
     def test_extension_case_insensitive(self, qapp, mock_config, mock_pixmap_label):
         """Test that file extension check is case-insensitive"""
         callback = MagicMock()
@@ -304,6 +332,195 @@ class TestOnConfigUpdated:
             util.onConfigUpdated(new_data)
 
             assert util.rotateTimeout == 60
+
+    def test_updates_rotation_mode_groups_and_schedule(
+        self, qapp, mock_config, mock_pixmap_label
+    ):
+        callback = MagicMock()
+        groups = [
+            {
+                "id": "breakfast",
+                "name": "Breakfast",
+                "content": ["breakfast.png"],
+            }
+        ]
+        time_blocks = {
+            "repeat": "Daily",
+            "daily": [
+                {
+                    "start": "06:00",
+                    "end": "11:00",
+                    "group_id": "breakfast",
+                }
+            ],
+            "weekly": {},
+            "dated": {},
+        }
+
+        with patch.object(QThread, "start"):
+            util = menu_content_view.menu_content_view(
+                mock_config,
+                mock_pixmap_label,
+                "TestWindow",
+                callback,
+            )
+            util.onConfigUpdated(
+                {
+                    "imported_content": ["breakfast.png"],
+                    "content_groups": groups,
+                    "rotation_mode": "schedule",
+                    "time_blocks": time_blocks,
+                    "rotate_content": False,
+                    "rotate_content_time": 15,
+                }
+            )
+
+        assert util.rotationMode == "schedule"
+        assert util.rotateContent is False
+        assert util.contentGroups == groups
+        assert util.timeBlocks == time_blocks
+
+
+class TestScheduledGroupSelection:
+    def test_daily_schedule_selects_matching_group(
+        self, qapp, mock_config, mock_pixmap_label
+    ):
+        mock_config.RotationMode = "schedule"
+        mock_config.ContentGroups = [
+            {
+                "id": "breakfast",
+                "name": "Breakfast",
+                "content": ["breakfast.png"],
+            },
+            {
+                "id": "lunch",
+                "name": "Lunch",
+                "content": ["lunch.png"],
+            },
+        ]
+        mock_config.TimeBlocks = {
+            "repeat": "Daily",
+            "daily": [
+                {
+                    "start": "06:00",
+                    "end": "11:00",
+                    "group_id": "breakfast",
+                },
+                {
+                    "start": "11:00",
+                    "end": "15:00",
+                    "group_id": "lunch",
+                },
+            ],
+            "weekly": {},
+            "dated": {},
+        }
+
+        with patch.object(QThread, "start"):
+            util = menu_content_view.menu_content_view(
+                mock_config,
+                mock_pixmap_label,
+                "TestWindow",
+                MagicMock(),
+            )
+
+        assert (
+            util.getScheduledGroup(datetime(2026, 10, 22, 8, 0))["id"]
+            == "breakfast"
+        )
+        assert (
+            util.getScheduledGroup(datetime(2026, 10, 22, 11, 0))["id"]
+            == "lunch"
+        )
+        assert util.getScheduledGroup(datetime(2026, 10, 22, 15, 0)) is None
+
+    def test_weekly_and_dated_schedules_select_groups(
+        self, qapp, mock_config, mock_pixmap_label
+    ):
+        mock_config.RotationMode = "schedule"
+        mock_config.ContentGroups = [
+            {"id": "dinner", "name": "Dinner", "content": ["dinner.png"]}
+        ]
+        mock_config.TimeBlocks = {
+            "repeat": "Weekly",
+            "daily": [],
+            "weekly": {
+                "Thursday": [
+                    {
+                        "start": "17:00",
+                        "end": "22:00",
+                        "group_id": "dinner",
+                    }
+                ]
+            },
+            "dated": {
+                "2026-10-23": [
+                    {
+                        "start": "00:00",
+                        "end": "24:00",
+                        "group_id": "dinner",
+                    }
+                ]
+            },
+        }
+
+        with patch.object(QThread, "start"):
+            util = menu_content_view.menu_content_view(
+                mock_config,
+                mock_pixmap_label,
+                "TestWindow",
+                MagicMock(),
+            )
+
+        assert (
+            util.getScheduledGroup(datetime(2026, 10, 22, 18, 0))["id"]
+            == "dinner"
+        )
+
+        util.timeBlocks["repeat"] = "None"
+        assert (
+            util.getScheduledGroup(datetime(2026, 10, 23, 12, 0))["id"]
+            == "dinner"
+        )
+
+    def test_first_group_wins_overlapping_schedule_blocks(
+        self, qapp, mock_config, mock_pixmap_label
+    ):
+        mock_config.RotationMode = "schedule"
+        mock_config.ContentGroups = [
+            {"id": "breakfast", "name": "Breakfast", "content": []},
+            {"id": "lunch", "name": "Lunch", "content": []},
+        ]
+        mock_config.TimeBlocks = {
+            "repeat": "Daily",
+            "daily": [
+                {
+                    "start": "08:00",
+                    "end": "10:00",
+                    "group_id": "lunch",
+                },
+                {
+                    "start": "08:00",
+                    "end": "10:00",
+                    "group_id": "breakfast",
+                },
+            ],
+            "weekly": {},
+            "dated": {},
+        }
+
+        with patch.object(QThread, "start"):
+            util = menu_content_view.menu_content_view(
+                mock_config,
+                mock_pixmap_label,
+                "TestWindow",
+                MagicMock(),
+            )
+
+        assert (
+            util.getScheduledGroup(datetime(2026, 10, 22, 9, 0))["id"]
+            == "breakfast"
+        )
 
 
 class test_menu_content_view_utility_properties:

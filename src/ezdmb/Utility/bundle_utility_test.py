@@ -66,6 +66,26 @@ class bundle_utility_test(unittest.TestCase):
                 archive.writestr("menu.png", "image data")
 
             config = Mock()
+            config.ContentGroups = [
+                {
+                    "id": "menu",
+                    "name": "Menu",
+                    "content": ["original/menu.png"],
+                }
+            ]
+            config.TimeBlocks = {
+                "repeat": "Daily",
+                "daily": [
+                    {
+                        "start": "08:00",
+                        "end": "12:00",
+                        "group_id": "menu",
+                    }
+                ],
+                "weekly": {},
+                "dated": {},
+            }
+            config.RotationMode = "schedule"
             trigger_settings_ui_update = Mock()
             with (
                 patch(
@@ -81,6 +101,12 @@ class bundle_utility_test(unittest.TestCase):
 
             assert not (extract_path / "stale.txt").exists()
             assert (extract_path / "menu.png").read_text(encoding="utf-8") == "image data"
+            saved_groups = config.save_config.call_args.kwargs["ContentGroups"]
+            assert saved_groups[0]["content"] == [str(extract_path / "menu.png")]
+            assert (
+                config.save_config.call_args.kwargs["RotationMode"]
+                == "schedule"
+            )
 
     def test_import_bundle_does_not_change_configuration_when_cancelled(self):
         config = Mock()

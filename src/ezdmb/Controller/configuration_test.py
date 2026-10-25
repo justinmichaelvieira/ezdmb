@@ -12,7 +12,11 @@ from unittest.mock import MagicMock, patch
 import pytest
 from PySide6.QtWidgets import QApplication
 
-from ezdmb.Controller.configuration import configuration
+from ezdmb.Controller.configuration import (
+    configuration,
+    default_content_groups,
+    default_time_blocks,
+)
 
 
 @pytest.fixture
@@ -91,6 +95,29 @@ class test_configuration_init:
         assert loaded_config["rotate_content_time"] == 15
         assert loaded_config["imported_content"] == []
 
+    def test_legacy_config_loads_with_empty_time_blocks(self, qapp, temp_config_dir):
+        config_path = os.path.join(temp_config_dir, "dmb_config.json")
+        with open(config_path, "w") as config_file:
+            json.dump(
+                {
+                    "rotate_content": True,
+                    "rotate_content_time": 15,
+                    "imported_content": [],
+                },
+                config_file,
+            )
+
+        with patch(
+            "ezdmb.Controller.configuration.get_appdata_path",
+            return_value=temp_config_dir,
+        ):
+            config = configuration()
+
+        assert config.TimeBlocks == default_time_blocks()
+        assert config.Data["time_blocks"] == default_time_blocks()
+        assert config.RotationMode == "interval"
+        assert config.ContentGroups == default_content_groups()
+
 
 class TestConfigurationProperties:
     """Tests for configuration properties"""
@@ -144,6 +171,12 @@ class test_configuration_save_config:
     def test_save_config_creates_json(self, qapp, temp_config_dir):
         """Test that save_config writes JSON to file"""
         config_file = os.path.join(temp_config_dir, "dmb_config.json")
+        time_blocks = {
+            "repeat": "Daily",
+            "daily": [{"start": "08:00", "end": "10:00"}],
+            "weekly": {},
+            "dated": {},
+        }
 
         config = MagicMock(spec=configuration)
         config.config_path = config_file
@@ -152,7 +185,13 @@ class test_configuration_save_config:
         config.get_data = MagicMock(return_value=test_data)
 
         # Call the actual save_config method
-        configuration.save_config(config, True, "20", ["/path/to/image.jpg"])
+        configuration.save_config(
+            config,
+            True,
+            "20",
+            ["/path/to/image.jpg"],
+            TimeBlocks=time_blocks,
+        )
 
         # Verify file was created and contains correct data
         assert os.path.exists(config_file)
@@ -162,6 +201,51 @@ class test_configuration_save_config:
         assert saved_data["rotate_content"] is True
         assert saved_data["rotate_content_time"] == 20
         assert saved_data["imported_content"] == ["/path/to/image.jpg"]
+        assert saved_data["time_blocks"] == time_blocks
+        assert saved_data["rotation_mode"] == "interval"
+        assert saved_data["content_groups"] == default_content_groups(
+            ["/path/to/image.jpg"]
+        )
+
+    def test_save_config_persists_schedule_mode_and_named_groups(
+        self, qapp, temp_config_dir
+    ):
+        config_file = os.path.join(temp_config_dir, "dmb_config.json")
+        groups = [
+            {
+                "id": "breakfast",
+                "name": "Breakfast",
+                "content": ["/menus/breakfast.png"],
+            },
+            {
+                "id": "lunch",
+                "name": "Lunch",
+                "content": ["/menus/lunch.png"],
+            },
+        ]
+        config = MagicMock(spec=configuration)
+        config.config_path = config_file
+        config._data = {}
+
+        configuration.save_config(
+            config,
+            False,
+            "15",
+            [],
+            ContentGroups=groups,
+            RotationMode="schedule",
+        )
+
+        with open(config_file, "r") as config_file_handle:
+            saved_data = json.load(config_file_handle)
+
+        assert saved_data["rotation_mode"] == "schedule"
+        assert saved_data["rotate_content"] is False
+        assert saved_data["content_groups"] == groups
+        assert saved_data["imported_content"] == [
+            "/menus/breakfast.png",
+            "/menus/lunch.png",
+        ]
 
     def test_save_config_with_multiple_images(self, qapp, temp_config_dir):
         """Test save_config with multiple image paths"""
