@@ -26,11 +26,11 @@ if [[ -z "$deb_file" ]]; then
     exit 1
 fi
 
-echo "==> Installing package with dpkg: $deb_file"
+echo "==> Installing package and dependencies with APT: $deb_file"
 if [[ "$(id -u)" -eq 0 ]]; then
-    dpkg -i --force-confnew "$deb_file"
+    apt-get install -y "$deb_file"
 else
-    sudo dpkg -i --force-confnew "$deb_file"
+    sudo apt-get install -y "$deb_file"
 fi
 
 echo "Verification passed: build-dpkg.sh succeeded, and the package was installed successfully."
