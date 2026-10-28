@@ -51,6 +51,17 @@ jobs:
         steps:
           - name: Check out the repo
             uses: actions/checkout@v2
+          - name: Install Debian package build dependencies
+            run: sudo apt-get update && sudo apt-get install -y fakeroot
+          - name: Build Debian package
+            id: build_debian_package
+            run: |
+              bash linux/debian/build-dpkg.sh
+              version="$(sed -n 's/^Version: //p' linux/debian/DEBIAN/control)"
+              deb_path="linux/python_package/ezdmb/resources/ezdmb_${version}_all.deb"
+              test -f "$deb_path"
+              echo "path=$deb_path" >> "$GITHUB_OUTPUT"
+              echo "name=${deb_path##*/}" >> "$GITHUB_OUTPUT"
           - uses: actions/download-artifact@v4
             with:
               name: ezdmb_setup.exe
@@ -89,3 +100,12 @@ jobs:
               asset_path: installbundle/ezdmb_install.zip
               asset_name: ezdmb_install.zip
               asset_content_type: application/zip
+          - name: Upload Debian package
+            uses: actions/upload-release-asset@v1
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            with:
+              upload_url: ${{ steps.create_release.outputs.upload_url }}
+              asset_path: ${{ steps.build_debian_package.outputs.path }}
+              asset_name: ${{ steps.build_debian_package.outputs.name }}
+              asset_content_type: application/vnd.debian.binary-package
