@@ -11,7 +11,11 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from ezdmb.Utility.bundle_utility import export_bundle, import_bundle
+from ezdmb.Utility.bundle_utility import (
+    export_bundle,
+    import_bundle,
+    import_bundle_from_url,
+)
 from ezdmb.Utility.icon_utility import getIcon, getWindowIcon
 from ezdmb.Utility.shortcut_utility import setCloseOnEscKey
 from ezdmb.View.config_widget import config_widget
@@ -71,7 +75,7 @@ class config_window(QMainWindow):
             parent=self,
             icon=getIcon("export.svg"),
         )
-        self.exportBundleAction.setText("&Export Content Bundle")
+        self.exportBundleAction.setText("&Export Bundle")
         self.exportBundleAction.setObjectName("exportBundleAction")
         self.exportBundleAction.triggered.connect(lambda: export_bundle(self.config))
         self.menuFile.addAction(self.exportBundleAction)
@@ -80,7 +84,7 @@ class config_window(QMainWindow):
             parent=self,
             icon=getIcon("import.svg"),
         )
-        self.importBundleAction.setText("&Import Content Bundle")
+        self.importBundleAction.setText("&Import Bundle From File")
         self.importBundleAction.setObjectName("importBundleAction")
         self.importBundleAction.triggered.connect(
             lambda: import_bundle(
@@ -89,6 +93,20 @@ class config_window(QMainWindow):
             ),
         )
         self.menuFile.addAction(self.importBundleAction)
+
+        self.importBundleFromUrlAction: QAction = QAction(
+            parent=self,
+            icon=getIcon("import.svg"),
+        )
+        self.importBundleFromUrlAction.setText("Import Bundle From URL")
+        self.importBundleFromUrlAction.setObjectName("importBundleFromUrlAction")
+        self.importBundleFromUrlAction.triggered.connect(
+            lambda: import_bundle_from_url(
+                self.config_widget.trigger_settings_ui_update,
+                self.config,
+            ),
+        )
+        self.menuFile.addAction(self.importBundleFromUrlAction)
 
         self.menuFile.addSeparator()
 

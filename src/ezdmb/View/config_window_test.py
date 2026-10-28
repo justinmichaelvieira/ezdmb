@@ -100,15 +100,27 @@ class TestConfigWindow:
     def test_bundle_menu_actions_forward_config(self, qapp, config, monkeypatch):
         export = MagicMock()
         import_content = MagicMock()
+        import_content_from_url = MagicMock()
         monkeypatch.setattr(config_window, "export_bundle", export)
         monkeypatch.setattr(config_window, "import_bundle", import_content)
+        monkeypatch.setattr(
+            config_window,
+            "import_bundle_from_url",
+            import_content_from_url,
+        )
         window = config_window.config_window(config, MagicMock(), MagicMock())
 
         window.exportBundleAction.trigger()
         window.importBundleAction.trigger()
+        window.importBundleFromUrlAction.trigger()
 
         export.assert_called_once_with(config)
         import_content.assert_called_once_with(
+            window.config_widget.trigger_settings_ui_update,
+            config,
+        )
+        assert window.importBundleFromUrlAction.text() == "Import Bundle From URL"
+        import_content_from_url.assert_called_once_with(
             window.config_widget.trigger_settings_ui_update,
             config,
         )

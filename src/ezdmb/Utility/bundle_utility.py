@@ -3,11 +3,15 @@ import re
 import tempfile
 import zipfile
 from copy import deepcopy
+from html import escape
+from http.client import HTTPException
 from pathlib import Path
-from shutil import copyfile, rmtree
+from shutil import copyfile, copyfileobj, rmtree
+from urllib.parse import urlparse
+from urllib.request import urlopen
 
 from PySide6.QtCore import SignalInstance
-from PySide6.QtWidgets import QFileDialog
+from PySide6.QtWidgets import QDialog, QFileDialog, QInputDialog
 
 from ezdmb.Controller.configuration import configuration
 from ezdmb.Utility.path_utility import get_appdata_path
@@ -36,13 +40,20 @@ def unzip_dir(zip_file: Path | str, extract_dir: Path | str):
         zip_ref.extractall(extract_dir)
 
 
-def import_bundle(trigger_settings_ui_update: SignalInstance, configuration: configuration, testing=False):
-    """Select a zip bundle and extract it to the application directory, updating the configuration accordingly."""
+def _show_import_error(message: str, testing: bool):
+    if not testing:
+        simple_text_dialog("Import Failed", message).exec()
 
-    # Open a dialog to select a zip file
-    zip_file = QFileDialog.getOpenFileName(None, "Select Zip Bundle", filter="Zip Files (*.zip)")[0]
-    if not zip_file:
-        return  # User canceled the dialog
+
+def _import_bundle_archive(
+    zip_file: Path | str,
+    trigger_settings_ui_update: SignalInstance,
+    configuration: configuration,
+    testing=False,
+):
+    if not zipfile.is_zipfile(zip_file):
+        _show_import_error("The selected file is not a valid ZIP bundle.", testing)
+        return
 
     # Create a folder for extraction
     extract_folder = os.path.join(get_appdata_path(), "ezdmb_bundle")
@@ -52,48 +63,138 @@ def import_bundle(trigger_settings_ui_update: SignalInstance, configuration: con
     Path(extract_folder).mkdir(parents=True, exist_ok=False)
 
     # Extract the zip file to the folder
-    unzip_dir(zip_file, extract_folder)
+    try:
+        unzip_dir(zip_file, extract_folder)
+    except (OSError, RuntimeError, zipfile.BadZipFile) as error:
+        rmtree(extract_folder, ignore_errors=True)
+        _show_import_error(
+            f"Could not extract the bundle: {escape(str(error))}",
+            testing,
+        )
+        return
 
     # Update the configuration with the extracted files
     new_config_path = os.path.join(extract_folder, "dmb_config.json")
-    if os.path.exists(new_config_path):
-        regex = re.compile('(.*jpg$)|(.*png$)|(.*gif$)|(.*bmp$)|(.*ico$)|(.*txt$)') 
-        content_files = [
-            file_path
-            for file_path in Path(extract_folder).glob("*")
-            if file_path.is_file() and regex.match(str(file_path))
+    if not os.path.exists(new_config_path):
+        _show_import_error(
+            "The bundle does not contain a dmb_config.json file.",
+            testing,
+        )
+        return
+
+    regex = re.compile("(.*jpg$)|(.*png$)|(.*gif$)|(.*bmp$)|(.*ico$)|(.*txt$)")
+    content_files = [
+        file_path
+        for file_path in Path(extract_folder).glob("*")
+        if file_path.is_file() and regex.match(str(file_path))
+    ]
+
+    configuration.load_from_file(new_config_path)
+    extracted_files = {
+        file_path.name.casefold(): str(file_path) for file_path in content_files
+    }
+    content_groups = deepcopy(configuration.ContentGroups)
+    for group in content_groups:
+        group["content"] = [
+            extracted_files[Path(content_path).name.casefold()]
+            for content_path in group["content"]
         ]
 
-        configuration.load_from_file(new_config_path)
-        extracted_files = {
-            file_path.name.casefold(): str(file_path)
-            for file_path in content_files
-        }
-        content_groups = deepcopy(configuration.ContentGroups)
-        for group in content_groups:
-            group["content"] = [
-                extracted_files[Path(content_path).name.casefold()]
-                for content_path in group["content"]
-            ]
+    configuration.save_config(
+        configuration.get_rotate_content(),
+        configuration.get_rotate_content_time(),
+        content_files,
+        configuration.get_config_path(),
+        TimeBlocks=configuration.TimeBlocks,
+        ContentGroups=content_groups,
+        RotationMode=configuration.RotationMode,
+    )
 
-        configuration.save_config(
-            configuration.get_rotate_content(),
-            configuration.get_rotate_content_time(),
-            content_files,
-            configuration.get_config_path(),
-            TimeBlocks=configuration.TimeBlocks,
-            ContentGroups=content_groups,
-            RotationMode=configuration.RotationMode,
+    # TODO: refresh ui with new values
+    trigger_settings_ui_update.emit()
+
+    if not testing:
+        simple_text_dialog(
+            "Import Successful",
+            "The bundle has been successfully imported.",
+        ).exec()
+
+
+def import_bundle(
+    trigger_settings_ui_update: SignalInstance,
+    configuration: configuration,
+    testing=False,
+):
+    """Select a zip bundle and extract it to the application directory, updating the configuration accordingly."""
+
+    zip_file = QFileDialog.getOpenFileName(
+        None,
+        "Select Zip Bundle",
+        filter="Zip Files (*.zip)",
+    )[0]
+    if not zip_file:
+        return
+
+    _import_bundle_archive(
+        zip_file,
+        trigger_settings_ui_update,
+        configuration,
+        testing,
+    )
+
+
+def import_bundle_from_url(
+    trigger_settings_ui_update: SignalInstance,
+    configuration: configuration,
+    testing=False,
+):
+    """Download and import a zip bundle from an HTTP or HTTPS URL."""
+
+    url_dialog = QInputDialog()
+    url_dialog.setWindowTitle("Import Bundle From URL")
+    url_dialog.setLabelText("URL:")
+    url_dialog.setInputMode(QInputDialog.InputMode.TextInput)
+    url_dialog.setOkButtonText("Import")
+    url_dialog.setCancelButtonText("Cancel")
+
+    if url_dialog.exec() != QDialog.DialogCode.Accepted:
+        return
+
+    bundle_url = url_dialog.textValue().strip()
+    try:
+        parsed_url = urlparse(bundle_url)
+        valid_url = (
+            parsed_url.scheme in ("http", "https") and parsed_url.hostname is not None
         )
+    except ValueError:
+        valid_url = False
 
-        # TODO: refresh ui with new values
-        trigger_settings_ui_update.emit()
+    if not valid_url:
+        _show_import_error(
+            "Please enter a valid HTTP or HTTPS bundle URL.",
+            testing,
+        )
+        return
 
-        if not testing:
-            simple_text_dialog(
-                "Export Successful",
-                "The bundle has been successfully imported.",
-            ).exec()
+    with tempfile.TemporaryDirectory() as temp_folder:
+        zip_file = Path(temp_folder) / "bundle.zip"
+        try:
+            with urlopen(bundle_url, timeout=30) as response:
+                with zip_file.open("wb") as output_file:
+                    copyfileobj(response, output_file)
+        except (HTTPException, OSError, ValueError) as error:
+            _show_import_error(
+                f"Could not download the bundle: {escape(str(error))}",
+                testing,
+            )
+            return
+
+        _import_bundle_archive(
+            zip_file,
+            trigger_settings_ui_update,
+            configuration,
+            testing,
+        )
 
 
 def export_bundle(configuration: configuration, testing=False):

@@ -2,18 +2,25 @@ import os
 import tempfile
 import unittest
 import zipfile
+from io import BytesIO
 from pathlib import Path
 from unittest.mock import Mock, patch
+
+from PySide6.QtWidgets import QApplication, QDialog, QInputDialog
 
 from ezdmb.Utility.bundle_utility import (
     export_bundle,
     import_bundle,
+    import_bundle_from_url,
     unzip_dir,
     zip_dir,
 )
 
 
 class bundle_utility_test(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.application = QApplication.instance() or QApplication([])
 
     def test_zip_dir_preserves_files_and_relative_paths(self):
         temp_dir = tempfile.TemporaryDirectory()
@@ -126,6 +133,90 @@ class bundle_utility_test(unittest.TestCase):
         assert config.ConfigPath == Path("current-config.json")
         assert config.ContentArray == [Path("current-menu.png")]
         get_appdata_path.assert_not_called()
+
+    def test_import_bundle_from_url_downloads_and_imports_bundle(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            archive_path = root / "bundle.zip"
+            appdata_path = root / "appdata"
+            extract_path = appdata_path / "ezdmb_bundle"
+            extract_path.mkdir(parents=True)
+            (extract_path / "stale.txt").write_text("stale", encoding="utf-8")
+            with zipfile.ZipFile(archive_path, "w") as archive:
+                archive.writestr("dmb_config.json", '{"rotate": true}')
+                archive.writestr("menu.png", "image data")
+
+            config = Mock()
+            config.ContentGroups = [
+                {
+                    "id": "menu",
+                    "name": "Menu",
+                    "content": ["original/menu.png"],
+                }
+            ]
+            config.TimeBlocks = {"repeat": "Daily"}
+            config.RotationMode = "schedule"
+            trigger_settings_ui_update = Mock()
+            bundle_url = "https://example.com/bundle.zip"
+
+            def accept_dialog(dialog):
+                assert dialog.windowTitle() == "Import Bundle From URL"
+                assert dialog.labelText() == "URL:"
+                assert dialog.okButtonText() == "Import"
+                assert dialog.cancelButtonText() == "Cancel"
+                dialog.setTextValue(bundle_url)
+                return QDialog.DialogCode.Accepted
+
+            with (
+                patch.object(QInputDialog, "exec", new=accept_dialog),
+                patch(
+                    "ezdmb.Utility.bundle_utility.urlopen",
+                    return_value=BytesIO(archive_path.read_bytes()),
+                ) as open_url,
+                patch(
+                    "ezdmb.Utility.bundle_utility.get_appdata_path",
+                    return_value=appdata_path,
+                ),
+            ):
+                import_bundle_from_url(trigger_settings_ui_update, config, True)
+
+            open_url.assert_called_once_with(bundle_url, timeout=30)
+            assert not (extract_path / "stale.txt").exists()
+            assert (extract_path / "menu.png").read_text(
+                encoding="utf-8"
+            ) == "image data"
+            saved_groups = config.save_config.call_args.kwargs["ContentGroups"]
+            assert saved_groups[0]["content"] == [str(extract_path / "menu.png")]
+            assert config.save_config.call_args.kwargs["RotationMode"] == "schedule"
+            trigger_settings_ui_update.emit.assert_called_once_with()
+
+    def test_import_bundle_from_url_does_not_download_when_cancelled(self):
+        config = Mock()
+
+        with (
+            patch.object(
+                QInputDialog,
+                "exec",
+                return_value=QDialog.DialogCode.Rejected,
+            ),
+            patch("ezdmb.Utility.bundle_utility.urlopen") as open_url,
+        ):
+            import_bundle_from_url(Mock(), config, True)
+
+        open_url.assert_not_called()
+
+    def test_import_bundle_from_url_rejects_non_http_urls(self):
+        def accept_dialog(dialog):
+            dialog.setTextValue("file:///bundle.zip")
+            return QDialog.DialogCode.Accepted
+
+        with (
+            patch.object(QInputDialog, "exec", new=accept_dialog),
+            patch("ezdmb.Utility.bundle_utility.urlopen") as open_url,
+        ):
+            import_bundle_from_url(Mock(), Mock(), True)
+
+        open_url.assert_not_called()
 
     def test_export_bundle_creates_zip_with_configuration_and_content(self):
         previous_cwd = os.getcwd()
