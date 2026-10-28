@@ -1,4 +1,5 @@
 # pylint: disable=no-name-in-module
+import logging
 from datetime import UTC, datetime
 from threading import Event
 from time import monotonic
@@ -11,12 +12,14 @@ from ezdmb.Controller.configuration import (
     default_content_groups,
     default_time_blocks,
 )
-from ezdmb.Utility.media_utility import get_content_type
+from ezdmb.Utility.media_utility import convert_presentation_to_pdf, get_content_type
 
 
 class menu_content_view(QThread):
     contentUpdated = Signal(QPixmap)
     videoUpdated = Signal(str)
+    pdfUpdated = Signal(str)
+    webUpdated = Signal(str)
 
     def __init__(
         self,
@@ -25,6 +28,8 @@ class menu_content_view(QThread):
         windowName,
         onRefresh,
         onVideoRefresh=None,
+        onPdfRefresh=None,
+        onWebRefresh=None,
     ):
         QThread.__init__(self)
         self._config = config
@@ -57,6 +62,10 @@ class menu_content_view(QThread):
         self.contentUpdated.connect(onRefresh)
         if onVideoRefresh is not None:
             self.videoUpdated.connect(onVideoRefresh)
+        if onPdfRefresh is not None:
+            self.pdfUpdated.connect(onPdfRefresh)
+        if onWebRefresh is not None:
+            self.webUpdated.connect(onWebRefresh)
         self._config.configUpdated.connect(self.onConfigUpdated)
         self.start()
 
@@ -258,10 +267,26 @@ class menu_content_view(QThread):
         content_array = self.contentArray if content_array is None else content_array
         index = i % len(content_array)
         content_path = content_array[index]
-        if get_content_type(content_path) == "video":
+        content_type = get_content_type(content_path)
+        if content_type in ("video", "pdf", "web", "presentation"):
             if content_path != self._active_video_path:
                 self._active_video_path = content_path
-                self.videoUpdated.emit(content_path)
+                if content_type == "video":
+                    self.videoUpdated.emit(content_path)
+                elif content_type == "web":
+                    self.webUpdated.emit(content_path.strip())
+                else:
+                    pdf_path = content_path
+                    if content_type == "presentation":
+                        try:
+                            pdf_path = convert_presentation_to_pdf(content_path)
+                        except Exception:  # pylint: disable=broad-except
+                            logging.getLogger(__name__).exception(
+                                "Unable to convert presentation: %s", content_path
+                            )
+                            self._active_video_path = None
+                            return index
+                    self.pdfUpdated.emit(pdf_path)
             return index
 
         self._active_video_path = None

@@ -164,7 +164,8 @@ def test_selected_radio_indicator_is_visible(qapp, object_name):
 
 
 def test_rotation_radio_options_share_interval_controls(settings_widget):
-    assert settings_widget.hLayout2.itemAt(0).layout() is (
+    assert settings_widget.hLayout2.itemAt(0).widget() is settings_widget.noneRadio
+    assert settings_widget.hLayout2.itemAt(1).layout() is (
         settings_widget.rotationIntervalLayout
     )
     assert settings_widget.rotationIntervalLayout.itemAt(0).widget() is (
@@ -173,10 +174,9 @@ def test_rotation_radio_options_share_interval_controls(settings_widget):
     assert settings_widget.rotationIntervalLayout.itemAt(1).widget() is (
         settings_widget.rotateTimeBox
     )
-    assert settings_widget.hLayout2.itemAt(1).widget() is (
+    assert settings_widget.hLayout2.itemAt(2).widget() is (
         settings_widget.byScheduleRadio
     )
-    assert settings_widget.hLayout2.itemAt(2).widget() is settings_widget.noneRadio
 
 
 def test_rotation_controls_follow_radio_selection(settings_widget):

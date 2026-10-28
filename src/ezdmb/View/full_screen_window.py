@@ -6,6 +6,9 @@ from PySide6.QtCore import QSize, Qt, QUrl, Slot
 from PySide6.QtGui import QPixmap, QShortcut
 from PySide6.QtMultimedia import QAudioOutput, QMediaPlayer
 from PySide6.QtMultimediaWidgets import QVideoWidget
+from PySide6.QtPdf import QPdfDocument
+from PySide6.QtPdfWidgets import QPdfView
+from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (
     QApplication,
     QFrame,
@@ -77,6 +80,16 @@ class full_screen_window(QMainWindow):
         self.videoWidget.setObjectName("videoWidget")
         self.videoWidget.setAspectRatioMode(Qt.AspectRatioMode.KeepAspectRatio)
         self.contentStack.addWidget(self.videoWidget)
+        self.pdfDocument = QPdfDocument(self)
+        self.pdfView = QPdfView(self.contentStack)
+        self.pdfView.setObjectName("pdfView")
+        self.pdfView.setDocument(self.pdfDocument)
+        self.pdfView.setPageMode(QPdfView.PageMode.MultiPage)
+        self.pdfView.setZoomMode(QPdfView.ZoomMode.FitToWidth)
+        self.contentStack.addWidget(self.pdfView)
+        self.webView = QWebEngineView(self.contentStack)
+        self.webView.setObjectName("webView")
+        self.contentStack.addWidget(self.webView)
         self.gridLayout_2.addWidget(self.contentStack, 0, 0, 1, 1)
         self.gridLayout.addLayout(self.gridLayout_2, 0, 0, 1, 1)
         self.setCentralWidget(self.centralwidget)
@@ -95,6 +108,8 @@ class full_screen_window(QMainWindow):
             "full_screen_window",
             self.onRefresh,
             self.onVideoRefresh,
+            self.onPdfRefresh,
+            self.onWebRefresh,
         )
         app = QApplication.instance()
         if app is not None:
@@ -120,6 +135,23 @@ class full_screen_window(QMainWindow):
         self._videoActive = True
         self.videoPlayer.setSource(QUrl.fromLocalFile(os.path.abspath(value)))
         self.videoPlayer.play()
+
+    @Slot(str)
+    def onPdfRefresh(self, value):
+        self._videoActive = False
+        self.videoPlayer.stop()
+        self.contentLbl.clear()
+        self.webView.setUrl(QUrl("about:blank"))
+        self.pdfDocument.load(os.path.abspath(value))
+        self.contentStack.setCurrentWidget(self.pdfView)
+
+    @Slot(str)
+    def onWebRefresh(self, value):
+        self._videoActive = False
+        self.videoPlayer.stop()
+        self.contentLbl.clear()
+        self.webView.setUrl(QUrl(value))
+        self.contentStack.setCurrentWidget(self.webView)
 
     @Slot(QMediaPlayer.Error, str)
     def onVideoError(self, error, error_message):

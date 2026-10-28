@@ -37,7 +37,7 @@ from ezdmb.Controller.configuration import (
     default_time_blocks,
 )
 from ezdmb.Utility.icon_utility import getWindowIcon
-from ezdmb.Utility.media_utility import CONTENT_FILE_DIALOG_FILTER
+from ezdmb.Utility.media_utility import CONTENT_FILE_DIALOG_FILTER, is_web_url
 from ezdmb.View import resources  # noqa: F401
 
 
@@ -261,6 +261,14 @@ class config_widget(QWidget):
         self.addContentButton.setObjectName("addContentButton")
         self.horizontalLayout.addWidget(self.addContentButton)
 
+        self.addWebPageButton = QPushButton("Add Web Page", self.frame)
+        self.addWebPageButton.setMinimumSize(QSize(120, 34))
+        self.addWebPageButton.setFont(twelvePtFont)
+        self.addWebPageButton.setAccessibleName("Add Web Page")
+        self.addWebPageButton.setToolTip("Add Web Page")
+        self.addWebPageButton.setObjectName("addWebPageButton")
+        self.horizontalLayout.addWidget(self.addWebPageButton)
+
         self.vLayout2.addWidget(self.frame)
         self.vLayout5.addWidget(self.addRemoveGrpBox)
 
@@ -283,6 +291,7 @@ class config_widget(QWidget):
             self.onContentGroupChanged
         )
         self.addContentButton.clicked.connect(self.addContent)
+        self.addWebPageButton.clicked.connect(self.addWebPage)
         self.everySecondsRadio.toggled.connect(
             lambda checked: self.onRotationModeToggled("interval", checked)
         )
@@ -578,7 +587,9 @@ class config_widget(QWidget):
         rowLayout.setContentsMargins(8, 4, 4, 4)
         rowLayout.setSpacing(8)
 
-        fileLabel = QLabel(Path(content).name, rowWidget)
+        fileLabel = QLabel(
+            content if is_web_url(content) else Path(content).name, rowWidget
+        )
         fileLabel.setObjectName("contentFilenameLabel")
         fileLabel.setToolTip(content)
         rowLayout.addWidget(fileLabel, 1)
@@ -781,6 +792,17 @@ class config_widget(QWidget):
         )[0]
         if contentFile != "":
             self._addContentListItem(contentFile)
+            self.saveUpdatedConfig()
+
+    def addWebPage(self):
+        url, accepted = QInputDialog.getText(
+            self, "Add Web Page", "Web page URL (http:// or https://):"
+        )
+        url = url.strip()
+        if accepted and url:
+            if not is_web_url(url):
+                url = f"https://{url}"
+            self._addContentListItem(url)
             self.saveUpdatedConfig()
 
     def _deleteContentItem(self, item: QListWidgetItem) -> None:

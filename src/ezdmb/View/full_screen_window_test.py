@@ -61,6 +61,8 @@ class TestFullScreenWindow:
             "full_screen_window",
             window.onRefresh,
             window.onVideoRefresh,
+            window.onPdfRefresh,
+            window.onWebRefresh,
         )
 
         pixmap = QPixmap(3, 2)

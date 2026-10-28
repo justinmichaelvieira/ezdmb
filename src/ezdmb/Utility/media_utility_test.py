@@ -11,7 +11,11 @@ from ezdmb.Utility.media_utility import get_content_type
         ("menu.mp4", "video"),
         ("menu.MOV", "video"),
         ("menu.webm", "video"),
-        ("document.pdf", None),
+        ("document.pdf", "pdf"),
+        ("slides.PPT", "presentation"),
+        ("slides.pptx", "presentation"),
+        ("https://example.com/menu", "web"),
+        ("document.docx", None),
     ],
 )
 def test_get_content_type(file_name, expected_type):
