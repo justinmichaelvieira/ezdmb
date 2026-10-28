@@ -89,10 +89,6 @@ QPushButton#addContentButton:hover {
     background-color: #174f84;
 }
 
-QPushButton#deleteSelectionButton {
-    color: #8a3d3a;
-}
-
 QListWidget, QDoubleSpinBox {
     background-color: #ffffff;
     border: 1px solid #cbd2da;

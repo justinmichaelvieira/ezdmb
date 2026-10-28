@@ -9,6 +9,8 @@ from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (
     QAbstractSpinBox,
     QApplication,
+    QLabel,
+    QPushButton,
     QRadioButton,
     QStyle,
     QStyleOptionButton,
@@ -83,6 +85,38 @@ def test_settings_controls_have_compact_hierarchy(settings_widget):
     assert settings_widget.vLayout5.spacing() == 12
     assert settings_widget.addContentButton.minimumHeight() == 34
     assert not settings_widget.addContentButton.icon().isNull()
+
+
+def test_add_content_button_displays_icon_instead_of_text(settings_widget):
+    assert settings_widget.addContentButton.text() == ""
+    assert not settings_widget.addContentButton.icon().isNull()
+    assert settings_widget.addContentButton.accessibleName() == "Add Content"
+    assert settings_widget.addContentButton.toolTip() == "Add Content"
+
+
+def test_inline_content_delete_removes_only_clicked_file(settings_widget, tmp_path):
+    first_path = str(tmp_path / "first.png")
+    second_path = str(tmp_path / "second.png")
+    settings_widget._addContentListItem(first_path)
+    settings_widget._addContentListItem(second_path)
+
+    first_item = settings_widget.loadedContentWidget.item(0)
+    row_widget = settings_widget.loadedContentWidget.itemWidget(first_item)
+    assert row_widget is not None
+    filename_label = row_widget.findChild(QLabel, "contentFilenameLabel")
+    delete_button = row_widget.findChild(QPushButton, "deleteContentButton")
+    assert filename_label is not None
+    assert delete_button is not None
+    assert filename_label.text() == "first.png"
+    assert filename_label.toolTip() == first_path
+
+    delete_button.click()
+
+    assert settings_widget.getContentList() == [second_path]
+    current_group = settings_widget._currentContentGroup()
+    assert current_group is not None
+    assert current_group["content"] == [second_path]
+    settings_widget._config.save_config.assert_called_once()
 
 
 def test_application_theme_styles_settings_controls(qapp):
@@ -192,6 +226,27 @@ def test_group_toolbar_is_visible_only_for_schedule_mode(settings_widget):
     settings_widget.noneRadio.setChecked(True)
 
     assert settings_widget.groupToolbar.isHidden()
+
+
+def test_add_group_button_displays_icon_instead_of_text(settings_widget):
+    assert settings_widget.addGroupButton.text() == ""
+    assert not settings_widget.addGroupButton.icon().isNull()
+    assert settings_widget.addGroupButton.accessibleName() == "Add Group"
+    assert settings_widget.addGroupButton.toolTip() == "Add Group"
+
+
+def test_delete_group_button_displays_icon_instead_of_text(settings_widget):
+    assert settings_widget.deleteGroupButton.text() == ""
+    assert not settings_widget.deleteGroupButton.icon().isNull()
+    assert settings_widget.deleteGroupButton.accessibleName() == "Delete Group"
+    assert settings_widget.deleteGroupButton.toolTip() == "Delete Group"
+
+
+def test_rename_group_button_displays_icon_instead_of_text(settings_widget):
+    assert settings_widget.renameGroupButton.text() == ""
+    assert not settings_widget.renameGroupButton.icon().isNull()
+    assert settings_widget.renameGroupButton.accessibleName() == "Rename"
+    assert settings_widget.renameGroupButton.toolTip() == "Rename"
 
 
 def test_rotation_group_uses_disabled_background_style(qapp):

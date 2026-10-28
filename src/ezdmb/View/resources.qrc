@@ -23,12 +23,19 @@
         <file alias="edit_square.svg">images/edit_square.svg</file>
         <file alias="delete.svg">images/delete.svg</file>
         <file alias="library_add.svg">images/library_add.svg</file>
+        <file alias="group_add.svg">images/group_add.svg</file>
+        <file alias="group_remove.svg">images/group_remove.svg</file>
+        <file alias="drive_file_rename.svg">images/drive_file_rename.svg</file>
         <file alias="minimize.svg">images/minimize.svg</file>
+        <file alias="hide.svg">images/hide.svg</file>
+        <file alias="hide_image.svg">images/hide_image.svg</file>
+        <file alias="open_in_full.svg">images/open_in_full.svg</file>
         <file alias="settings.svg">images/settings.svg</file>
         <file alias="settings_screen.svg">images/settings_screen.svg</file>
         <file alias="visibility.svg">images/visibility.svg</file>
         <file alias="quickstart.svg">images/quickstart.svg</file>
         <file alias="export.svg">images/export.svg</file>
         <file alias="import.svg">images/import.svg</file>
+        <file alias="content_paste_go.svg">images/content_paste_go.svg</file>
     </qresource>
 </RCC>

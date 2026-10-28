@@ -92,7 +92,10 @@ class config_window(QMainWindow):
 
         self.menuFile.addSeparator()
 
-        self.minimizeConfigurationWindowAction: QAction = QAction(parent=self)
+        self.minimizeConfigurationWindowAction: QAction = QAction(
+            parent=self,
+            icon=getIcon("hide.svg"),
+        )
         self.minimizeConfigurationWindowAction.setText(
             "Minimize Configuration Window"
         )
@@ -104,7 +107,10 @@ class config_window(QMainWindow):
         )
         self.menuFile.addAction(self.minimizeConfigurationWindowAction)
 
-        self.minimizeFullScreenWindowAction: QAction = QAction(parent=self)
+        self.minimizeFullScreenWindowAction: QAction = QAction(
+            parent=self,
+            icon=getIcon("hide_image.svg"),
+        )
         self.minimizeFullScreenWindowAction.setText("Minimize Full Screen Window")
         self.minimizeFullScreenWindowAction.setObjectName(
             "minimizeFullScreenWindowAction"
@@ -125,7 +131,10 @@ class config_window(QMainWindow):
         )
         self.menuFile.addAction(self.minimizeToTrayAction)
 
-        self.showFullScreenWindowAction: QAction = QAction(parent=self)
+        self.showFullScreenWindowAction: QAction = QAction(
+            parent=self,
+            icon=getIcon("open_in_full.svg"),
+        )
         self.showFullScreenWindowAction.setText("Show Full Screen Window")
         self.showFullScreenWindowAction.setObjectName("showFullScreenWindowAction")
         self.showFullScreenWindowAction.triggered.connect(

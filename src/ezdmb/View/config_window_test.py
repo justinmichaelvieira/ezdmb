@@ -51,10 +51,13 @@ class TestConfigWindow:
         assert window.minimizeConfigurationWindowAction.text() == (
             "Minimize Configuration Window"
         )
+        assert not window.minimizeConfigurationWindowAction.icon().isNull()
         assert window.minimizeFullScreenWindowAction.text() == (
             "Minimize Full Screen Window"
         )
+        assert not window.minimizeFullScreenWindowAction.icon().isNull()
         assert window.showFullScreenWindowAction.text() == "Show Full Screen Window"
+        assert not window.showFullScreenWindowAction.icon().isNull()
 
         window.showAboutAction.trigger()
         window.showQuickstartAction.trigger()

@@ -1,5 +1,6 @@
 # pylint: disable=no-name-in-module
 from copy import deepcopy
+from pathlib import Path
 from uuid import uuid4
 
 from PySide6.QtCore import QSize, Qt, Signal
@@ -18,6 +19,7 @@ from PySide6.QtWidgets import (
     QInputDialog,
     QLabel,
     QListWidget,
+    QListWidgetItem,
     QMessageBox,
     QPushButton,
     QRadioButton,
@@ -201,15 +203,30 @@ class config_widget(QWidget):
         self.contentGroupCombo.setObjectName("contentGroupCombo")
         self.groupToolbarLayout.addWidget(self.contentGroupCombo, 1)
 
-        self.addGroupButton = QPushButton("Add Group", self.groupToolbar)
+        groupAddPixmap = QPixmap(":/images/group_add.svg")
+        self.addGroupButton = QPushButton(self.groupToolbar)
+        self.addGroupButton.setIcon(QIcon(groupAddPixmap))
+        self.addGroupButton.setIconSize(groupAddPixmap.rect().size())
+        self.addGroupButton.setAccessibleName("Add Group")
+        self.addGroupButton.setToolTip("Add Group")
         self.addGroupButton.setObjectName("addGroupButton")
         self.groupToolbarLayout.addWidget(self.addGroupButton)
 
-        self.renameGroupButton = QPushButton("Rename", self.groupToolbar)
+        renameGroupPixmap = QPixmap(":/images/drive_file_rename.svg")
+        self.renameGroupButton = QPushButton(self.groupToolbar)
+        self.renameGroupButton.setIcon(QIcon(renameGroupPixmap))
+        self.renameGroupButton.setIconSize(renameGroupPixmap.rect().size())
+        self.renameGroupButton.setAccessibleName("Rename")
+        self.renameGroupButton.setToolTip("Rename")
         self.renameGroupButton.setObjectName("renameGroupButton")
         self.groupToolbarLayout.addWidget(self.renameGroupButton)
 
-        self.deleteGroupButton = QPushButton("Delete Group", self.groupToolbar)
+        groupRemovePixmap = QPixmap(":/images/group_remove.svg")
+        self.deleteGroupButton = QPushButton(self.groupToolbar)
+        self.deleteGroupButton.setIcon(QIcon(groupRemovePixmap))
+        self.deleteGroupButton.setIconSize(groupRemovePixmap.rect().size())
+        self.deleteGroupButton.setAccessibleName("Delete Group")
+        self.deleteGroupButton.setToolTip("Delete Group")
         self.deleteGroupButton.setObjectName("deleteGroupButton")
         self.groupToolbarLayout.addWidget(self.deleteGroupButton)
         self.vLayout2.addWidget(self.groupToolbar)
@@ -231,26 +248,18 @@ class config_widget(QWidget):
         self.horizontalLayout.setSpacing(8)
         self.horizontalLayout.setObjectName("horizontalLayout")
 
-        addPixmap = QPixmap(":/images/add.svg")
-        addButtonIcon = QIcon(addPixmap)
+        contentPasteGoPixmap = QPixmap(":/images/content_paste_go.svg")
+        addButtonIcon = QIcon(contentPasteGoPixmap)
 
         self.addContentButton = QPushButton(self.frame)
         self.addContentButton.setIcon(addButtonIcon)
-        self.addContentButton.setIconSize(addPixmap.rect().size())
+        self.addContentButton.setIconSize(contentPasteGoPixmap.rect().size())
         self.addContentButton.setMinimumSize(QSize(120, 34))
         self.addContentButton.setFont(twelvePtFont)
+        self.addContentButton.setAccessibleName("Add Content")
+        self.addContentButton.setToolTip("Add Content")
         self.addContentButton.setObjectName("addContentButton")
         self.horizontalLayout.addWidget(self.addContentButton)
-
-        deletePixmap = QPixmap(":/images/delete.svg")
-        deleteButtonIcon = QIcon(deletePixmap)
-        self.deleteSelectionButton = QPushButton(self.frame)
-        self.deleteSelectionButton.setIcon(deleteButtonIcon)
-        self.deleteSelectionButton.setIconSize(deletePixmap.rect().size())
-        self.deleteSelectionButton.setMinimumSize(QSize(120, 34))
-        self.deleteSelectionButton.setFont(twelvePtFont)
-        self.deleteSelectionButton.setObjectName("deleteSelectionButton")
-        self.horizontalLayout.addWidget(self.deleteSelectionButton)
 
         self.vLayout2.addWidget(self.frame)
         self.vLayout5.addWidget(self.addRemoveGrpBox)
@@ -263,8 +272,6 @@ class config_widget(QWidget):
         self.rotationSettingsGrpBox.setTitle("Rotation")
         self.secondsLabel.setText("seconds")
         self.addRemoveGrpBox.setTitle("Add/Remove content")
-        self.addContentButton.setText("Add Content")
-        self.deleteSelectionButton.setText("Delete Selection")
 
         self.setUiFromConfig()
 
@@ -276,7 +283,6 @@ class config_widget(QWidget):
             self.onContentGroupChanged
         )
         self.addContentButton.clicked.connect(self.addContent)
-        self.deleteSelectionButton.clicked.connect(self.deleteSelectedContent)
         self.everySecondsRadio.toggled.connect(
             lambda checked: self.onRotationModeToggled("interval", checked)
         )
@@ -563,6 +569,35 @@ class config_widget(QWidget):
             for i in range(self.loadedContentWidget.count())
         ]
 
+    def _addContentListItem(self, content: str) -> None:
+        listItem = QListWidgetItem(content)
+        self.loadedContentWidget.addItem(listItem)
+
+        rowWidget = QWidget(self.loadedContentWidget)
+        rowLayout = QHBoxLayout(rowWidget)
+        rowLayout.setContentsMargins(8, 4, 4, 4)
+        rowLayout.setSpacing(8)
+
+        fileLabel = QLabel(Path(content).name, rowWidget)
+        fileLabel.setObjectName("contentFilenameLabel")
+        fileLabel.setToolTip(content)
+        rowLayout.addWidget(fileLabel, 1)
+
+        deleteButton = QPushButton(rowWidget)
+        deleteButton.setIcon(QIcon(":/images/delete.svg"))
+        deleteButton.setIconSize(QSize(20, 20))
+        deleteButton.setFixedSize(QSize(28, 28))
+        deleteButton.setAccessibleName(f"Remove {fileLabel.text()}")
+        deleteButton.setToolTip(f"Remove {fileLabel.text()}")
+        deleteButton.setObjectName("deleteContentButton")
+        rowLayout.addWidget(deleteButton)
+
+        self.loadedContentWidget.setItemWidget(listItem, rowWidget)
+        listItem.setSizeHint(QSize(0, 36))
+        deleteButton.clicked.connect(
+            lambda _checked=False, item=listItem: self._deleteContentItem(item)
+        )
+
     def _currentContentGroup(self):
         return self._findGroup(self.contentGroupCombo.currentData())
 
@@ -595,7 +630,7 @@ class config_widget(QWidget):
             self.loadedContentWidget.clear()
             if group is not None:
                 for content in group["content"]:
-                    self.loadedContentWidget.addItem(str(content))
+                    self._addContentListItem(str(content))
 
             self._updateGroupToolbarState(self._rotationMode == "schedule")
             selected_schedule_group = self.scheduleGroupCombo.currentData()
@@ -725,7 +760,7 @@ class config_widget(QWidget):
         self.loadedContentWidget.clear()
         if group is not None:
             for content in group["content"]:
-                self.loadedContentWidget.addItem(str(content))
+                self._addContentListItem(str(content))
 
     def saveAndClose(self):
         self._config.RotateContent = self._rotationMode == "interval"
@@ -745,15 +780,14 @@ class config_widget(QWidget):
             CONTENT_FILE_DIALOG_FILTER,
         )[0]
         if contentFile != "":
-            self.loadedContentWidget.addItem(contentFile)
+            self._addContentListItem(contentFile)
             self.saveUpdatedConfig()
 
-    def deleteSelectedContent(self):
-        for SelectedItem in self.loadedContentWidget.selectedItems():
-            self.loadedContentWidget.takeItem(
-                self.loadedContentWidget.row(SelectedItem)
-            )
-
+    def _deleteContentItem(self, item: QListWidgetItem) -> None:
+        row = self.loadedContentWidget.row(item)
+        if row < 0:
+            raise ValueError("Cannot delete a content item that is not in the list")
+        self.loadedContentWidget.takeItem(row)
         self.saveUpdatedConfig()
 
     def setUiFromConfig(self):
@@ -881,7 +915,7 @@ class config_widget(QWidget):
         group = self._findGroup(selected_group_id)
         for index in selected_cells:
             item = self.timeBlockGrid.item(index.row(), index.column())
-            if group is None:
+            if group is None and item is not None:
                 item.setText("")
                 item.setToolTip("")
                 item.setData(Qt.ItemDataRole.UserRole, None)
