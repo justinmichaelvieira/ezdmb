@@ -1,5 +1,5 @@
 # pylint: disable=no-name-in-module
-from datetime import datetime
+from datetime import UTC, datetime
 from threading import Event
 from time import monotonic
 
@@ -119,7 +119,7 @@ class menu_content_view(QThread):
         while not self._stop_event.is_set():
             self._wake_event.clear()
             mode = self.rotationMode
-            now = datetime.now()
+            now = datetime.now(tz=UTC).astimezone()
             now_monotonic = monotonic()
             rotate_timeout = max(float(self.rotateTimeout), 1)
 
@@ -200,7 +200,7 @@ class menu_content_view(QThread):
 
     def getScheduledGroup(self, current_time=None):
         if current_time is None:
-            current_time = datetime.now()
+            current_time = datetime.now(tz=UTC).astimezone()
 
         repeat_mode = self.timeBlocks["repeat"]
         if repeat_mode == "Daily":

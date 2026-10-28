@@ -5,7 +5,7 @@ Tests for the menu_content_view module
 
 import os
 import tempfile
-from datetime import datetime
+from datetime import UTC, datetime
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -425,14 +425,23 @@ class TestScheduledGroupSelection:
             )
 
         assert (
-            util.getScheduledGroup(datetime(2026, 10, 22, 8, 0))["id"]
+            util.getScheduledGroup(
+                datetime(2026, 10, 22, 8, 0, tzinfo=UTC)
+            )["id"]
             == "breakfast"
         )
         assert (
-            util.getScheduledGroup(datetime(2026, 10, 22, 11, 0))["id"]
+            util.getScheduledGroup(
+                datetime(2026, 10, 22, 11, 0, tzinfo=UTC)
+            )["id"]
             == "lunch"
         )
-        assert util.getScheduledGroup(datetime(2026, 10, 22, 15, 0)) is None
+        assert (
+            util.getScheduledGroup(
+                datetime(2026, 10, 22, 15, 0, tzinfo=UTC)
+            )
+            is None
+        )
 
     def test_weekly_and_dated_schedules_select_groups(
         self, qapp, mock_config, mock_pixmap_label
@@ -473,13 +482,17 @@ class TestScheduledGroupSelection:
             )
 
         assert (
-            util.getScheduledGroup(datetime(2026, 10, 22, 18, 0))["id"]
+            util.getScheduledGroup(
+                datetime(2026, 10, 22, 18, 0, tzinfo=UTC)
+            )["id"]
             == "dinner"
         )
 
         util.timeBlocks["repeat"] = "None"
         assert (
-            util.getScheduledGroup(datetime(2026, 10, 23, 12, 0))["id"]
+            util.getScheduledGroup(
+                datetime(2026, 10, 23, 12, 0, tzinfo=UTC)
+            )["id"]
             == "dinner"
         )
 
@@ -518,7 +531,9 @@ class TestScheduledGroupSelection:
             )
 
         assert (
-            util.getScheduledGroup(datetime(2026, 10, 22, 9, 0))["id"]
+            util.getScheduledGroup(
+                datetime(2026, 10, 22, 9, 0, tzinfo=UTC)
+            )["id"]
             == "breakfast"
         )
 

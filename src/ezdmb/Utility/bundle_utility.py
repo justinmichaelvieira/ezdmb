@@ -179,9 +179,10 @@ def import_bundle_from_url(
     with tempfile.TemporaryDirectory() as temp_folder:
         zip_file = Path(temp_folder) / "bundle.zip"
         try:
-            with urlopen(bundle_url, timeout=30) as response:
-                with zip_file.open("wb") as output_file:
-                    copyfileobj(response, output_file)
+            with urlopen(bundle_url, timeout=30) as response, zip_file.open(
+                "wb"
+            ) as output_file:
+                copyfileobj(response, output_file)
         except (HTTPException, OSError, ValueError) as error:
             _show_import_error(
                 f"Could not download the bundle: {escape(str(error))}",
