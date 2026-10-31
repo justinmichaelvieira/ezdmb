@@ -13,6 +13,9 @@ A dead-simple digital menu board display and configuration.  Engineered to be th
 3. Double click install.bat.
 4. Once the installer completes, you can launch the app using the Start Menu (Start > Run ezdmb)
 
+The installer installs Python 3.13 or later and the required PySide6 dependencies.
+64-bit Windows is required.
+
 ## Basic Operation
 
 - On startup, ezdmb opens the menu board in fullscreen and the Configuration window.

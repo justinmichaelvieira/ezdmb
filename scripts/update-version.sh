@@ -38,7 +38,6 @@ replace_in_file "s/^(AppVerName=ezdmb v)[0-9]+\\.[0-9]+\\.[0-9]+/\\1${NEW_VERSIO
 replace_in_file "s/^(VERSION=.)[0-9]+\\.[0-9]+\\.[0-9]+/\\1${NEW_VERSION}/" linux/debian/build-dpkg.sh
 replace_in_file "s/^(Version: )[0-9]+\\.[0-9]+\\.[0-9]+/\\1${NEW_VERSION}/" linux/debian/DEBIAN/control
 replace_in_file "s/^(version = .)[0-9]+\\.[0-9]+\\.[0-9]+/\\1${NEW_VERSION}/" pyproject.toml
-replace_in_file "s/^(.*appWheelFile = .ezdmb-)[0-9]+\\.[0-9]+\\.[0-9]+(-py3-none-any\\.whl)/\\1${NEW_VERSION}\\2/" setup-dev-environment.ps1
 replace_in_file "s/^(    version=.)[0-9]+\\.[0-9]+\\.[0-9]+/\\1${NEW_VERSION}/" setup.py
 replace_in_file "s/^(__version__ = .)[0-9]+\\.[0-9]+\\.[0-9]+/\\1${NEW_VERSION}/" src/ezdmb/__init__.py
 sed "${SED_IN_PLACE[@]}" "${SED_FLAGS[@]}" "/^name = .*ezdmb/,/^[[:space:]]*$/ s/^(version = .)[0-9]+\\.[0-9]+\\.[0-9]+/\\1${NEW_VERSION}/" uv.lock

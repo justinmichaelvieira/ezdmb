@@ -1,30 +1,46 @@
-# How to run through python3 (local dev env setup)
+# Developer environment setup
+
+The project requires Python 3.13 or later.
 
 ## Ubuntu Linux
 
-1. Run the install script in a bash terminal: `chmod +x ./setup-dev-environment.sh && ./setup-dev-environment.sh`
-2. Run the app: `python3 -m ezdmb`
+1. Clone the repository if you have not already.
+2. Run `bash linux/debian/setup-dev-environment.sh` from the repository root.
+3. Activate the environment with `source .venv/bin/activate`.
+4. Run the current source with `PYTHONPATH=src .venv/bin/python -m ezdmb`.
+
+The setup script installs Python 3.13 on Ubuntu when needed, creates a virtual
+environment, installs the project dependencies, and adds the Qt system
+libraries required by the PySide6 Linux wheels.
 
 ## Windows
 
-1. Install Python if necessary: <https://www.python.org/downloads/windows/>
-2. Clone the ezdmb repo using `git clone https://github.com/justinmichaelvieira/ezdmb.git`, or the big green "<> Code" button on <https://github.com/justinmichaelvieira/ezdmb>
-3. Run `setup-dev-environment.ps1` in the root folder of the repo.
+1. Install Python 3.13 or later, including the Python launcher: <https://www.python.org/downloads/windows/>
+2. Clone the ezdmb repository.
+3. Run `.\setup-dev-environment.ps1` from the repository root.
+4. Set `$env:PYTHONPATH = "$PWD\src"` and run
+   `.\.venv\Scripts\python.exe -m ezdmb`.
 
-`py __main__.py` should allow you to run that app. Debug messages will be logged every time the display content updates. The content update interval can be changed using `File > Settings` .
+Debug messages are logged every time the display content updates. The content
+update interval can be changed using `File > Settings`.
 
 ## Advanced install instructions / troubleshooting install
 
-If the developer install script/procedure does not work for you, try installing manually as follows:
+If the developer setup script does not work, verify that Python 3.13 or later
+is installed and create the environment manually.
 
-1. Install python libraries: `pip install -r requirements.txt`
-2. Install PySide6 dev tools: `sudo apt install python3-pyside6.qttools`
-3. Install the qt framework loader: `pip install -U pip && pip install aqtinstall`
-4. Use the qt framework loader to install Qt 6 if needed; otherwise PySide6 is installed via pip.
-5. Add qt build tools to your path (replace `<username>` in the command with the username on the system): `export PATH="/home/<username>/ezdmb/6.9.0/gcc_64/bin":$PATH`
+On Windows, run `py -3 -m venv .venv`, then
+`.\.venv\Scripts\python.exe -m pip install --upgrade pip` and
+`.\.venv\Scripts\python.exe -m pip install .`. Set `$env:PYTHONPATH = "$PWD\src"`
+when launching to use the current source tree.
 
-On Windows and Mac, use the Qt Framework install packages provided at <https://www.qt.io/>
+On Debian/Ubuntu, run `python3.13 -m venv .venv`, then
+`.venv/bin/python -m pip install --upgrade pip` and
+`.venv/bin/python -m pip install .`. Launch with
+`PYTHONPATH=src .venv/bin/python -m ezdmb`. The Linux setup script also
+installs the native Qt libraries needed to run the application.
 
 ### Generating resource files
 
-`pyrcc5 -o resources.py resources.qrc` executed in the `/View` directory generates necessary image resources.
+Run `pyside6-rcc -o resources.py resources.qrc` from `src/ezdmb/View` to
+regenerate the Qt resource module.

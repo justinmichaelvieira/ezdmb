@@ -13,6 +13,7 @@ __pycache__/*
 View/__pycache__/*
 .vscode/
 .github/
+.venv/
 Lib/
 Scripts/
 6.9.0/
