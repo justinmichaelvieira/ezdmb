@@ -92,7 +92,13 @@ def populate_instance():
     config_win.activateWindow()
 
     system_tray = system_tray_utility(
-        [full_screen_win, config_win, about_win, quickstart_win],
+        [
+            full_screen_win,
+            config_win,
+            about_win,
+            quickstart_win,
+            config_win.config_widget.scheduleWindow,
+        ],
         app.quit,
         app,
         configuration_window=config_win,

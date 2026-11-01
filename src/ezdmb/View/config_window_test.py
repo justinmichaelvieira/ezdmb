@@ -2,6 +2,8 @@ from types import SimpleNamespace
 from unittest.mock import MagicMock
 
 import pytest
+from PySide6.QtCore import Qt
+from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication
 
 from ezdmb.Controller.configuration import (
@@ -133,3 +135,22 @@ class TestConfigWindow:
         window.exitAction.trigger()
 
         quit_app.assert_called_once_with()
+
+    def test_escape_in_schedule_window_closes_it_without_quitting(
+        self, qapp, config, monkeypatch
+    ):
+        quit_app = MagicMock()
+        monkeypatch.setattr(QApplication, "quit", staticmethod(quit_app))
+        window = config_window.config_window(config, MagicMock(), MagicMock())
+        schedule_window = window.config_widget.scheduleWindow
+        window.show()
+        window.config_widget.viewScheduleButton.click()
+        qapp.processEvents()
+        assert schedule_window.isVisible()
+
+        QTest.keyClick(schedule_window, Qt.Key.Key_Escape)
+        qapp.processEvents()
+
+        assert schedule_window.isHidden()
+        quit_app.assert_not_called()
+        window.close()

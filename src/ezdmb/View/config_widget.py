@@ -10,6 +10,8 @@ from PySide6.QtWidgets import (
     QButtonGroup,
     QCalendarWidget,
     QComboBox,
+    QDialog,
+    QDialogButtonBox,
     QDoubleSpinBox,
     QFileDialog,
     QFrame,
@@ -26,7 +28,6 @@ from PySide6.QtWidgets import (
     QSizePolicy,
     QTableWidget,
     QTableWidgetItem,
-    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -99,17 +100,13 @@ class config_widget(QWidget):
         self.settingsLayout = QVBoxLayout(self.settingsWidget)
         self.settingsLayout.setContentsMargins(0, 0, 0, 0)
 
-        self.settingsTabs = QTabWidget(self.settingsWidget)
-        self.settingsTabs.setObjectName("settingsTabs")
-        self.settingsLayout.addWidget(self.settingsTabs)
-
         # fonts
         twelvePtFont = QFont()
         twelvePtFont.setPointSize(12)
         twelvePtFont.setBold(False)
-        self.contentWidget = QWidget(self.settingsTabs)
+        self.contentWidget = QWidget(self.settingsWidget)
         self.contentWidget.setSizePolicy(minExpMinExpSizePolicy)
-        self.contentWidget.setObjectName("contentTab")
+        self.contentWidget.setObjectName("contentWidget")
 
         self.vLayout5 = QVBoxLayout(self.contentWidget)
         self.vLayout5.setContentsMargins(0, 0, 0, 0)
@@ -125,7 +122,7 @@ class config_widget(QWidget):
             self.rotationSettingsGrpBox.sizePolicy().hasHeightForWidth()
         )
         self.rotationSettingsGrpBox.setSizePolicy(preferredSizePolicy)
-        self.rotationSettingsGrpBox.setMinimumSize(QSize(180, 130))
+        self.rotationSettingsGrpBox.setMinimumWidth(180)
         self.rotationSettingsGrpBox.setFont(twelvePtFont)
         self.rotationSettingsGrpBox.setObjectName("rotationSettingsGrpBox")
 
@@ -173,7 +170,21 @@ class config_widget(QWidget):
         self.byScheduleRadio.setFont(rotationRadioFont)
         self.byScheduleRadio.setMinimumHeight(34)
         self.byScheduleRadio.setObjectName("byScheduleRadio")
-        self.hLayout2.addWidget(self.byScheduleRadio)
+
+        self.viewScheduleButton = QPushButton(
+            "View schedule", self.rotationSettingsGrpBox
+        )
+        self.viewScheduleButton.setMinimumHeight(34)
+        self.viewScheduleButton.setAccessibleName("View schedule")
+        self.viewScheduleButton.setToolTip("View schedule")
+        self.viewScheduleButton.setObjectName("viewScheduleButton")
+
+        self.rotationScheduleLayout = QHBoxLayout()
+        self.rotationScheduleLayout.setSpacing(10)
+        self.rotationScheduleLayout.addWidget(self.byScheduleRadio)
+        self.rotationScheduleLayout.addWidget(self.viewScheduleButton)
+        self.rotationScheduleLayout.addStretch(1)
+        self.hLayout2.addLayout(self.rotationScheduleLayout)
 
         self.rotationModeButtonGroup = QButtonGroup(self.rotationSettingsGrpBox)
         self.rotationModeButtonGroup.setExclusive(True)
@@ -272,8 +283,8 @@ class config_widget(QWidget):
         self.vLayout2.addWidget(self.frame)
         self.vLayout5.addWidget(self.addRemoveGrpBox)
 
-        self.settingsTabs.addTab(self.contentWidget, "Content")
-        self._buildScheduleTab()
+        self.settingsLayout.addWidget(self.contentWidget)
+        self._buildScheduleWindow()
         self.vLayout6.addWidget(self.settingsWidget)
 
         self.setWindowTitle("Settings")
@@ -292,6 +303,7 @@ class config_widget(QWidget):
         )
         self.addContentButton.clicked.connect(self.addContent)
         self.addWebPageButton.clicked.connect(self.addWebPage)
+        self.viewScheduleButton.clicked.connect(self.showScheduleWindow)
         self.everySecondsRadio.toggled.connect(
             lambda checked: self.onRotationModeToggled("interval", checked)
         )
@@ -311,25 +323,29 @@ class config_widget(QWidget):
             self.onTimeBlockSelectionChanged
         )
 
-    def _buildScheduleTab(self):
-        self.scheduleWidget = QWidget(self.settingsTabs)
-        self.scheduleWidget.setObjectName("scheduleTab")
-        self.scheduleLayout = QVBoxLayout(self.scheduleWidget)
-        self.scheduleLayout.setContentsMargins(8, 8, 8, 8)
+    def _buildScheduleWindow(self):
+        self.scheduleWindow = QDialog(self)
+        self.scheduleWindow.setObjectName("scheduleWindow")
+        self.scheduleWindow.setWindowTitle("Schedule")
+        self.scheduleWindow.setWindowIcon(getWindowIcon())
+        self.scheduleWindow.setMinimumSize(QSize(640, 420))
+        self.scheduleWindow.resize(800, 640)
+        self.scheduleLayout = QVBoxLayout(self.scheduleWindow)
+        self.scheduleLayout.setContentsMargins(12, 12, 12, 12)
         self.scheduleLayout.setSpacing(8)
 
         self.repeatLayout = QHBoxLayout()
-        self.repeatLabel = QLabel("Repeat:", self.scheduleWidget)
+        self.repeatLabel = QLabel("Repeat:", self.scheduleWindow)
         self.repeatLabel.setObjectName("repeatLabel")
-        self.repeatCombo = QComboBox(self.scheduleWidget)
+        self.repeatCombo = QComboBox(self.scheduleWindow)
         self.repeatCombo.addItems(self._REPEAT_MODES)
         self.repeatCombo.setObjectName("repeatCombo")
         self.repeatLayout.addWidget(self.repeatLabel)
         self.repeatLayout.addWidget(self.repeatCombo)
-        self.scheduleGroupLabel = QLabel("Assign blocks to:", self.scheduleWidget)
+        self.scheduleGroupLabel = QLabel("Assign blocks to:", self.scheduleWindow)
         self.scheduleGroupLabel.setObjectName("scheduleGroupLabel")
         self.repeatLayout.addWidget(self.scheduleGroupLabel)
-        self.scheduleGroupCombo = QComboBox(self.scheduleWidget)
+        self.scheduleGroupCombo = QComboBox(self.scheduleWindow)
         self.scheduleGroupCombo.setObjectName("scheduleGroupCombo")
         self.repeatLayout.addWidget(self.scheduleGroupCombo, 1)
         self.repeatLayout.addStretch(1)
@@ -339,14 +355,14 @@ class config_widget(QWidget):
             "Choose a group, then select 30-minute blocks to assign those times "
             "to it. Assignments replace existing groups; choose Clear blocks "
             "to remove an assignment.",
-            self.scheduleWidget,
+            self.scheduleWindow,
         )
         self.scheduleHelpLabel.setWordWrap(True)
         self.scheduleHelpLabel.setObjectName("scheduleHelpLabel")
         self.scheduleLayout.addWidget(self.scheduleHelpLabel)
 
         self.scheduleGridLayout = QHBoxLayout()
-        self.scheduleCalendar = QCalendarWidget(self.scheduleWidget)
+        self.scheduleCalendar = QCalendarWidget(self.scheduleWindow)
         self.scheduleCalendar.setObjectName("scheduleCalendar")
         self.scheduleCalendar.setGridVisible(True)
         self.scheduleCalendar.setFirstDayOfWeek(Qt.DayOfWeek.Monday)
@@ -357,7 +373,7 @@ class config_widget(QWidget):
             Qt.AlignmentFlag.AlignTop,
         )
 
-        self.timeBlockGrid = QTableWidget(self.scheduleWidget)
+        self.timeBlockGrid = QTableWidget(self.scheduleWindow)
         self.timeBlockGrid.setObjectName("timeBlockGrid")
         self.timeBlockGrid.setSelectionBehavior(
             QAbstractItemView.SelectionBehavior.SelectItems
@@ -379,7 +395,17 @@ class config_widget(QWidget):
         self.scheduleGridLayout.addWidget(self.timeBlockGrid, 1)
         self.scheduleLayout.addLayout(self.scheduleGridLayout, 1)
 
-        self.settingsTabs.addTab(self.scheduleWidget, "Schedule")
+        self.scheduleButtonBox = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Close, self.scheduleWindow
+        )
+        self.scheduleButtonBox.setObjectName("scheduleButtonBox")
+        self.scheduleButtonBox.rejected.connect(self.scheduleWindow.reject)
+        self.scheduleLayout.addWidget(self.scheduleButtonBox)
+
+    def showScheduleWindow(self):
+        self.scheduleWindow.showNormal()
+        self.scheduleWindow.raise_()
+        self.scheduleWindow.activateWindow()
 
     def _refreshTimeBlockGrid(self):
         repeat_mode = self.repeatCombo.currentText()
@@ -952,8 +978,6 @@ class config_widget(QWidget):
 
         self._rotationMode = mode
         self.setRotationControlsEnabled(mode)
-        if mode == "schedule":
-            self.settingsTabs.setCurrentWidget(self.scheduleWidget)
         self.saveUpdatedConfig()
 
     def setRotationControlsEnabled(self, mode):

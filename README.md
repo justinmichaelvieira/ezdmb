@@ -30,7 +30,7 @@ The Configuration window includes the Settings controls:
 - Add and remove content files. ezdmb displays images (`.jpg`, `.png`, `.gif`, `.bmp`, or `.ico`), text files (`.txt`), and videos (`.mp4`, `.m4v`, `.mov`, `.avi`, `.mkv`, `.webm`, `.wmv`, `.mpeg`, `.mpg`, or `.3gp`), depending on the installed Qt Multimedia codecs.
 - Videos play with audio, loop while selected, and follow the configured rotation interval. In **None** mode, the first video loops continuously.
 - Choose **Every x seconds**, **By schedule**, or **None** for playback.
-- Create named content groups with separate content lists, then assign groups to 30-minute Daily, Weekly, or dated schedule blocks.
+- Create named content groups with separate content lists, then choose **View schedule** next to **By schedule** to open the Schedule window and assign groups to 30-minute Daily, Weekly, or dated schedule blocks.
 - Scheduled groups rotate through their content using the configured interval. Outside scheduled blocks, the last displayed content remains visible.
 - Changes to rotation settings, groups, content, and schedules are saved automatically.
 - Use **File > Export Content Bundle** to export the configuration and its content files as a ZIP bundle. Use **File > Import Content Bundle** to load a bundle.

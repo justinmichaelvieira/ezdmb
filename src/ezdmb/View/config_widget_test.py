@@ -9,6 +9,8 @@ from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (
     QAbstractSpinBox,
     QApplication,
+    QDialog,
+    QDialogButtonBox,
     QLabel,
     QPushButton,
     QRadioButton,
@@ -16,6 +18,7 @@ from PySide6.QtWidgets import (
     QStyleOptionButton,
     QStyleOptionSpinBox,
     QTableWidgetSelectionRange,
+    QTabWidget,
 )
 
 from ezdmb import STYLESHEET
@@ -65,7 +68,10 @@ def settings_widget(qapp):
         TimeBlocks=default_time_blocks(),
         save_config=Mock(),
     )
-    return config_widget(None, cast(configuration, config))
+    widget = config_widget(None, cast(configuration, config))
+    yield widget
+    widget.scheduleWindow.close()
+    widget.close()
 
 
 def test_settings_layout_is_responsive(settings_widget):
@@ -77,6 +83,8 @@ def test_settings_layout_is_responsive(settings_widget):
 
 
 def test_settings_controls_have_compact_hierarchy(settings_widget):
+    settings_widget.ensurePolished()
+
     assert settings_widget.settingsWidget.font().pointSize() <= 10
     assert settings_widget.rotationSettingsGrpBox.font().pointSize() == 12
     assert settings_widget.addRemoveGrpBox.font().pointSize() == 12
@@ -174,8 +182,14 @@ def test_rotation_radio_options_share_interval_controls(settings_widget):
     assert settings_widget.rotationIntervalLayout.itemAt(1).widget() is (
         settings_widget.rotateTimeBox
     )
-    assert settings_widget.hLayout2.itemAt(2).widget() is (
+    assert settings_widget.hLayout2.itemAt(2).layout() is (
+        settings_widget.rotationScheduleLayout
+    )
+    assert settings_widget.rotationScheduleLayout.itemAt(0).widget() is (
         settings_widget.byScheduleRadio
+    )
+    assert settings_widget.rotationScheduleLayout.itemAt(1).widget() is (
+        settings_widget.viewScheduleButton
     )
 
 
@@ -196,7 +210,115 @@ def test_rotation_controls_follow_radio_selection(settings_widget):
     assert settings_widget.rotateTimeBox.isEnabled()
     assert settings_widget.secondsLabel.isEnabled()
     assert settings_widget.rotationSettingsGrpBox.property("rotationEnabled") is True
-    assert settings_widget.settingsTabs.currentWidget() is settings_widget.scheduleWidget
+    assert settings_widget.scheduleWindow.isHidden()
+
+
+def test_view_schedule_button_is_beside_schedule_radio(settings_widget):
+    button = settings_widget.viewScheduleButton
+
+    assert button.text() == "View schedule"
+    assert button.accessibleName() == "View schedule"
+    assert button not in settings_widget.rotationModeButtonGroup.buttons()
+
+
+@pytest.mark.parametrize(
+    "radio_name",
+    ("noneRadio", "everySecondsRadio", "byScheduleRadio"),
+)
+def test_view_schedule_button_is_available_in_every_rotation_mode(
+    settings_widget, radio_name
+):
+    getattr(settings_widget, radio_name).setChecked(True)
+
+    assert settings_widget.viewScheduleButton.isEnabled()
+
+
+def test_settings_content_is_shown_without_tabs(settings_widget, qapp):
+    settings_widget.show()
+    qapp.processEvents()
+
+    assert settings_widget.findChildren(QTabWidget) == []
+    assert settings_widget.settingsLayout.indexOf(settings_widget.contentWidget) == 0
+    assert settings_widget.rotationSettingsGrpBox.isVisible()
+    assert settings_widget.addRemoveGrpBox.isVisible()
+    assert not settings_widget.settingsWidget.isAncestorOf(
+        settings_widget.timeBlockGrid
+    )
+
+
+def test_view_schedule_button_opens_schedule_window(settings_widget, qapp):
+    window = settings_widget.scheduleWindow
+    assert window.isWindow()
+    assert window.windowTitle() == "Schedule"
+    assert window.isHidden()
+
+    settings_widget.viewScheduleButton.click()
+    qapp.processEvents()
+
+    assert window.isVisible()
+    for control in (
+        settings_widget.repeatCombo,
+        settings_widget.scheduleGroupCombo,
+        settings_widget.scheduleCalendar,
+        settings_widget.timeBlockGrid,
+    ):
+        assert window.isAncestorOf(control)
+
+
+def test_schedule_window_close_button_hides_window(settings_widget, qapp):
+    window = settings_widget.scheduleWindow
+    settings_widget.viewScheduleButton.click()
+    close_button = settings_widget.scheduleButtonBox.button(
+        QDialogButtonBox.StandardButton.Close
+    )
+    assert close_button is not None
+
+    close_button.click()
+
+    assert window.isHidden()
+
+
+def test_schedule_window_is_reused_when_reopened(settings_widget, qapp):
+    window = settings_widget.scheduleWindow
+    settings_widget.viewScheduleButton.click()
+    settings_widget.repeatCombo.setCurrentText("Weekly")
+    window.close()
+
+    settings_widget.viewScheduleButton.click()
+    settings_widget.viewScheduleButton.click()
+    qapp.processEvents()
+
+    assert window.isVisible()
+    assert settings_widget.repeatCombo.currentText() == "Weekly"
+    assert settings_widget.findChildren(QDialog) == [window]
+
+
+def test_open_schedule_window_follows_content_group_changes(
+    settings_widget, monkeypatch
+):
+    settings_widget.viewScheduleButton.click()
+    settings_widget.repeatCombo.setCurrentText("Daily")
+    settings_widget.timeBlockGrid.setRangeSelected(
+        QTableWidgetSelectionRange(16, 0, 17, 0),
+        True,
+    )
+    assert settings_widget.timeBlockGrid.item(16, 0).text() == "Default"
+
+    group_names = iter([("Lunch", True), ("Breakfast", True)])
+    monkeypatch.setattr(
+        "ezdmb.View.config_widget.QInputDialog.getText",
+        lambda *args: next(group_names),
+    )
+    settings_widget.renameContentGroup()
+    settings_widget.addContentGroup()
+
+    combo = settings_widget.scheduleGroupCombo
+    assert [combo.itemText(index) for index in range(combo.count())] == [
+        "Clear blocks",
+        "Lunch",
+        "Breakfast",
+    ]
+    assert settings_widget.timeBlockGrid.item(16, 0).text() == "Lunch"
 
 
 def test_group_toolbar_is_visible_only_for_schedule_mode(settings_widget):
