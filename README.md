@@ -13,6 +13,16 @@ A dead-simple digital menu board display and configuration.  Engineered to be th
 3. Double click install.bat.
 4. Once the installer completes, you can launch the app using the Start Menu (Start > Run ezdmb)
 
+## Android
+
+An Android-specific, single-window build entry point is provided separately from
+the desktop startup. The Android workflow targets arm64 tablets and uses the
+official `pyside6-android-deploy` tool. See the [Android build and limitations
+guide](android/README.md) for prerequisites, wheel setup, APK build/install
+commands, and Android-only behavior. Android packaging and device support are
+experimental until the debug APK and on-device checks in that guide have been
+completed for the selected Qt/PySide versions.
+
 ## Basic Operation
 
 - On startup, ezdmb opens the menu board in fullscreen and the Configuration window.

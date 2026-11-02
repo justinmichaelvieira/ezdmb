@@ -68,6 +68,26 @@ def settings_widget(qapp):
     return config_widget(None, cast(configuration, config))
 
 
+@pytest.fixture
+def mobile_settings_widget(qapp):
+    config = SimpleNamespace(
+        RotateContent=True,
+        RotateContentTime=15,
+        ContentArray=[],
+        RotationMode="interval",
+        ContentGroups=default_content_groups(),
+        TimeBlocks=default_time_blocks(),
+        save_config=Mock(),
+    )
+    storage_adapter = Mock()
+    return config_widget(
+        None,
+        cast(configuration, config),
+        android_mode=True,
+        storage_adapter=storage_adapter,
+    )
+
+
 def test_settings_layout_is_responsive(settings_widget):
     assert settings_widget.minimumWidth() == 520
     assert settings_widget.minimumHeight() == 360
@@ -321,6 +341,36 @@ def test_add_content_dialog_includes_video_formats(
     assert "*.mp4" in open_file_dialog.call_args.args[3]
 
 
+def test_android_add_content_uses_storage_adapter(mobile_settings_widget):
+    content_path = "/private/ezdmb/content/menu.png"
+    mobile_settings_widget._storage_adapter.pick_content_file.return_value = (
+        content_path
+    )
+
+    mobile_settings_widget.addContent()
+
+    mobile_settings_widget._storage_adapter.pick_content_file.assert_called_once_with()
+    assert mobile_settings_widget.getContentList() == [content_path]
+    mobile_settings_widget._config.save_config.assert_called_once()
+
+
+def test_android_web_content_is_rejected_with_an_explanation(
+    mobile_settings_widget,
+    monkeypatch,
+):
+    show_message = Mock()
+    monkeypatch.setattr(
+        "ezdmb.View.config_widget.QMessageBox.information",
+        show_message,
+    )
+
+    mobile_settings_widget.addWebPage()
+
+    show_message.assert_called_once()
+    assert mobile_settings_widget.getContentList() == []
+    mobile_settings_widget._config.save_config.assert_not_called()
+
+
 def test_schedule_repeat_modes_show_expected_calendar_grid(settings_widget):
     assert settings_widget.repeatCombo.currentText() == "None"
     assert not settings_widget.scheduleCalendar.isHidden()
@@ -334,6 +384,81 @@ def test_schedule_repeat_modes_show_expected_calendar_grid(settings_widget):
     settings_widget.repeatCombo.setCurrentText("Weekly")
     assert settings_widget.timeBlockGrid.columnCount() == 7
     assert settings_widget.timeBlockGrid.horizontalHeaderItem(0).text() == "Monday"
+
+
+def test_android_settings_use_a_narrow_mobile_schedule_editor(
+    mobile_settings_widget,
+):
+    assert mobile_settings_widget.minimumWidth() == 0
+    assert not hasattr(mobile_settings_widget, "timeBlockGrid")
+    assert mobile_settings_widget.mobileScheduleList.objectName() == (
+        "mobileScheduleList"
+    )
+    assert not mobile_settings_widget.mobileScheduleDateEdit.isHidden()
+
+
+def test_android_schedule_editor_saves_existing_daily_schedule_schema(
+    mobile_settings_widget,
+):
+    mobile_settings_widget.byScheduleRadio.setChecked(True)
+    mobile_settings_widget.repeatCombo.setCurrentText("Daily")
+    mobile_settings_widget.mobileStartTimeCombo.setCurrentIndex(16)
+    mobile_settings_widget.mobileEndTimeCombo.setCurrentIndex(20)
+
+    mobile_settings_widget.addMobileScheduleBlock()
+
+    assert mobile_settings_widget._timeBlocks == {
+        "repeat": "Daily",
+        "daily": [
+            {"start": "08:00", "end": "10:00", "group_id": "default"}
+        ],
+        "weekly": {},
+        "dated": {},
+    }
+    assert mobile_settings_widget._config.save_config.call_args.kwargs[
+        "TimeBlocks"
+    ] == mobile_settings_widget._timeBlocks
+
+    mobile_settings_widget.mobileScheduleList.setCurrentRow(0)
+    mobile_settings_widget.removeMobileScheduleBlock()
+
+    assert mobile_settings_widget._timeBlocks["daily"] == []
+
+
+def test_android_schedule_editor_edits_one_weekday_at_a_time(
+    mobile_settings_widget,
+):
+    mobile_settings_widget.byScheduleRadio.setChecked(True)
+    mobile_settings_widget.repeatCombo.setCurrentText("Weekly")
+    mobile_settings_widget.mobileScheduleDayCombo.setCurrentText("Wednesday")
+    mobile_settings_widget.mobileStartTimeCombo.setCurrentIndex(18)
+    mobile_settings_widget.mobileEndTimeCombo.setCurrentIndex(20)
+
+    mobile_settings_widget.addMobileScheduleBlock()
+
+    assert mobile_settings_widget._timeBlocks["weekly"] == {
+        "Wednesday": [
+            {"start": "09:00", "end": "10:00", "group_id": "default"}
+        ]
+    }
+
+
+def test_android_schedule_editor_edits_one_date_at_a_time(
+    mobile_settings_widget,
+):
+    mobile_settings_widget.byScheduleRadio.setChecked(True)
+    mobile_settings_widget.repeatCombo.setCurrentText("None")
+    mobile_settings_widget.mobileScheduleDateEdit.setDate(QDate(2026, 10, 22))
+    mobile_settings_widget.mobileStartTimeCombo.setCurrentIndex(16)
+    mobile_settings_widget.mobileEndTimeCombo.setCurrentIndex(18)
+
+    mobile_settings_widget.addMobileScheduleBlock()
+
+    assert mobile_settings_widget._timeBlocks["dated"] == {
+        "2026-10-22": [
+            {"start": "08:00", "end": "09:00", "group_id": "default"}
+        ]
+    }
 
 
 def test_selected_time_blocks_are_saved_for_each_repeat_mode(settings_widget):

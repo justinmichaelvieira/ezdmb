@@ -1,6 +1,8 @@
 # pylint: disable=no-name-in-module
 import logging
+import subprocess
 from datetime import UTC, datetime
+from pathlib import Path
 from threading import Event
 from time import monotonic
 
@@ -20,6 +22,7 @@ class menu_content_view(QThread):
     videoUpdated = Signal(str)
     pdfUpdated = Signal(str)
     webUpdated = Signal(str)
+    errorUpdated = Signal(str)
 
     def __init__(
         self,
@@ -34,8 +37,10 @@ class menu_content_view(QThread):
         QThread.__init__(self)
         self._config = config
         self._stop_event = Event()
+        self._pause_event = Event()
         self._wake_event = Event()
         self._active_video_path = None
+        self._config_connected = True
 
         self.debug = True
         self.contentArray = self._config.ContentArray
@@ -70,9 +75,20 @@ class menu_content_view(QThread):
         self.start()
 
     def stop(self):
+        if self._config_connected:
+            self._config.configUpdated.disconnect(self.onConfigUpdated)
+            self._config_connected = False
         self._stop_event.set()
         self._wake_event.set()
         self.wait()
+
+    def pause(self):
+        self._pause_event.set()
+        self._wake_event.set()
+
+    def resume(self):
+        self._pause_event.clear()
+        self._wake_event.set()
 
     @Slot(dict)
     def onConfigUpdated(self, data):
@@ -101,7 +117,7 @@ class menu_content_view(QThread):
         if content_type == "image":
             return QPixmap(fileName)
         elif content_type == "text":
-            with open(fileName, "r") as f:
+            with open(fileName, "r", encoding="utf-8") as f:
                 txt_content = f.read()
                 pix = QPixmap(400, 300)
                 pix.fill(Qt.GlobalColor.white)
@@ -114,6 +130,7 @@ class menu_content_view(QThread):
                     painter.drawText(QPoint(12, i * row_spacing), line)
                     i += 1
 
+                painter.end()
                 return pix
         else:
             return None
@@ -127,6 +144,10 @@ class menu_content_view(QThread):
 
         while not self._stop_event.is_set():
             self._wake_event.clear()
+            if self._pause_event.is_set():
+                self._wake_event.wait()
+                continue
+
             mode = self.rotationMode
             now = datetime.now(tz=UTC).astimezone()
             now_monotonic = monotonic()
@@ -267,30 +288,48 @@ class menu_content_view(QThread):
         content_array = self.contentArray if content_array is None else content_array
         index = i % len(content_array)
         content_path = content_array[index]
-        content_type = get_content_type(content_path)
-        if content_type in ("video", "pdf", "web", "presentation"):
-            if content_path != self._active_video_path:
-                self._active_video_path = content_path
-                if content_type == "video":
-                    self.videoUpdated.emit(content_path)
-                elif content_type == "web":
-                    self.webUpdated.emit(content_path.strip())
-                else:
-                    pdf_path = content_path
-                    if content_type == "presentation":
-                        try:
-                            pdf_path = convert_presentation_to_pdf(content_path)
-                        except Exception:  # pylint: disable=broad-except
-                            logging.getLogger(__name__).exception(
-                                "Unable to convert presentation: %s", content_path
-                            )
-                            self._active_video_path = None
-                            return index
-                    self.pdfUpdated.emit(pdf_path)
-            return index
+        try:
+            content_type = get_content_type(content_path)
+            if content_type is None:
+                raise ValueError("This content type is not supported.")
 
-        self._active_video_path = None
-        img = self.getViewableFilecontent(content_path)
-        if img is not None:
-            self.contentUpdated.emit(img)
+            if content_type in ("video", "pdf", "web", "presentation"):
+                if content_path != self._active_video_path:
+                    self._active_video_path = content_path
+                    if content_type == "video":
+                        self.videoUpdated.emit(content_path)
+                    elif content_type == "web":
+                        self.webUpdated.emit(content_path.strip())
+                    else:
+                        pdf_path = content_path
+                        if content_type == "presentation":
+                            pdf_path = convert_presentation_to_pdf(content_path)
+                        self.pdfUpdated.emit(pdf_path)
+                return index
+
+            self._active_video_path = None
+            image = self.getViewableFilecontent(content_path)
+            if image is None or image.isNull():
+                raise OSError("The selected file could not be read.")
+            self.contentUpdated.emit(image)
+        except (
+            OSError,
+            RuntimeError,
+            ValueError,
+            TypeError,
+            subprocess.SubprocessError,
+        ) as error:
+            self._active_video_path = None
+            logging.getLogger(__name__).exception(
+                "Unable to display content: %s",
+                content_path,
+            )
+            display_name = (
+                content_path
+                if get_content_type(content_path) == "web"
+                else Path(content_path).name
+            )
+            self.errorUpdated.emit(
+                f"Unable to display {display_name}: {error}"
+            )
         return index

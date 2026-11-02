@@ -2,7 +2,7 @@
 import logging
 import os.path
 
-from PySide6.QtCore import QSize, Qt, QUrl, Slot
+from PySide6.QtCore import QObject, QSize, Qt, QUrl, Slot
 from PySide6.QtGui import QPixmap, QShortcut
 from PySide6.QtMultimedia import QAudioOutput, QMediaPlayer
 from PySide6.QtMultimediaWidgets import QVideoWidget
@@ -111,12 +111,19 @@ class full_screen_window(QMainWindow):
             self.onPdfRefresh,
             self.onWebRefresh,
         )
+        if isinstance(self.contentViewUtil, QObject):
+            self.contentViewUtil.setParent(self)
         app = QApplication.instance()
         if app is not None:
             app.aboutToQuit.connect(self.contentViewUtil.stop)
             app.aboutToQuit.connect(self.videoPlayer.stop)
         setCloseOnEscKey(self)
         self.openOnOShortcut: QShortcut = setOpenOnOKey(self, reopen_preview_window)
+
+    def closeEvent(self, event):
+        self.contentViewUtil.stop()
+        self.videoPlayer.stop()
+        super().closeEvent(event)
 
     @Slot(QPixmap)
     def onRefresh(self, value):

@@ -1,3 +1,4 @@
+import json
 import os
 import tempfile
 import unittest
@@ -60,6 +61,19 @@ class bundle_utility_test(unittest.TestCase):
         with open(os.path.join(extract_dir, "nested", "special.txt"), encoding="utf-8") as f:
             assert f.read() == "today's special"
 
+    def test_unzip_dir_rejects_parent_directory_paths(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            archive_path = root / "unsafe.zip"
+            extract_path = root / "extracted"
+            with zipfile.ZipFile(archive_path, "w") as archive:
+                archive.writestr("../outside.txt", "unsafe")
+
+            with self.assertRaises(ValueError):
+                unzip_dir(archive_path, extract_path)
+
+            assert not (root / "outside.txt").exists()
+
     def test_import_bundle_extracts_files_and_updates_configuration(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
@@ -106,10 +120,11 @@ class bundle_utility_test(unittest.TestCase):
             ):
                 import_bundle(trigger_settings_ui_update, config, True)
 
-            assert not (extract_path / "stale.txt").exists()
-            assert (extract_path / "menu.png").read_text(encoding="utf-8") == "image data"
             saved_groups = config.save_config.call_args.kwargs["ContentGroups"]
-            assert saved_groups[0]["content"] == [str(extract_path / "menu.png")]
+            imported_path = Path(saved_groups[0]["content"][0])
+            assert (extract_path / "stale.txt").exists()
+            assert imported_path.name == "menu.png"
+            assert imported_path.read_text(encoding="utf-8") == "image data"
             assert (
                 config.save_config.call_args.kwargs["RotationMode"]
                 == "schedule"
@@ -133,6 +148,62 @@ class bundle_utility_test(unittest.TestCase):
         assert config.ConfigPath == Path("current-config.json")
         assert config.ContentArray == [Path("current-menu.png")]
         get_appdata_path.assert_not_called()
+
+    def test_android_bundle_import_rejects_presentations_before_config_update(
+        self,
+    ):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            archive_path = root / "bundle.zip"
+            appdata_path = root / "appdata"
+            appdata_path.mkdir()
+            with zipfile.ZipFile(archive_path, "w") as archive:
+                archive.writestr(
+                    "dmb_config.json",
+                    json.dumps(
+                        {
+                            "rotate_content": True,
+                            "rotate_content_time": 15,
+                            "imported_content": ["slides.pptx"],
+                            "content_groups": [
+                                {
+                                    "id": "default",
+                                    "name": "Default",
+                                    "content": ["slides.pptx"],
+                                }
+                            ],
+                        }
+                    ),
+                )
+                archive.writestr("slides.pptx", b"presentation")
+
+            config = Mock()
+            config.ConfigPath = root / "current.json"
+            trigger_settings_ui_update = Mock()
+            with (
+                patch(
+                    "ezdmb.Utility.bundle_utility.QFileDialog.getOpenFileName",
+                    return_value=(str(archive_path), ""),
+                ),
+                patch(
+                    "ezdmb.Utility.bundle_utility.get_appdata_path",
+                    return_value=appdata_path,
+                ),
+                patch(
+                    "ezdmb.Utility.bundle_utility.is_android",
+                    return_value=True,
+                ),
+            ):
+                result = import_bundle(
+                    trigger_settings_ui_update,
+                    config,
+                    testing=True,
+                )
+
+        assert result is False
+        config.load_from_file.assert_not_called()
+        config.save_config.assert_not_called()
+        trigger_settings_ui_update.emit.assert_not_called()
 
     def test_import_bundle_from_url_downloads_and_imports_bundle(self):
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -181,12 +252,11 @@ class bundle_utility_test(unittest.TestCase):
                 import_bundle_from_url(trigger_settings_ui_update, config, True)
 
             open_url.assert_called_once_with(bundle_url, timeout=30)
-            assert not (extract_path / "stale.txt").exists()
-            assert (extract_path / "menu.png").read_text(
-                encoding="utf-8"
-            ) == "image data"
             saved_groups = config.save_config.call_args.kwargs["ContentGroups"]
-            assert saved_groups[0]["content"] == [str(extract_path / "menu.png")]
+            imported_path = Path(saved_groups[0]["content"][0])
+            assert (extract_path / "stale.txt").exists()
+            assert imported_path.name == "menu.png"
+            assert imported_path.read_text(encoding="utf-8") == "image data"
             assert config.save_config.call_args.kwargs["RotationMode"] == "schedule"
             trigger_settings_ui_update.emit.assert_called_once_with()
 
@@ -247,7 +317,15 @@ class bundle_utility_test(unittest.TestCase):
                 bundle_path = output_path / "ezdmb_bundle.zip"
                 with zipfile.ZipFile(bundle_path) as archive:
                     assert set(archive.namelist()) == {"dmb_config.json", "menu.png"}
-                    assert archive.read("dmb_config.json") == b'{"rotate": true}'
+                    bundle_config = json.loads(
+                        archive.read("dmb_config.json")
+                    )
+                    assert bundle_config["rotate"] is True
+                    assert bundle_config["imported_content"] == ["menu.png"]
+                    assert (
+                        bundle_config["content_groups"][0]["content"]
+                        == ["menu.png"]
+                    )
                     assert archive.read("menu.png") == b"image data"
             finally:
                 os.chdir(previous_cwd)

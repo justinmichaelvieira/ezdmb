@@ -110,11 +110,26 @@ class TestMenuContentViewShutdown:
 
         assert not worker.isRunning()
 
-    def test_application_shutdown_stops_display_worker(self, qapp, mock_config):
+    def test_pause_and_resume_rotation_worker(self, qapp, mock_config):
+        worker = menu_content_view.menu_content_view(
+            mock_config,
+            QLabel(),
+            "TestWindow",
+            MagicMock(),
+        )
+
+        worker.pause()
+        assert worker._pause_event.is_set()
+
+        worker.resume()
+        assert not worker._pause_event.is_set()
+        worker.stop()
+
+    def test_window_close_stops_display_worker(self, qapp, mock_config):
         mock_config.RotateContentTime = 3600
         window = full_screen_window.full_screen_window(mock_config, MagicMock())
 
-        qapp.aboutToQuit.emit()
+        window.close()
 
         assert not window.contentViewUtil.isRunning()
 
@@ -143,6 +158,55 @@ class TestGetViewableFileContent:
 
                     assert result is not None
                     mock_pixmap_class.assert_called_once_with(test_file)
+
+    def test_display_index_reports_unreadable_content(
+        self,
+        qapp,
+        mock_config,
+        mock_pixmap_label,
+        tmp_path,
+    ):
+        errors = []
+        with patch.object(QThread, "start"):
+            worker = menu_content_view.menu_content_view(
+                mock_config,
+                mock_pixmap_label,
+                "TestWindow",
+                MagicMock(),
+            )
+            worker.errorUpdated.connect(errors.append)
+
+            worker.display_index(0, [str(tmp_path / "missing.png")])
+
+        assert len(errors) == 1
+        assert "missing.png" in errors[0]
+        assert "could not be read" in errors[0]
+
+    def test_android_presentation_fails_visibly_without_libreoffice(
+        self,
+        qapp,
+        mock_config,
+        mock_pixmap_label,
+        monkeypatch,
+    ):
+        errors = []
+        monkeypatch.setattr(
+            "ezdmb.Utility.media_utility.is_android",
+            lambda: True,
+        )
+        with patch.object(QThread, "start"):
+            worker = menu_content_view.menu_content_view(
+                mock_config,
+                mock_pixmap_label,
+                "TestWindow",
+                MagicMock(),
+            )
+            worker.errorUpdated.connect(errors.append)
+
+            worker.display_index(0, ["slides.pptx"])
+
+        assert len(errors) == 1
+        assert "not supported on Android" in errors[0]
 
     def test_recognizes_png_extension(self, qapp, mock_config, mock_pixmap_label):
         """Test that png files are recognized as viewable"""

@@ -1,6 +1,7 @@
 # pylint: disable=no-name-in-module
 from copy import deepcopy
 from pathlib import Path
+from typing import Protocol
 from uuid import uuid4
 
 from PySide6.QtCore import QSize, Qt, Signal
@@ -10,9 +11,11 @@ from PySide6.QtWidgets import (
     QButtonGroup,
     QCalendarWidget,
     QComboBox,
+    QDateEdit,
     QDoubleSpinBox,
     QFileDialog,
     QFrame,
+    QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QHeaderView,
@@ -37,8 +40,15 @@ from ezdmb.Controller.configuration import (
     default_time_blocks,
 )
 from ezdmb.Utility.icon_utility import getWindowIcon
-from ezdmb.Utility.media_utility import CONTENT_FILE_DIALOG_FILTER, is_web_url
+from ezdmb.Utility.media_utility import (
+    CONTENT_FILE_DIALOG_FILTER,
+    is_web_url,
+)
 from ezdmb.View import resources  # noqa: F401
+
+
+class content_storage_adapter(Protocol):
+    def pick_content_file(self) -> str | None: ...
 
 
 class config_widget(QWidget):
@@ -57,9 +67,18 @@ class config_widget(QWidget):
     _SLOT_MINUTES = 30
     _SLOTS_PER_DAY = 24 * 60 // _SLOT_MINUTES
 
-    def __init__(self, parent, config: configuration):
+    def __init__(
+        self,
+        parent,
+        config: configuration,
+        *,
+        android_mode: bool = False,
+        storage_adapter: content_storage_adapter | None = None,
+    ):
         super(self.__class__, self).__init__(parent)
         self._config = config
+        self._android_mode = android_mode
+        self._storage_adapter = storage_adapter
         self._loadingUi = False
         self._updatingGroups = False
         self._updatingScheduleGrid = False
@@ -70,7 +89,9 @@ class config_widget(QWidget):
 
         # widgets
         self.setObjectName("config_widget")
-        self.setMinimumSize(QSize(520, 360))
+        self.setMinimumSize(
+            QSize(0, 0) if android_mode else QSize(520, 360)
+        )
 
         self.setWindowIcon(getWindowIcon())
 
@@ -82,7 +103,12 @@ class config_widget(QWidget):
         preferredSizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
         self.setSizePolicy(preferredSizePolicy)
         self.vLayout6 = QVBoxLayout(self)
-        self.vLayout6.setContentsMargins(20, 18, 20, 18)
+        self.vLayout6.setContentsMargins(
+            8 if android_mode else 20,
+            8 if android_mode else 18,
+            8 if android_mode else 20,
+            8 if android_mode else 18,
+        )
         self.vLayout6.setSpacing(12)
         self.vLayout6.setObjectName("vLayout6")
 
@@ -139,18 +165,20 @@ class config_widget(QWidget):
 
         self.noneRadio = QRadioButton("None", self.rotationSettingsGrpBox)
         self.noneRadio.setFont(rotationRadioFont)
-        self.noneRadio.setMinimumHeight(34)
+        self.noneRadio.setMinimumHeight(48 if android_mode else 34)
         self.noneRadio.setObjectName("noneRadio")
         self.hLayout2.addWidget(self.noneRadio)
 
         self.everySecondsRadio = QRadioButton("Fixed Period: Every", self.rotationSettingsGrpBox)
         self.everySecondsRadio.setFont(rotationRadioFont)
-        self.everySecondsRadio.setMinimumHeight(34)
+        self.everySecondsRadio.setMinimumHeight(48 if android_mode else 34)
         self.everySecondsRadio.setObjectName("everySecondsRadio")
 
         self.rotateTimeBox = QDoubleSpinBox(self.rotationSettingsGrpBox)
         self.rotateTimeBox.setSizePolicy(fixedFixedSizePolicy)
-        self.rotateTimeBox.setMinimumSize(QSize(70, 32))
+        self.rotateTimeBox.setMinimumSize(
+            QSize(70, 48 if android_mode else 32)
+        )
         self.rotateTimeBox.setFont(twelvePtFont)
         self.rotateTimeBox.setDecimals(0)
         self.rotateTimeBox.setMinimum(1)
@@ -171,7 +199,7 @@ class config_widget(QWidget):
 
         self.byScheduleRadio = QRadioButton("By schedule grid", self.rotationSettingsGrpBox)
         self.byScheduleRadio.setFont(rotationRadioFont)
-        self.byScheduleRadio.setMinimumHeight(34)
+        self.byScheduleRadio.setMinimumHeight(48 if android_mode else 34)
         self.byScheduleRadio.setObjectName("byScheduleRadio")
         self.hLayout2.addWidget(self.byScheduleRadio)
 
@@ -210,6 +238,8 @@ class config_widget(QWidget):
         self.addGroupButton.setAccessibleName("Add Group")
         self.addGroupButton.setToolTip("Add Group")
         self.addGroupButton.setObjectName("addGroupButton")
+        if android_mode:
+            self.addGroupButton.setMinimumSize(QSize(48, 48))
         self.groupToolbarLayout.addWidget(self.addGroupButton)
 
         renameGroupPixmap = QPixmap(":/images/drive_file_rename.svg")
@@ -219,6 +249,8 @@ class config_widget(QWidget):
         self.renameGroupButton.setAccessibleName("Rename")
         self.renameGroupButton.setToolTip("Rename")
         self.renameGroupButton.setObjectName("renameGroupButton")
+        if android_mode:
+            self.renameGroupButton.setMinimumSize(QSize(48, 48))
         self.groupToolbarLayout.addWidget(self.renameGroupButton)
 
         groupRemovePixmap = QPixmap(":/images/group_remove.svg")
@@ -228,6 +260,8 @@ class config_widget(QWidget):
         self.deleteGroupButton.setAccessibleName("Delete Group")
         self.deleteGroupButton.setToolTip("Delete Group")
         self.deleteGroupButton.setObjectName("deleteGroupButton")
+        if android_mode:
+            self.deleteGroupButton.setMinimumSize(QSize(48, 48))
         self.groupToolbarLayout.addWidget(self.deleteGroupButton)
         self.vLayout2.addWidget(self.groupToolbar)
 
@@ -254,7 +288,9 @@ class config_widget(QWidget):
         self.addContentButton = QPushButton(self.frame)
         self.addContentButton.setIcon(addButtonIcon)
         self.addContentButton.setIconSize(contentPasteGoPixmap.rect().size())
-        self.addContentButton.setMinimumSize(QSize(120, 34))
+        self.addContentButton.setMinimumSize(
+            QSize(120, 48 if android_mode else 34)
+        )
         self.addContentButton.setFont(twelvePtFont)
         self.addContentButton.setAccessibleName("Add Content")
         self.addContentButton.setToolTip("Add Content")
@@ -262,7 +298,9 @@ class config_widget(QWidget):
         self.horizontalLayout.addWidget(self.addContentButton)
 
         self.addWebPageButton = QPushButton("Add Web Page", self.frame)
-        self.addWebPageButton.setMinimumSize(QSize(120, 34))
+        self.addWebPageButton.setMinimumSize(
+            QSize(120, 48 if android_mode else 34)
+        )
         self.addWebPageButton.setFont(twelvePtFont)
         self.addWebPageButton.setAccessibleName("Add Web Page")
         self.addWebPageButton.setToolTip("Add Web Page")
@@ -306,10 +344,29 @@ class config_widget(QWidget):
         self.scheduleGroupCombo.currentIndexChanged.connect(
             self._refreshScheduleGroupHelp
         )
-        self.scheduleCalendar.selectionChanged.connect(self.onScheduleDateChanged)
-        self.timeBlockGrid.itemSelectionChanged.connect(
-            self.onTimeBlockSelectionChanged
-        )
+        if self._android_mode:
+            self.mobileScheduleDayCombo.currentTextChanged.connect(
+                self._refreshTimeBlockGrid
+            )
+            self.mobileScheduleDateEdit.dateChanged.connect(
+                lambda _date: self._refreshTimeBlockGrid()
+            )
+            self.mobileAssignBlockButton.clicked.connect(
+                self.addMobileScheduleBlock
+            )
+            self.mobileRemoveBlockButton.clicked.connect(
+                self.removeMobileScheduleBlock
+            )
+            self.mobileScheduleList.currentRowChanged.connect(
+                lambda row: self.mobileRemoveBlockButton.setEnabled(row >= 0)
+            )
+        else:
+            self.scheduleCalendar.selectionChanged.connect(
+                self.onScheduleDateChanged
+            )
+            self.timeBlockGrid.itemSelectionChanged.connect(
+                self.onTimeBlockSelectionChanged
+            )
 
     def _buildScheduleTab(self):
         self.scheduleWidget = QWidget(self.settingsTabs)
@@ -318,7 +375,9 @@ class config_widget(QWidget):
         self.scheduleLayout.setContentsMargins(8, 8, 8, 8)
         self.scheduleLayout.setSpacing(8)
 
-        self.repeatLayout = QHBoxLayout()
+        self.repeatLayout = (
+            QVBoxLayout() if self._android_mode else QHBoxLayout()
+        )
         self.repeatLabel = QLabel("Repeat:", self.scheduleWidget)
         self.repeatLabel.setObjectName("repeatLabel")
         self.repeatCombo = QComboBox(self.scheduleWidget)
@@ -336,53 +395,182 @@ class config_widget(QWidget):
         self.scheduleLayout.addLayout(self.repeatLayout)
 
         self.scheduleHelpLabel = QLabel(
-            "Choose a group, then select 30-minute blocks to assign those times "
-            "to it. Assignments replace existing groups; choose Clear blocks "
-            "to remove an assignment.",
+            (
+                "Choose a day or date, a group, and a half-hour time range "
+                "to assign."
+                if self._android_mode
+                else "Choose a group, then select 30-minute blocks to assign "
+                "those times to it. Assignments replace existing groups; "
+                "choose Clear blocks to remove an assignment."
+            ),
             self.scheduleWidget,
         )
         self.scheduleHelpLabel.setWordWrap(True)
         self.scheduleHelpLabel.setObjectName("scheduleHelpLabel")
         self.scheduleLayout.addWidget(self.scheduleHelpLabel)
 
-        self.scheduleGridLayout = QHBoxLayout()
-        self.scheduleCalendar = QCalendarWidget(self.scheduleWidget)
-        self.scheduleCalendar.setObjectName("scheduleCalendar")
-        self.scheduleCalendar.setGridVisible(True)
-        self.scheduleCalendar.setFirstDayOfWeek(Qt.DayOfWeek.Monday)
-        self.scheduleCalendar.setMinimumSize(QSize(220, 180))
-        self.scheduleGridLayout.addWidget(
-            self.scheduleCalendar,
-            0,
-            Qt.AlignmentFlag.AlignTop,
-        )
+        if self._android_mode:
+            self.mobileSchedulePeriodLayout = QHBoxLayout()
+            self.mobileScheduleDayLabel = QLabel(
+                "Day:",
+                self.scheduleWidget,
+            )
+            self.mobileScheduleDayCombo = QComboBox(self.scheduleWidget)
+            self.mobileScheduleDayCombo.addItems(self._WEEKDAYS)
+            self.mobileScheduleDayCombo.setObjectName(
+                "mobileScheduleDayCombo"
+            )
+            self.mobileSchedulePeriodLayout.addWidget(
+                self.mobileScheduleDayLabel
+            )
+            self.mobileSchedulePeriodLayout.addWidget(
+                self.mobileScheduleDayCombo,
+                1,
+            )
 
-        self.timeBlockGrid = QTableWidget(self.scheduleWidget)
-        self.timeBlockGrid.setObjectName("timeBlockGrid")
-        self.timeBlockGrid.setSelectionBehavior(
-            QAbstractItemView.SelectionBehavior.SelectItems
-        )
-        self.timeBlockGrid.setSelectionMode(
-            QAbstractItemView.SelectionMode.ExtendedSelection
-        )
-        self.timeBlockGrid.setEditTriggers(
-            QAbstractItemView.EditTrigger.NoEditTriggers
-        )
-        self.timeBlockGrid.setAlternatingRowColors(True)
-        self.timeBlockGrid.setMinimumHeight(220)
-        self.timeBlockGrid.verticalHeader().setDefaultSectionSize(18)
-        self.timeBlockGrid.horizontalHeader().setMinimumSectionSize(36)
-        self.timeBlockGrid.horizontalHeader().setDefaultSectionSize(56)
-        self.timeBlockGrid.horizontalHeader().setSectionResizeMode(
-            QHeaderView.ResizeMode.Stretch
-        )
-        self.scheduleGridLayout.addWidget(self.timeBlockGrid, 1)
-        self.scheduleLayout.addLayout(self.scheduleGridLayout, 1)
+            self.mobileScheduleDateLabel = QLabel(
+                "Date:",
+                self.scheduleWidget,
+            )
+            self.mobileScheduleDateEdit = QDateEdit(self.scheduleWidget)
+            self.mobileScheduleDateEdit.setCalendarPopup(True)
+            self.mobileScheduleDateEdit.setDisplayFormat("yyyy-MM-dd")
+            self.mobileScheduleDateEdit.setObjectName(
+                "mobileScheduleDateEdit"
+            )
+            self.mobileSchedulePeriodLayout.addWidget(
+                self.mobileScheduleDateLabel
+            )
+            self.mobileSchedulePeriodLayout.addWidget(
+                self.mobileScheduleDateEdit,
+                1,
+            )
+            self.scheduleLayout.addLayout(
+                self.mobileSchedulePeriodLayout
+            )
+
+            self.mobileScheduleList = QListWidget(self.scheduleWidget)
+            self.mobileScheduleList.setObjectName("mobileScheduleList")
+            self.scheduleLayout.addWidget(self.mobileScheduleList, 1)
+
+            self.mobileBlockEditorLayout = QGridLayout()
+            self.mobileStartTimeCombo = QComboBox(self.scheduleWidget)
+            self.mobileStartTimeCombo.setObjectName("mobileStartTimeCombo")
+            self.mobileEndTimeCombo = QComboBox(self.scheduleWidget)
+            self.mobileEndTimeCombo.setObjectName("mobileEndTimeCombo")
+            for slot in range(self._SLOTS_PER_DAY + 1):
+                time_label = self._slotToTime(slot)
+                self.mobileStartTimeCombo.addItem(time_label)
+                self.mobileEndTimeCombo.addItem(time_label)
+            self.mobileStartTimeCombo.setCurrentIndex(16)
+            self.mobileEndTimeCombo.setCurrentIndex(20)
+
+            self.mobileBlockEditorLayout.addWidget(
+                QLabel("Start:", self.scheduleWidget),
+                0,
+                0,
+            )
+            self.mobileBlockEditorLayout.addWidget(
+                self.mobileStartTimeCombo,
+                0,
+                1,
+            )
+            self.mobileBlockEditorLayout.addWidget(
+                QLabel("End:", self.scheduleWidget),
+                1,
+                0,
+            )
+            self.mobileBlockEditorLayout.addWidget(
+                self.mobileEndTimeCombo,
+                1,
+                1,
+            )
+
+            self.mobileAssignBlockButton = QPushButton(
+                "Assign time block",
+                self.scheduleWidget,
+            )
+            self.mobileAssignBlockButton.setObjectName(
+                "mobileAssignBlockButton"
+            )
+            self.mobileRemoveBlockButton = QPushButton(
+                "Remove selected block",
+                self.scheduleWidget,
+            )
+            self.mobileRemoveBlockButton.setObjectName(
+                "mobileRemoveBlockButton"
+            )
+            self.mobileRemoveBlockButton.setEnabled(False)
+            self.mobileBlockEditorLayout.addWidget(
+                self.mobileAssignBlockButton,
+                2,
+                0,
+                1,
+                2,
+            )
+            self.mobileBlockEditorLayout.addWidget(
+                self.mobileRemoveBlockButton,
+                3,
+                0,
+                1,
+                2,
+            )
+            self.scheduleLayout.addLayout(self.mobileBlockEditorLayout)
+        else:
+            self.scheduleGridLayout = QHBoxLayout()
+            self.scheduleCalendar = QCalendarWidget(self.scheduleWidget)
+            self.scheduleCalendar.setObjectName("scheduleCalendar")
+            self.scheduleCalendar.setGridVisible(True)
+            self.scheduleCalendar.setFirstDayOfWeek(Qt.DayOfWeek.Monday)
+            self.scheduleCalendar.setMinimumSize(QSize(220, 180))
+            self.scheduleGridLayout.addWidget(
+                self.scheduleCalendar,
+                0,
+                Qt.AlignmentFlag.AlignTop,
+            )
+
+            self.timeBlockGrid = QTableWidget(self.scheduleWidget)
+            self.timeBlockGrid.setObjectName("timeBlockGrid")
+            self.timeBlockGrid.setSelectionBehavior(
+                QAbstractItemView.SelectionBehavior.SelectItems
+            )
+            self.timeBlockGrid.setSelectionMode(
+                QAbstractItemView.SelectionMode.ExtendedSelection
+            )
+            self.timeBlockGrid.setEditTriggers(
+                QAbstractItemView.EditTrigger.NoEditTriggers
+            )
+            self.timeBlockGrid.setAlternatingRowColors(True)
+            self.timeBlockGrid.setMinimumHeight(220)
+            self.timeBlockGrid.verticalHeader().setDefaultSectionSize(18)
+            self.timeBlockGrid.horizontalHeader().setMinimumSectionSize(36)
+            self.timeBlockGrid.horizontalHeader().setDefaultSectionSize(56)
+            self.timeBlockGrid.horizontalHeader().setSectionResizeMode(
+                QHeaderView.ResizeMode.Stretch
+            )
+            self.scheduleGridLayout.addWidget(self.timeBlockGrid, 1)
+            self.scheduleLayout.addLayout(self.scheduleGridLayout, 1)
 
         self.settingsTabs.addTab(self.scheduleWidget, "Schedule")
 
     def _refreshTimeBlockGrid(self):
         repeat_mode = self.repeatCombo.currentText()
+        if self._android_mode:
+            self.mobileScheduleDayLabel.setVisible(
+                repeat_mode == "Weekly"
+            )
+            self.mobileScheduleDayCombo.setVisible(
+                repeat_mode == "Weekly"
+            )
+            self.mobileScheduleDateLabel.setVisible(
+                repeat_mode == "None"
+            )
+            self.mobileScheduleDateEdit.setVisible(
+                repeat_mode == "None"
+            )
+            self._refreshMobileScheduleBlocks()
+            return
+
         if repeat_mode == "Daily":
             column_headers = ["Daily"]
         elif repeat_mode == "Weekly":
@@ -440,6 +628,97 @@ class config_widget(QWidget):
                         )
         finally:
             self._updatingScheduleGrid = False
+
+    def _mobileScheduleBlocks(self):
+        repeat_mode = self.repeatCombo.currentText()
+        if repeat_mode == "Daily":
+            return self._timeBlocks["daily"]
+        if repeat_mode == "Weekly":
+            return self._timeBlocks["weekly"].get(
+                self.mobileScheduleDayCombo.currentText(),
+                [],
+            )
+        date_key = self.mobileScheduleDateEdit.date().toString(
+            Qt.DateFormat.ISODate
+        )
+        return self._timeBlocks["dated"].get(date_key, [])
+
+    def _storeMobileScheduleBlocks(self, blocks):
+        repeat_mode = self.repeatCombo.currentText()
+        if repeat_mode == "Daily":
+            self._timeBlocks["daily"] = blocks
+        elif repeat_mode == "Weekly":
+            day = self.mobileScheduleDayCombo.currentText()
+            if blocks:
+                self._timeBlocks["weekly"][day] = blocks
+            else:
+                self._timeBlocks["weekly"].pop(day, None)
+        else:
+            date_key = self.mobileScheduleDateEdit.date().toString(
+                Qt.DateFormat.ISODate
+            )
+            if blocks:
+                self._timeBlocks["dated"][date_key] = blocks
+            else:
+                self._timeBlocks["dated"].pop(date_key, None)
+
+    def _refreshMobileScheduleBlocks(self):
+        self.mobileScheduleList.clear()
+        for block in self._mobileScheduleBlocks():
+            group = self._findGroup(block.get("group_id"))
+            group_name = group["name"] if group is not None else "Unknown group"
+            self.mobileScheduleList.addItem(
+                f"{block['start']} - {block['end']}  {group_name}"
+            )
+
+    def addMobileScheduleBlock(self):
+        if self._loadingUi:
+            return
+
+        group_id = self.scheduleGroupCombo.currentData()
+        if group_id is None:
+            QMessageBox.warning(
+                self,
+                "Choose a Content Group",
+                "Select a content group before assigning a time block.",
+            )
+            return
+
+        start_slot = self.mobileStartTimeCombo.currentIndex()
+        end_slot = self.mobileEndTimeCombo.currentIndex()
+        if start_slot < 0 or end_slot <= start_slot:
+            QMessageBox.warning(
+                self,
+                "Invalid Time Block",
+                "The end time must be later than the start time.",
+            )
+            return
+
+        assignments = self._assignmentsFromBlocks(
+            self._mobileScheduleBlocks()
+        )
+        for slot in range(start_slot, end_slot):
+            assignments[slot] = group_id
+        self._storeMobileScheduleBlocks(
+            self._blocksFromAssignments(assignments)
+        )
+        self._refreshTimeBlockGrid()
+        self.saveUpdatedConfig()
+
+    def removeMobileScheduleBlock(self):
+        selected_row = self.mobileScheduleList.currentRow()
+        blocks = self._mobileScheduleBlocks()
+        if selected_row < 0 or selected_row >= len(blocks):
+            return
+
+        assignments = self._assignmentsFromBlocks(blocks)
+        for slot in self._rowsFromBlocks([blocks[selected_row]]):
+            assignments[slot] = None
+        self._storeMobileScheduleBlocks(
+            self._blocksFromAssignments(assignments)
+        )
+        self._refreshTimeBlockGrid()
+        self.saveUpdatedConfig()
 
     def _refreshScheduleGroupCombo(self, selected_group_id=None):
         if not hasattr(self, "scheduleGroupCombo"):
@@ -597,14 +876,17 @@ class config_widget(QWidget):
         deleteButton = QPushButton(rowWidget)
         deleteButton.setIcon(QIcon(":/images/delete.svg"))
         deleteButton.setIconSize(QSize(20, 20))
-        deleteButton.setFixedSize(QSize(28, 28))
+        delete_size = 48 if self._android_mode else 28
+        deleteButton.setFixedSize(QSize(delete_size, delete_size))
         deleteButton.setAccessibleName(f"Remove {fileLabel.text()}")
         deleteButton.setToolTip(f"Remove {fileLabel.text()}")
         deleteButton.setObjectName("deleteContentButton")
         rowLayout.addWidget(deleteButton)
 
         self.loadedContentWidget.setItemWidget(listItem, rowWidget)
-        listItem.setSizeHint(QSize(0, 36))
+        listItem.setSizeHint(
+            QSize(0, 56 if self._android_mode else 36)
+        )
         deleteButton.clicked.connect(
             lambda _checked=False, item=listItem: self._deleteContentItem(item)
         )
@@ -784,17 +1066,45 @@ class config_widget(QWidget):
         self.close()
 
     def addContent(self):
-        contentFile = QFileDialog.getOpenFileName(
-            self,
-            "Add Content",
-            "",
-            CONTENT_FILE_DIALOG_FILTER,
-        )[0]
-        if contentFile != "":
+        if self._android_mode:
+            if self._storage_adapter is None:
+                QMessageBox.critical(
+                    self,
+                    "File Access Unavailable",
+                    "Android document access is not available in this build.",
+                )
+                return
+            try:
+                contentFile = self._storage_adapter.pick_content_file()
+            except (OSError, RuntimeError, ValueError) as error:
+                QMessageBox.warning(
+                    self,
+                    "Unable to Add Content",
+                    str(error),
+                )
+                return
+        else:
+            contentFile = QFileDialog.getOpenFileName(
+                self,
+                "Add Content",
+                "",
+                CONTENT_FILE_DIALOG_FILTER,
+            )[0]
+
+        if contentFile:
             self._addContentListItem(contentFile)
             self.saveUpdatedConfig()
 
     def addWebPage(self):
+        if self._android_mode:
+            QMessageBox.information(
+                self,
+                "Web Pages Not Supported",
+                "Qt WebEngine Widgets is not available on Android. "
+                "Web pages cannot be added or rendered in this build.",
+            )
+            return
+
         url, accepted = QInputDialog.getText(
             self, "Add Web Page", "Web page URL (http:// or https://):"
         )

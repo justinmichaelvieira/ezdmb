@@ -3,6 +3,8 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+from ezdmb.Utility.path_utility import is_android
+
 IMAGE_FILE_EXTENSIONS = (".jpg", ".png", ".gif", ".bmp", ".ico")
 TEXT_FILE_EXTENSIONS = (".txt",)
 VIDEO_FILE_EXTENSIONS = (
@@ -38,6 +40,12 @@ def is_web_url(value):
 
 def convert_presentation_to_pdf(presentation_path):
     """Convert a presentation to PDF with LibreOffice; returns the PDF path."""
+    if is_android():
+        raise RuntimeError(
+            "PowerPoint presentations are not supported on Android. "
+            "Convert the file to PDF before adding it."
+        )
+
     source = Path(presentation_path).resolve()
     soffice = shutil.which("soffice") or shutil.which("libreoffice")
     if soffice is None:
