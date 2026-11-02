@@ -204,8 +204,9 @@ emulator/device is available.
 ## Android behavior and limitations
 
 - The app has one full-screen display window and an in-app Settings page. The
-  Settings control is touch-sized; Android Back returns to the display from
-  Settings. No system tray, Esc/O shortcuts, or desktop menus are used.
+  Settings control is touch-sized; Android Back closes the schedule editor
+  first, then returns from Settings to the display. No system tray, Esc/O
+  shortcuts, or desktop menus are used.
 - Rotation interval, None, named groups, daily/weekly/dated schedules, and the
   existing JSON configuration schema are retained. The mobile schedule editor
   edits one weekday or date and its half-hour block rows at a time.
@@ -243,7 +244,7 @@ PYTHONPATH=src QT_QPA_PLATFORM=offscreen python -m pytest -q
 cd src/ezdmb && ruff check
 ```
 
-The full test suite reports 132 passed. Full Ruff checks, targeted `ty check`
+The full test suite reports 144 passed. Full Ruff checks, targeted `ty check`
 for the Android implementation and build helper, and `git diff --check` pass.
 
 The x86_64 debug APK was built with PySide6 6.12.0 using
@@ -255,13 +256,15 @@ JDK 21. The APK is `output/ezdmb-0.1-x86_64-debug.apk` (173 MiB).
 
 The final APK installed and ran on the Android 15/API 35 AOSP x86_64 AVD using
 software CPU emulation (`/dev/kvm` is unavailable). Runtime checks covered the
-display, Settings, touch scrolling, schedule tab, Android Back navigation,
-and persistence after app restart. The Qt-native SAF picker opened; a sample
-image was copied from Downloads into app-private storage, exported as a ZIP
-bundle to Downloads, and re-imported successfully. The re-imported image was
-displayed after restarting the app. Cold startup is slow under TCG; Android
-System UI occasionally reported an ANR while the large Qt Python bundle was
-being extracted, then recovered without an app crash.
+display, Settings, touch scrolling, and schedule editor. The schedule editor
+fits the emulator viewport; Android Back closes it before returning from
+Settings to the display. A weekly time block was assigned and saved. The
+Qt-native SAF picker opened; a sample image was copied from Downloads into
+app-private storage, exported as a ZIP bundle to Downloads, and re-imported
+successfully. The imported image and configuration persisted after restarting
+the app. Cold startup is slow under TCG; Android System UI occasionally
+reported an ANR while the large Qt Python bundle was being extracted, then
+recovered without an app crash.
 
 The APK has a minimum API level of 28, but this final x86_64 build was only
 runtime-validated on API 35. API 28, arm64, physical devices, PDF, and video

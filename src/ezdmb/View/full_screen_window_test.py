@@ -150,9 +150,19 @@ class TestFullScreenWindow:
             "menu_content_view",
             MagicMock(return_value=worker),
         )
+        shutdown_handlers = []
+        app = SimpleNamespace(
+            aboutToQuit=SimpleNamespace(connect=shutdown_handlers.append)
+        )
+        monkeypatch.setattr(
+            full_screen_window,
+            "QApplication",
+            SimpleNamespace(instance=lambda: app),
+        )
         window = full_screen_window.full_screen_window(config, MagicMock())
 
-        qapp.aboutToQuit.emit()
+        for handler in shutdown_handlers:
+            handler()
 
         worker.stop.assert_called_once_with()
         window.close()

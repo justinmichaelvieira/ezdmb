@@ -6,6 +6,7 @@ Tests for the menu_content_view module
 import os
 import tempfile
 from datetime import UTC, datetime
+from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -125,8 +126,22 @@ class TestMenuContentViewShutdown:
         assert not worker._pause_event.is_set()
         worker.stop()
 
-    def test_window_close_stops_display_worker(self, qapp, mock_config):
+    def test_window_close_stops_display_worker(
+        self,
+        qapp,
+        mock_config,
+        monkeypatch,
+    ):
         mock_config.RotateContentTime = 3600
+        shutdown_handlers = []
+        app = SimpleNamespace(
+            aboutToQuit=SimpleNamespace(connect=shutdown_handlers.append)
+        )
+        monkeypatch.setattr(
+            full_screen_window,
+            "QApplication",
+            SimpleNamespace(instance=lambda: app),
+        )
         window = full_screen_window.full_screen_window(mock_config, MagicMock())
 
         window.close()
