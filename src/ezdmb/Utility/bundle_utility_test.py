@@ -108,6 +108,7 @@ class bundle_utility_test(unittest.TestCase):
             }
             config.RotationMode = "schedule"
             trigger_settings_ui_update = Mock()
+            status_messages = []
             with (
                 patch(
                     "ezdmb.Utility.bundle_utility.QFileDialog.getOpenFileName",
@@ -117,8 +118,15 @@ class bundle_utility_test(unittest.TestCase):
                     "ezdmb.Utility.bundle_utility.get_appdata_path",
                     return_value=appdata_path,
                 ),
+                patch(
+                    "ezdmb.Utility.bundle_utility.simple_text_dialog"
+                ) as dialog,
             ):
-                import_bundle(trigger_settings_ui_update, config, True)
+                import_bundle(
+                    trigger_settings_ui_update,
+                    config,
+                    status_callback=status_messages.append,
+                )
 
             saved_groups = config.save_config.call_args.kwargs["ContentGroups"]
             imported_path = Path(saved_groups[0]["content"][0])
@@ -129,6 +137,10 @@ class bundle_utility_test(unittest.TestCase):
                 config.save_config.call_args.kwargs["RotationMode"]
                 == "schedule"
             )
+            assert status_messages == [
+                "The bundle has been successfully imported."
+            ]
+            dialog.assert_not_called()
 
     def test_import_bundle_does_not_change_configuration_when_cancelled(self):
         config = Mock()

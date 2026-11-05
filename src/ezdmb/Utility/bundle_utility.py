@@ -2,6 +2,7 @@ import json
 import stat
 import tempfile
 import zipfile
+from collections.abc import Callable
 from copy import deepcopy
 from html import escape
 from http.client import HTTPException
@@ -93,13 +94,29 @@ def unzip_dir(zip_file: Path | str, extract_dir: Path | str):
                 copyfileobj(source, target)
 
 
-def _show_import_error(message: str, testing: bool):
-    if not testing:
+def _show_import_error(
+    message: str,
+    testing: bool,
+    status_callback: Callable[[str], None] | None = None,
+):
+    if testing:
+        return
+    if status_callback is not None:
+        status_callback(message)
+    else:
         simple_text_dialog("Import Failed", message).exec()
 
 
-def _show_export_error(message: str, testing: bool):
-    if not testing:
+def _show_export_error(
+    message: str,
+    testing: bool,
+    status_callback: Callable[[str], None] | None = None,
+):
+    if testing:
+        return
+    if status_callback is not None:
+        status_callback(message)
+    else:
         simple_text_dialog("Export Failed", message).exec()
 
 
@@ -108,9 +125,14 @@ def _import_bundle_archive(
     trigger_settings_ui_update: SignalInstance,
     configuration: configuration,
     testing=False,
+    status_callback: Callable[[str], None] | None = None,
 ):
     if not zipfile.is_zipfile(zip_file):
-        _show_import_error("The selected file is not a valid ZIP bundle.", testing)
+        _show_import_error(
+            "The selected file is not a valid ZIP bundle.",
+            testing,
+            status_callback,
+        )
         return False
 
     extract_folder = (
@@ -228,16 +250,18 @@ def _import_bundle_archive(
         _show_import_error(
             f"Could not import the bundle: {escape(str(error))}",
             testing,
+            status_callback,
         )
         return False
 
     trigger_settings_ui_update.emit()
 
     if not testing:
-        simple_text_dialog(
-            "Import Successful",
-            "The bundle has been successfully imported.",
-        ).exec()
+        message = "The bundle has been successfully imported."
+        if status_callback is not None:
+            status_callback(message)
+        else:
+            simple_text_dialog("Import Successful", message).exec()
     return True
 
 
@@ -246,6 +270,7 @@ def import_bundle(
     configuration: configuration,
     testing=False,
     storage_adapter: bundle_storage_adapter | None = None,
+    status_callback: Callable[[str], None] | None = None,
 ):
     """Select a zip bundle and extract it to the application directory, updating the configuration accordingly."""
 
@@ -262,6 +287,7 @@ def import_bundle(
             _show_import_error(
                 f"Could not open the selected bundle: {escape(str(error))}",
                 testing,
+                status_callback,
             )
             return False
     if not zip_file:
@@ -273,6 +299,7 @@ def import_bundle(
             trigger_settings_ui_update,
             configuration,
             testing,
+            status_callback,
         )
     finally:
         if storage_adapter is not None:
@@ -283,6 +310,7 @@ def import_bundle_from_url(
     trigger_settings_ui_update: SignalInstance,
     configuration: configuration,
     testing=False,
+    status_callback: Callable[[str], None] | None = None,
 ):
     """Download and import a zip bundle from an HTTP or HTTPS URL."""
 
@@ -309,6 +337,7 @@ def import_bundle_from_url(
         _show_import_error(
             "Please enter a valid HTTP or HTTPS bundle URL.",
             testing,
+            status_callback,
         )
         return
 
@@ -323,6 +352,7 @@ def import_bundle_from_url(
             _show_import_error(
                 f"Could not download the bundle: {escape(str(error))}",
                 testing,
+                status_callback,
             )
             return
 
@@ -331,6 +361,7 @@ def import_bundle_from_url(
             trigger_settings_ui_update,
             configuration,
             testing,
+            status_callback,
         )
 
 
@@ -411,6 +442,7 @@ def export_bundle(
     configuration: configuration,
     testing=False,
     storage_adapter: bundle_storage_adapter | None = None,
+    status_callback: Callable[[str], None] | None = None,
 ):
     """Create a ZIP bundle and save it to a desktop directory or SAF document."""
 
@@ -439,6 +471,7 @@ def export_bundle(
             _show_export_error(
                 f"Could not export the bundle: {escape(str(error))}",
                 testing,
+                status_callback,
             )
             return False
 
@@ -449,5 +482,8 @@ def export_bundle(
             else f"The bundle has been successfully exported to: "
             f"{Path(output_dir) / 'ezdmb_bundle.zip'}"
         )
-        simple_text_dialog("Export Successful", message).exec()
+        if status_callback is not None:
+            status_callback(message)
+        else:
+            simple_text_dialog("Export Successful", message).exec()
     return True

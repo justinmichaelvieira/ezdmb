@@ -87,6 +87,19 @@ def test_settings_navigation_pauses_display_and_back_resumes(app_window):
     worker.resume.assert_called_with()
 
 
+def test_settings_feedback_is_shown_inline(app_window):
+    window, _worker = app_window
+
+    window.showSettings()
+    window.showStatusMessage("The bundle has been successfully imported.")
+
+    assert window._pageStack.currentWidget() is window.settingsPage
+    assert window.actionStatusLabel.text() == (
+        "The bundle has been successfully imported."
+    )
+    assert not window.actionStatusLabel.isHidden()
+
+
 def test_android_window_closes_rotation_worker(app_window):
     window, worker = app_window
 

@@ -352,6 +352,13 @@ class android_app_window(QMainWindow):
         self.aboutButton.clicked.connect(self.showAbout)
         layout.addLayout(actions)
 
+        self.actionStatusLabel = QLabel(page)
+        self.actionStatusLabel.setObjectName("androidActionStatusLabel")
+        self.actionStatusLabel.setTextFormat(Qt.TextFormat.RichText)
+        self.actionStatusLabel.setWordWrap(True)
+        self.actionStatusLabel.hide()
+        layout.addWidget(self.actionStatusLabel)
+
         self.settingsScrollArea = QScrollArea(page)
         self.settingsScrollArea.setWidgetResizable(True)
         QScroller.grabGesture(
@@ -394,19 +401,26 @@ class android_app_window(QMainWindow):
             self.configWidget.trigger_settings_ui_update,
             self._config,
             storage_adapter=self._storage_adapter,
+            status_callback=self.showStatusMessage,
         )
 
     def exportBundle(self):
         export_bundle(
             self._config,
             storage_adapter=self._storage_adapter,
+            status_callback=self.showStatusMessage,
         )
 
     def importBundleFromUrl(self):
         import_bundle_from_url(
             self.configWidget.trigger_settings_ui_update,
             self._config,
+            status_callback=self.showStatusMessage,
         )
+
+    def showStatusMessage(self, message: str):
+        self.actionStatusLabel.setText(message)
+        self.actionStatusLabel.show()
 
     def showQuickstart(self):
         QMessageBox.information(

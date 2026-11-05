@@ -227,6 +227,8 @@ emulator/device is available.
   Settings control is touch-sized; Android Back closes the schedule editor
   first, then returns from Settings to the display. No system tray, Esc/O
   shortcuts, or desktop menus are used.
+- Bundle import/export results and errors are shown inline in Settings instead
+  of opening a modal Qt dialog after Android's document picker returns.
 - Rotation interval, None, named groups, daily/weekly/dated schedules, and the
   existing JSON configuration schema are retained. The mobile schedule editor
   edits one weekday or date and its half-hour block rows at a time.
@@ -286,11 +288,13 @@ the app. Cold startup is slow under TCG; Android System UI occasionally
 reported an ANR while the large Qt Python bundle was being extracted, then
 recovered without an app crash.
 
-The x86_64 build was runtime-validated on API 35. An ARM64 APK was built and
-installed on a Samsung SM-G960U1 (`arm64-v8a`, Android 10/API 29); ADB reported
-successful installation. The launch attempt did not show a resumed app
-activity, and subsequent ADB shell commands timed out, so ARM64 runtime
-behavior is not yet verified. API 28, PDF, and video playback also remain
-unverified. Qt Multimedia remains excluded after its earlier native
-`JNI_OnLoad` crash on the API 28 emulator; video entries show the documented
-unavailable fallback.
+The x86_64 build was runtime-validated on API 35. The ARM64 APK was installed
+and tested on a Samsung Galaxy Tab S9 (SM-X810, Android 16/API 36). A valid
+bundle import reproduced a native Qt abort after the Android document picker
+returned. Import/export feedback now appears inline in Settings instead of
+opening a modal dialog; the same controlled bundle imported successfully and
+the app remained running. The tablet's original configuration was restored
+after testing. The Samsung SM-G960U1 (Android 10/API 29), API 28, PDF, and video
+playback remain unverified. Qt Multimedia remains excluded after its earlier
+native `JNI_OnLoad` crash on the API 28 emulator; video entries show the
+documented unavailable fallback.
