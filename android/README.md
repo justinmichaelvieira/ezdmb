@@ -105,6 +105,10 @@ the filenames ending in `android_x86_64.whl`. Each wheel is about 90 MB. These
 are public Qt 6.12.0 binary wheels; the commercial-license prompt from `qtpip`
 does not apply when downloading the public URLs directly.
 
+The build helper accepts `aarch64`, `arm64`, and `arm64-v8a` as names for the
+same Android ARM64 ABI. All three require the matching
+`android_aarch64` PySide6 and Shiboken wheels.
+
 The downloads must match PySide6 6.12.0. Qt's current documentation also
 describes cross-compiling wheels from the matching Qt for Android SDK. Install
 Qt 6.12.0 with the Android kit and host tools, then run the
@@ -170,10 +174,26 @@ absolute paths in this repository.
 ## Install and inspect on Android
 
 ```bash
-adb install -r android/output/*.apk
+adb install -r android/output/ezdmb-0.1-arm64-v8a-debug.apk
 adb logcat -c
 adb logcat
 ```
+
+For a one-step ARM64 build and install, connect and authorize the device, find
+its serial with `adb devices -l`, then pass the matching ARM64 wheels and serial:
+
+```bash
+python android/build.py --arch arm64-v8a \
+    --wheel-pyside "$PYSIDE_ANDROID_WHEEL" \
+    --wheel-shiboken "$SHIBOKEN_ANDROID_WHEEL" \
+    --ndk-path "$ANDROID_NDK_HOME" \
+    --sdk-path "$ANDROID_SDK_ROOT" \
+    --install --device-serial "$ADB_SERIAL"
+```
+
+`--install` installs the newly built APK with `adb install -r`; omit
+`--device-serial` only when ADB has a single connected device. The device serial
+option requires `--install`.
 
 Check the generated APK's actual permissions before release:
 
@@ -266,8 +286,11 @@ the app. Cold startup is slow under TCG; Android System UI occasionally
 reported an ANR while the large Qt Python bundle was being extracted, then
 recovered without an app crash.
 
-The APK has a minimum API level of 28, but this final x86_64 build was only
-runtime-validated on API 35. API 28, arm64, physical devices, PDF, and video
-playback remain unverified. Qt Multimedia remains excluded after its earlier
-native `JNI_OnLoad` crash on the API 28 emulator; video entries show the
-documented unavailable fallback.
+The x86_64 build was runtime-validated on API 35. An ARM64 APK was built and
+installed on a Samsung SM-G960U1 (`arm64-v8a`, Android 10/API 29); ADB reported
+successful installation. The launch attempt did not show a resumed app
+activity, and subsequent ADB shell commands timed out, so ARM64 runtime
+behavior is not yet verified. API 28, PDF, and video playback also remain
+unverified. Qt Multimedia remains excluded after its earlier native
+`JNI_OnLoad` crash on the API 28 emulator; video entries show the documented
+unavailable fallback.

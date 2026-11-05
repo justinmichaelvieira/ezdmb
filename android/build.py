@@ -5,6 +5,8 @@ import importlib
 import logging
 import os
 import re
+import shutil
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -149,23 +151,61 @@ recipe = EzdmbRecipe()
     )
 
 
+def _install_apk(apk_path: Path, sdk_path: Path, device_serial: str | None):
+    adb_name = "adb.exe" if os.name == "nt" else "adb"
+    adb_path = sdk_path / "platform-tools" / adb_name
+    if not adb_path.is_file():
+        adb_from_path = shutil.which("adb")
+        if not adb_from_path:
+            raise FileNotFoundError(
+                "Android Debug Bridge was not found in the SDK or PATH."
+            )
+        adb_path = Path(adb_from_path)
+
+    command = [str(adb_path)]
+    if device_serial:
+        command.extend(("-s", device_serial))
+    command.extend(("install", "-r", str(apk_path.resolve())))
+    subprocess.run(command, check=True)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Build a PySide6 Android debug APK or release AAB."
     )
     parser.add_argument(
         "--arch",
-        choices=("aarch64", "x86_64"),
+        choices=("aarch64", "arm64", "arm64-v8a", "x86_64"),
         default="aarch64",
+        help="Target architecture; arm64 and arm64-v8a are aliases for aarch64.",
     )
     parser.add_argument("--wheel-pyside", type=Path, required=True)
     parser.add_argument("--wheel-shiboken", type=Path, required=True)
     parser.add_argument("--sdk-path", type=Path)
     parser.add_argument("--ndk-path", type=Path)
+    parser.add_argument(
+        "--install",
+        action="store_true",
+        help="Install the newly built APK on a connected Android device.",
+    )
+    parser.add_argument(
+        "--device-serial",
+        help="ADB serial of the target device; requires --install.",
+    )
     parser.add_argument("--keep-deployment-files", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
+    if args.device_serial and not args.install:
+        parser.error("--device-serial requires --install.")
+    if args.install and args.dry_run:
+        parser.error("--install cannot be used with --dry-run.")
+
+    arch = (
+        "aarch64"
+        if args.arch in ("aarch64", "arm64", "arm64-v8a")
+        else args.arch
+    )
     if sys.prefix == sys.base_prefix:
         raise SystemExit(
             "Run this script from an activated Python virtual environment."
@@ -215,7 +255,7 @@ def main():
         "deploy_lib.android.buildozer"
     ).Buildozer
 
-    if args.arch == "aarch64":
+    if arch == "aarch64":
         config_file = repository_root / "android" / "pysidedeploy.spec"
     else:
         config_file = (
@@ -225,6 +265,13 @@ def main():
         raise FileNotFoundError(args.wheel_pyside)
     if not args.wheel_shiboken.is_file():
         raise FileNotFoundError(args.wheel_shiboken)
+    wheel_suffix = f"android_{arch}.whl"
+    for wheel_path in (args.wheel_pyside, args.wheel_shiboken):
+        if not wheel_path.name.endswith(wheel_suffix):
+            raise ValueError(
+                f"{wheel_path} does not match --arch {args.arch}; "
+                f"expected a wheel ending in {wheel_suffix}."
+            )
 
     original_config = config_file.read_bytes()
     original_create_executable = Buildozer.create_executable
@@ -271,6 +318,8 @@ def main():
             )
         latest_apk = max(new_apks, key=lambda path: path.stat().st_mtime)
         print(f"Android APK created: {latest_apk}")
+        if args.install:
+            _install_apk(latest_apk, sdk_path, args.device_serial)
 
 
 if __name__ == "__main__":
